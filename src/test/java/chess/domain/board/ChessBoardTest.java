@@ -24,6 +24,8 @@ import static chess.domain.Position.E1;
 import static chess.domain.Position.E3;
 import static chess.domain.Position.F2;
 import static chess.domain.Position.H1;
+import static chess.domain.piece.PieceMoveResult.FAILURE;
+import static chess.domain.piece.PieceMoveResult.SUCCESS;
 import static chess.domain.piece.Team.BLACK;
 import static chess.domain.piece.Team.WHITE;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -34,6 +36,7 @@ import chess.domain.piece.King;
 import chess.domain.piece.Knight;
 import chess.domain.piece.Pawn;
 import chess.domain.piece.Piece;
+import chess.domain.piece.PieceMoveResult;
 import chess.domain.piece.Queen;
 import chess.domain.piece.Rook;
 import chess.domain.piece.Team;
@@ -78,8 +81,8 @@ class ChessBoardTest {
     void moveSuccess(Position from, Position to) {
         ChessBoard chessBoard = new ChessBoard(new Pawn(D2, WHITE), new Rook(A1, WHITE), new King(E1, WHITE),
                 new Knight(B1, WHITE), new Bishop(C1, WHITE), new Queen(D1, WHITE));
-        boolean moveSuccess = chessBoard.move(from, to);
-        Assertions.assertThat(moveSuccess).isTrue();
+        PieceMoveResult moveResult = chessBoard.move(from, to);
+        Assertions.assertThat(moveResult).isEqualTo(SUCCESS);
     }
 
     @ParameterizedTest
@@ -88,16 +91,16 @@ class ChessBoardTest {
     void moveFailureCauseInvalidMove(Position from, Position to) {
         ChessBoard chessBoard = new ChessBoard(new Pawn(D2, WHITE), new Rook(A1, WHITE), new King(E1, WHITE),
                 new Knight(B1, WHITE), new Bishop(C1, WHITE), new Queen(D1, WHITE));
-        boolean moveSuccess = chessBoard.move(from, to);
-        Assertions.assertThat(moveSuccess).isFalse();
+        PieceMoveResult moveResult = chessBoard.move(from, to);
+        Assertions.assertThat(moveResult).isEqualTo(FAILURE);
     }
 
     @Test
     @DisplayName("해당 위치에 말이 없어서 이동이 실패하는지 검증")
     void moveFailureCausePieceNotFound() {
         ChessBoard chessBoard = new ChessBoard(new Pawn(D2, WHITE));
-        boolean moveSuccess = chessBoard.move(D3, D4);
-        Assertions.assertThat(moveSuccess).isFalse();
+        PieceMoveResult moveResult = chessBoard.move(D3, D4);
+        Assertions.assertThat(moveResult).isEqualTo(FAILURE);
     }
 
     @Test
@@ -106,8 +109,8 @@ class ChessBoardTest {
         ChessBoard chessBoard = new ChessBoard(new Pawn(D2, WHITE), new Pawn(D7, BLACK));
         chessBoard.move(D2, D4);
 
-        boolean moveSuccess = chessBoard.move(D4, D5);
-        Assertions.assertThat(moveSuccess).isFalse();
+        PieceMoveResult moveResult = chessBoard.move(D4, D5);
+        Assertions.assertThat(moveResult).isEqualTo(FAILURE);
     }
 
     @Test
@@ -126,8 +129,8 @@ class ChessBoardTest {
     void validateTurnNotChangeWhenInvalidMove() {
         ChessBoard chessBoard = new ChessBoard(new Pawn(D2, WHITE), new Pawn(C3, BLACK));
         chessBoard.move(D2, D8);
-        boolean blackMoveSuccess = chessBoard.move(C3, C2);
-        Assertions.assertThat(blackMoveSuccess).isFalse();
+        PieceMoveResult moveResult = chessBoard.move(C3, C2);
+        Assertions.assertThat(moveResult).isEqualTo(FAILURE);
     }
 
     @Test
@@ -135,8 +138,8 @@ class ChessBoardTest {
     void validateTurnChangeWhenValidMove() {
         ChessBoard chessBoard = new ChessBoard(new Pawn(D2, WHITE), new Pawn(C3, BLACK));
         chessBoard.move(D2, D3);
-        boolean blackMoveSuccess = chessBoard.move(C3, C2);
-        Assertions.assertThat(blackMoveSuccess).isTrue();
+        PieceMoveResult moveResult = chessBoard.move(C3, C2);
+        Assertions.assertThat(moveResult).isEqualTo(SUCCESS);
     }
 
     @ParameterizedTest

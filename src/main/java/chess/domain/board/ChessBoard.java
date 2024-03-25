@@ -30,15 +30,26 @@ public class ChessBoard {
         this(List.of(pieces));
     }
 
-    boolean move(Position from, Position to) {
+    PieceMoveResult move(Position from, Position to) {
         if (isEmptyPosition(from) || isOtherTeamTurn(from)) {
-            return false;
+            return PieceMoveResult.FAILURE;
         }
         Piece piece = findPiece(from);
         PieceMoveResult moveResult = piece.move(to, this);
+        if (moveResult.equals(PieceMoveResult.CATCH)) {
+            boolean isGameOver = piecesOnBoard.stream().filter(piece1 -> piece1.getPieceType().equals(PieceType.KING))
+                    .filter(piece1 -> piece1.getTeam().equals(currentTeam.otherTeam()))
+                    .allMatch(piece1 -> piece1.isOn(to));
+            if (isGameOver && currentTeam.equals(Team.WHITE)) {
+                return PieceMoveResult.WHITE_WIN;
+            }
+            if (isGameOver && currentTeam.equals(Team.BLACK)) {
+                return PieceMoveResult.BLACK_WIN;
+            }
+        }
         removePieceIfCaught(to, moveResult);
         changeCurrentTeamIfNotFail(moveResult);
-        return moveResult.toBoolean();
+        return moveResult;
     }
 
     private boolean isEmptyPosition(Position from) {
@@ -83,28 +94,6 @@ public class ChessBoard {
         if (!moveResult.equals(PieceMoveResult.FAILURE)) {
             currentTeam = currentTeam.otherTeam();
         }
-    }
-
-    PieceMoveResult move2(Position from, Position to) {
-        if (isEmptyPosition(from) || isOtherTeamTurn(from)) {
-            return PieceMoveResult.FAILURE;
-        }
-        Piece piece = findPiece(from);
-        PieceMoveResult moveResult = piece.move(to, this);
-        if (moveResult.equals(PieceMoveResult.CATCH)) {
-            boolean isGameOver = piecesOnBoard.stream().filter(piece1 -> piece1.getPieceType().equals(PieceType.KING))
-                    .filter(piece1 -> piece1.getTeam().equals(currentTeam.otherTeam()))
-                    .allMatch(piece1 -> piece1.isOn(to));
-            if (isGameOver && currentTeam.equals(Team.WHITE)) {
-                return PieceMoveResult.WHITE_WIN;
-            }
-            if (isGameOver && currentTeam.equals(Team.BLACK)) {
-                return PieceMoveResult.BLACK_WIN;
-            }
-        }
-        removePieceIfCaught(to, moveResult);
-        changeCurrentTeamIfNotFail(moveResult);
-        return moveResult;
     }
 
     public Optional<Team> whichTeam(Position position) {

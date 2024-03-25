@@ -14,7 +14,7 @@ public class ChessBoardWrapper {
     }
 
     public PieceMoveResult move(Position from, Position to) {
-        return chessBoard.move2(from, to);
+        return chessBoard.move(from, to);
     }
 
     public List<Piece> getPiecesOnBoard() {
