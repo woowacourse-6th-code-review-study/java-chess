@@ -33,16 +33,22 @@ abstract class AbstractCatchOnMovePiece extends AbstractPiece {
 
     private boolean isMyTeam(Position targetPosition, ChessBoard chessBoard) {
         return chessBoard.whichTeam(targetPosition)
-                .filter(team -> team.equals(getTeam()))
+                .filter(this::isMyTeam)
                 .isPresent();
+    }
+
+    private boolean isMyTeam(Team team) {
+        return team.equals(getTeam());
     }
 
     private boolean isOtherTeam(Position targetPosition, ChessBoard chessBoard) {
         return chessBoard.whichTeam(targetPosition)
-                .filter(team -> {
-                    Team otherTeam = getTeam().otherTeam();
-                    return team.equals(otherTeam);
-                })
+                .filter(this::isOtherTeam)
                 .isPresent();
+    }
+
+    private boolean isOtherTeam(Team team) {
+        Team otherTeam = getTeam().otherTeam();
+        return team.equals(otherTeam);
     }
 }
