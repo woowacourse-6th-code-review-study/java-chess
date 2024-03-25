@@ -46,6 +46,11 @@ abstract class AbstractPiece implements Piece {
         return position.getRow();
     }
 
+    @Override
+    public boolean isTeamWith(Team team) {
+        return this.team.equals(team);
+    }
+
     protected Position getPosition() {
         return position;
     }
