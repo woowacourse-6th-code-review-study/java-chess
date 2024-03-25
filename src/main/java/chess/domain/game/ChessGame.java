@@ -4,6 +4,7 @@ import chess.domain.Position;
 import chess.domain.board.ChessBoard;
 import chess.domain.board.ChessBoardWrapper;
 import chess.domain.piece.Piece;
+import chess.domain.piece.Team;
 import java.util.List;
 
 public class ChessGame {
@@ -15,6 +16,10 @@ public class ChessGame {
 
     public boolean move(Position from, Position to) {
         return chessBoardWrapper.move(from, to);
+    }
+
+    public double calculatePoint(Team team) {
+        return chessBoardWrapper.calculatePoint(team);
     }
 
     public List<Piece> getPiecesOnBoard() {

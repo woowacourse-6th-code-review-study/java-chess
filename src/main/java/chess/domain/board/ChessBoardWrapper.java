@@ -2,6 +2,7 @@ package chess.domain.board;
 
 import chess.domain.Position;
 import chess.domain.piece.Piece;
+import chess.domain.piece.Team;
 import java.util.List;
 
 public class ChessBoardWrapper {
@@ -17,5 +18,9 @@ public class ChessBoardWrapper {
 
     public List<Piece> getPiecesOnBoard() {
         return chessBoard.getPiecesOnBoard();
+    }
+
+    public double calculatePoint(Team team) {
+        return chessBoard.calculatePoint(team);
     }
 }

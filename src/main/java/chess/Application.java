@@ -5,6 +5,7 @@ import static chess.domain.game.EndCommand.END_COMMAND;
 import chess.domain.Position;
 import chess.domain.game.ChessGame;
 import chess.domain.game.Command;
+import chess.domain.game.StatusCommand;
 import chess.domain.piece.Piece;
 import chess.domain.piece.PieceType;
 import chess.domain.piece.Team;
@@ -25,10 +26,10 @@ public class Application {
         List<PieceDTO> pieceDTOS = piecesToDTO(piecesOnBoard);
         OutputView.printChessBoard(pieceDTOS);
 
-        Command endOrMove = InputView.readEndOrMove();
-        while (!isEndCommand(endOrMove)) {
-            playGame(endOrMove, chessGame);
-            endOrMove = InputView.readEndOrMove();
+        Command endOrMoveOrStatus = InputView.readEndOrMoveOrStatus();
+        while (!isEndCommand(endOrMoveOrStatus)) {
+            playGameOrPrintStatus(endOrMoveOrStatus, chessGame);
+            endOrMoveOrStatus = InputView.readEndOrMoveOrStatus();
         }
     }
 
@@ -44,6 +45,21 @@ public class Application {
 
     private static boolean isEndCommand(Command command) {
         return command.equals(END_COMMAND);
+    }
+
+    private static void playGameOrPrintStatus(Command moveOrStatus, ChessGame chessGame) {
+        if (moveOrStatus.equals(StatusCommand.STATUS_COMMAND)) {
+            printStatus(chessGame);
+            return;
+        }
+        playGame(moveOrStatus, chessGame);
+    }
+
+    private static void printStatus(ChessGame chessGame) {
+        double whiteTeamPoint = chessGame.calculatePoint(Team.WHITE);
+        OutputView.printStatus(Team.WHITE, whiteTeamPoint);
+        double blackTeamPoint = chessGame.calculatePoint(Team.BLACK);
+        OutputView.printStatus(Team.BLACK, blackTeamPoint);
     }
 
     private static void playGame(Command moveCommand, ChessGame chessGame) {

@@ -44,6 +44,10 @@ public class OutputView {
         System.out.println("다시 입력해 주세요");
     }
 
+    public static void printStatus(Team team, double point) {
+        System.out.printf("%s: %f%n", team.name(), point);
+    }
+
     enum PieceAsset {
         BLACK_KING('K'),
         BLACK_QUEEN('Q'),
