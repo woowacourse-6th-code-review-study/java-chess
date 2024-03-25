@@ -84,4 +84,9 @@ public final class Pawn extends AbstractPiece {
     public PieceType getPieceType() {
         return PieceType.PAWN;
     }
+
+    @Override
+    public double getPoint() {
+        return 1.0;
+    }
 }

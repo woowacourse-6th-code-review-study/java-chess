@@ -24,4 +24,9 @@ public final class King extends AbstractCatchOnMovePiece {
     public PieceType getPieceType() {
         return PieceType.KING;
     }
+
+    @Override
+    public double getPoint() {
+        return 0.0;
+    }
 }

@@ -29,4 +29,9 @@ public final class Knight extends AbstractCatchOnMovePiece {
     public PieceType getPieceType() {
         return PieceType.KNIGHT;
     }
+
+    @Override
+    public double getPoint() {
+        return 2.5;
+    }
 }

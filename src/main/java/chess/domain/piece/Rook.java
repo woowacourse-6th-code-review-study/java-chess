@@ -22,4 +22,9 @@ public final class Rook extends AbstractStraightMovePiece {
     public PieceType getPieceType() {
         return PieceType.ROOK;
     }
+
+    @Override
+    public double getPoint() {
+        return 5.0;
+    }
 }
