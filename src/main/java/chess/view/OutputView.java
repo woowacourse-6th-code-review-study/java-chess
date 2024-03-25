@@ -1,5 +1,6 @@
 package chess.view;
 
+import chess.domain.piece.PieceMoveResult;
 import chess.domain.piece.PieceType;
 import chess.domain.piece.Team;
 import chess.dto.PieceDTO;
@@ -46,6 +47,16 @@ public class OutputView {
 
     public static void printStatus(Team team, double point) {
         System.out.printf("%s: %f%n", team.name(), point);
+    }
+
+    public static void printWinner(PieceMoveResult pieceMoveResult) {
+        if (pieceMoveResult.equals(PieceMoveResult.BLACK_WIN)) {
+            System.out.println("BLACK 승리");
+            return;
+        }
+        if (pieceMoveResult.equals(PieceMoveResult.WHITE_WIN)) {
+            System.out.println("WHITE 승리");
+        }
     }
 
     enum PieceAsset {

@@ -33,21 +33,6 @@ public class InputView {
         return input.equals("end");
     }
 
-    public static Command readEndOrMove() {
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        while (!input.matches("move [a-h][1-8] [a-h][1-8]") && !isEndCommand(input)) {
-            System.out.println("다시 입력해 주세요");
-            input = scanner.nextLine();
-        }
-        if (isEndCommand(input)) {
-            return EndCommand.END_COMMAND;
-        }
-        String options = input.substring(OPTION_BEGIN_INDEX);
-        String[] splitOptions = options.split(SEPARATOR);
-        return new MoveCommand(splitOptions);
-    }
-
     public static Command readEndOrMoveOrStatus() {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();

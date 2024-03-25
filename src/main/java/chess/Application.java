@@ -7,6 +7,7 @@ import chess.domain.game.ChessGame;
 import chess.domain.game.Command;
 import chess.domain.game.StatusCommand;
 import chess.domain.piece.Piece;
+import chess.domain.piece.PieceMoveResult;
 import chess.domain.piece.PieceType;
 import chess.domain.piece.Team;
 import chess.dto.PieceDTO;
@@ -26,11 +27,12 @@ public class Application {
         List<PieceDTO> pieceDTOS = piecesToDTO(piecesOnBoard);
         OutputView.printChessBoard(pieceDTOS);
 
-        Command endOrMoveOrStatus = InputView.readEndOrMoveOrStatus();
-        while (!isEndCommand(endOrMoveOrStatus)) {
-            playGameOrPrintStatus(endOrMoveOrStatus, chessGame);
+        Command endOrMoveOrStatus;
+        PieceMoveResult pieceMoveResult;
+        do {
             endOrMoveOrStatus = InputView.readEndOrMoveOrStatus();
-        }
+            pieceMoveResult = playGameOrPrintStatus(endOrMoveOrStatus, chessGame);
+        } while (!isEndCommand(endOrMoveOrStatus) && !pieceMoveResult.isEnd());
     }
 
     private static List<PieceDTO> piecesToDTO(List<Piece> piecesOnBoard) {
@@ -47,12 +49,31 @@ public class Application {
         return command.equals(END_COMMAND);
     }
 
-    private static void playGameOrPrintStatus(Command moveOrStatus, ChessGame chessGame) {
+    private static PieceMoveResult playGameOrPrintStatus(Command moveOrStatus, ChessGame chessGame) {
         if (moveOrStatus.equals(StatusCommand.STATUS_COMMAND)) {
             printStatus(chessGame);
-            return;
+            return PieceMoveResult.FAILURE;
         }
-        playGame(moveOrStatus, chessGame);
+        return playGame(moveOrStatus, chessGame);
+    }
+
+    private static PieceMoveResult playGame(Command moveCommand, ChessGame chessGame) {
+        List<Position> options = moveCommand.getOptions();
+        Position from = options.get(0);
+        Position to = options.get(1);
+        PieceMoveResult moveResult = chessGame.move(from, to);
+        List<Piece> piecesOnBoard = chessGame.getPiecesOnBoard();
+        List<PieceDTO> pieceDTOS = piecesToDTO(piecesOnBoard);
+        OutputView.printChessBoard(pieceDTOS);
+        printReInputGuideIfNeed(moveResult);
+        OutputView.printWinner(moveResult);
+        return moveResult;
+    }
+
+    private static void printReInputGuideIfNeed(PieceMoveResult moveResult) {
+        if (moveResult.equals(PieceMoveResult.FAILURE)) {
+            OutputView.printReInputGuide();
+        }
     }
 
     private static void printStatus(ChessGame chessGame) {
@@ -60,18 +81,5 @@ public class Application {
         OutputView.printStatus(Team.WHITE, whiteTeamPoint);
         double blackTeamPoint = chessGame.calculatePoint(Team.BLACK);
         OutputView.printStatus(Team.BLACK, blackTeamPoint);
-    }
-
-    private static void playGame(Command moveCommand, ChessGame chessGame) {
-        List<Position> options = moveCommand.getOptions();
-        Position from = options.get(0);
-        Position to = options.get(1);
-        boolean moveSuccess = chessGame.move(from, to);
-        List<Piece> piecesOnBoard = chessGame.getPiecesOnBoard();
-        List<PieceDTO> pieceDTOS = piecesToDTO(piecesOnBoard);
-        OutputView.printChessBoard(pieceDTOS);
-        if (!moveSuccess) {
-            OutputView.printReInputGuide();
-        }
     }
 }

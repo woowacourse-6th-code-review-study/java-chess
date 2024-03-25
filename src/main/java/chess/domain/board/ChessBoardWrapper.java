@@ -2,6 +2,7 @@ package chess.domain.board;
 
 import chess.domain.Position;
 import chess.domain.piece.Piece;
+import chess.domain.piece.PieceMoveResult;
 import chess.domain.piece.Team;
 import java.util.List;
 
@@ -12,8 +13,8 @@ public class ChessBoardWrapper {
         this.chessBoard = chessBoard;
     }
 
-    public boolean move(Position from, Position to) {
-        return chessBoard.move(from, to);
+    public PieceMoveResult move(Position from, Position to) {
+        return chessBoard.move2(from, to);
     }
 
     public List<Piece> getPiecesOnBoard() {
