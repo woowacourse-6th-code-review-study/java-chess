@@ -2,7 +2,7 @@ package chess.domain.piece;
 
 
 import chess.domain.Position;
-import chess.domain.game.ChessBoard;
+import chess.domain.board.ChessBoard;
 import java.util.List;
 import java.util.Optional;
 

@@ -2,9 +2,9 @@ package chess;
 
 import static chess.domain.game.command.EndCommand.END_COMMAND;
 
-import chess.domain.Position;
 import chess.domain.game.ChessGame;
 import chess.domain.game.command.Command;
+import chess.domain.game.command.MoveCommand;
 import chess.domain.game.command.StatusCommand;
 import chess.domain.piece.Piece;
 import chess.domain.piece.PieceMoveResult;
@@ -75,10 +75,7 @@ public class Application {
     }
 
     private static PieceMoveResult playGame(Command moveCommand, ChessGame chessGame) {
-        List<Position> options = moveCommand.getOptions();
-        Position from = options.get(0);
-        Position to = options.get(1);
-        PieceMoveResult moveResult = chessGame.move(from, to);
+        PieceMoveResult moveResult = chessGame.move((MoveCommand) moveCommand);
         printPiecesOnChessBoard(chessGame);
         printReInputGuideIfNeed(moveResult);
         printWinnerIfNeed(moveResult);

@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-class PointCalculator {
-    static double calculatePoint(Team team, List<Piece> piecesOnBoard) {
+public class PointCalculator {
+    public static double calculatePoint(Team team, List<Piece> piecesOnBoard) {
         piecesOnBoard = Collections.unmodifiableList(piecesOnBoard);
         double totalPoint = calculateWithOutSameColumnPawn(team, piecesOnBoard);
         Map<Integer, List<Piece>> pawnsAtSameColumn = pawnGroupingByColumn(team, piecesOnBoard);

@@ -1,8 +1,9 @@
-package chess.domain.game;
+package chess.domain.board;
 
-import static chess.domain.game.InitialPieces.INITIAL_PIECES;
+import static chess.domain.board.InitialPieces.INITIAL_PIECES;
 
 import chess.domain.Position;
+import chess.domain.game.PointCalculator;
 import chess.domain.piece.Piece;
 import chess.domain.piece.PieceMoveResult;
 import chess.domain.piece.PieceType;

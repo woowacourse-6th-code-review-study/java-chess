@@ -21,7 +21,7 @@ import static chess.domain.piece.Team.BLACK;
 import static chess.domain.piece.Team.WHITE;
 
 import chess.domain.Position;
-import chess.domain.game.ChessBoard;
+import chess.domain.board.ChessBoard;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;

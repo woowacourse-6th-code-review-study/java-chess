@@ -5,7 +5,7 @@ import static chess.domain.piece.PieceMoveResult.FAILURE;
 import static chess.domain.piece.PieceMoveResult.SUCCESS;
 
 import chess.domain.Position;
-import chess.domain.game.ChessBoard;
+import chess.domain.board.ChessBoard;
 import java.util.Optional;
 
 abstract class AbstractCatchOnMovePiece extends AbstractPiece {

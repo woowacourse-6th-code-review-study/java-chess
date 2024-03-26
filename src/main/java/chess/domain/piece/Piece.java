@@ -1,7 +1,7 @@
 package chess.domain.piece;
 
 import chess.domain.Position;
-import chess.domain.game.ChessBoard;
+import chess.domain.board.ChessBoard;
 
 public interface Piece {
     PieceMoveResult move(Position targetPosition, ChessBoard chessBoard);

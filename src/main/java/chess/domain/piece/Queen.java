@@ -4,7 +4,7 @@ import static chess.domain.piece.PieceMoveResult.FAILURE;
 import static chess.domain.piece.PieceType.QUEEN;
 
 import chess.domain.Position;
-import chess.domain.game.ChessBoard;
+import chess.domain.board.ChessBoard;
 import java.util.Optional;
 
 public final class Queen extends AbstractStraightMovePiece {
