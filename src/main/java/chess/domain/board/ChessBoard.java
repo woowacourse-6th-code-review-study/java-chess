@@ -34,20 +34,36 @@ public class ChessBoard {
         }
         Piece piece = findPiece(from);
         PieceMoveResult moveResult = piece.move(to, this);
-        if (moveResult.equals(PieceMoveResult.CATCH)) {
-            boolean isGameOver = piecesOnBoard.stream().filter(piece1 -> piece1.getPieceType().equals(PieceType.KING))
-                    .filter(piece1 -> piece1.getTeam().equals(currentTeam.otherTeam()))
-                    .allMatch(piece1 -> piece1.isOn(to));
-            if (isGameOver && currentTeam.equals(Team.WHITE)) {
-                return PieceMoveResult.WHITE_WIN;
-            }
-            if (isGameOver && currentTeam.equals(Team.BLACK)) {
-                return PieceMoveResult.BLACK_WIN;
-            }
-        }
+        moveResult = fixMoveResultWhenGameEnd(to, moveResult);
         removePieceIfCaught(to, moveResult);
         changeCurrentTeamIfNotFail(moveResult);
         return moveResult;
+    }
+
+    private PieceMoveResult fixMoveResultWhenGameEnd(Position to, PieceMoveResult moveResult) {
+        boolean gameEnd = isGameEnd(to);
+        if (gameEnd && currentTeam.equals(Team.WHITE)) {
+            return PieceMoveResult.WHITE_WIN;
+        }
+        if (gameEnd && currentTeam.equals(Team.BLACK)) {
+            return PieceMoveResult.BLACK_WIN;
+        }
+        return moveResult;
+    }
+
+    private boolean isGameEnd(Position to) {
+        return piecesOnBoard.stream()
+                .filter(this::isKing)
+                .filter(this::isOtherTeam)
+                .allMatch(piece -> piece.isOn(to));
+    }
+
+    private boolean isKing(Piece piece) {
+        return piece.getPieceType().equals(PieceType.KING);
+    }
+
+    private boolean isOtherTeam(Piece piece) {
+        return piece.isTeamWith(currentTeam.otherTeam());
     }
 
     private boolean isEmptyPosition(Position from) {
@@ -79,11 +95,7 @@ public class ChessBoard {
     private void removeDeadPiece(Position to) {
         Piece needToRemovePiece = piecesOnBoard.stream()
                 .filter(piece -> piece.isOn(to))
-                .filter(piece -> {
-                    Team pieceTeam = piece.getTeam();
-                    Team otherTeam = currentTeam.otherTeam();
-                    return pieceTeam.equals(otherTeam);
-                })
+                .filter(this::isOtherTeam)
                 .findFirst().orElseThrow();
         piecesOnBoard.remove(needToRemovePiece);
     }
