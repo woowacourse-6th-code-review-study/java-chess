@@ -4,6 +4,7 @@ import static chess.domain.Position.A1;
 import static chess.domain.Position.A2;
 
 import chess.domain.Position;
+import chess.domain.game.command.MoveCommand;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

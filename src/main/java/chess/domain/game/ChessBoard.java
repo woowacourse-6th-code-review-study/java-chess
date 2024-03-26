@@ -1,6 +1,6 @@
-package chess.domain.board;
+package chess.domain.game;
 
-import static chess.domain.board.InitialPieces.INITIAL_PIECES;
+import static chess.domain.game.InitialPieces.INITIAL_PIECES;
 
 import chess.domain.Position;
 import chess.domain.piece.Piece;

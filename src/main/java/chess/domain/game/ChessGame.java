@@ -1,29 +1,27 @@
 package chess.domain.game;
 
 import chess.domain.Position;
-import chess.domain.board.ChessBoard;
-import chess.domain.board.ChessBoardWrapper;
 import chess.domain.piece.Piece;
 import chess.domain.piece.PieceMoveResult;
 import chess.domain.piece.Team;
 import java.util.List;
 
 public class ChessGame {
-    private final ChessBoardWrapper chessBoardWrapper;
+    private final ChessBoard chessBoard;
 
     public ChessGame() {
-        this.chessBoardWrapper = new ChessBoardWrapper(new ChessBoard());
+        this.chessBoard = new ChessBoard();
     }
 
     public PieceMoveResult move(Position from, Position to) {
-        return chessBoardWrapper.move(from, to);
+        return chessBoard.move(from, to);
     }
 
     public double calculatePoint(Team team) {
-        return chessBoardWrapper.calculatePoint(team);
+        return chessBoard.calculatePoint(team);
     }
 
     public List<Piece> getPiecesOnBoard() {
-        return chessBoardWrapper.getPiecesOnBoard();
+        return chessBoard.getPiecesOnBoard();
     }
 }

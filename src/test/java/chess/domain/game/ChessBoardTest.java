@@ -1,4 +1,4 @@
-package chess.domain.board;
+package chess.domain.game;
 
 import static chess.domain.Position.A1;
 import static chess.domain.Position.A2;

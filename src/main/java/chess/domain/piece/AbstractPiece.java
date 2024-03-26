@@ -1,7 +1,7 @@
 package chess.domain.piece;
 
 import chess.domain.Position;
-import chess.domain.board.ChessBoard;
+import chess.domain.game.ChessBoard;
 
 abstract class AbstractPiece implements Piece {
     private final Team team;

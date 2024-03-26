@@ -1,11 +1,11 @@
 package chess;
 
-import static chess.domain.game.EndCommand.END_COMMAND;
+import static chess.domain.game.command.EndCommand.END_COMMAND;
 
 import chess.domain.Position;
 import chess.domain.game.ChessGame;
-import chess.domain.game.Command;
-import chess.domain.game.StatusCommand;
+import chess.domain.game.command.Command;
+import chess.domain.game.command.StatusCommand;
 import chess.domain.piece.Piece;
 import chess.domain.piece.PieceMoveResult;
 import chess.domain.piece.PieceType;
