@@ -5,7 +5,7 @@ import chess.domain.movement.MovementRule;
 import chess.domain.position.Position;
 import java.util.List;
 
-public abstract class Piece {
+public abstract sealed class Piece permits King, Queen, Rook, Bishop, Knight, Pawn {
 
     private final Team team;
     private final List<MovementRule> movementRules;
@@ -13,10 +13,6 @@ public abstract class Piece {
     protected Piece(Team team, List<MovementRule> movementRules) {
         this.team = team;
         this.movementRules = movementRules;
-    }
-
-    public final boolean isBlackTeam() {
-        return team.isBlack();
     }
 
     public final List<Position> findPath(Position start, Position end, boolean isAttack) {
@@ -27,11 +23,19 @@ public abstract class Piece {
                 .orElseThrow(() -> new IllegalArgumentException("불가능한 경로입니다."));
     }
 
+    public final boolean isBlackTeam() {
+        return team.isBlack();
+    }
+
     public final boolean isSameTeam(Piece other) {
         return isSameTeam(other.team);
     }
 
     public final boolean isSameTeam(Team team) {
         return this.team == team;
+    }
+
+    public final boolean isKing() {
+        return this.getClass() == King.class;
     }
 }
