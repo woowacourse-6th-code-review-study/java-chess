@@ -4,7 +4,7 @@ public class Start implements GameCommand {
 
     @Override
     public void execute(final ChessGame chessGame) {
-        if (chessGame.isGameRunning()) {
+        if (!chessGame.isWaiting()) {
             throw new IllegalArgumentException("이미 게임이 진행중입니다.");
         }
 

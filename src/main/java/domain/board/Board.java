@@ -2,6 +2,7 @@ package domain.board;
 
 import domain.piece.Piece;
 import domain.piece.PieceColor;
+import domain.piece.PieceType;
 
 import java.util.Collections;
 import java.util.Map;
@@ -48,5 +49,11 @@ public class Board {
 
     public Map<Position, Piece> piecePositions() {
         return Collections.unmodifiableMap(piecePositions);
+    }
+
+    public boolean isKingAlive(final PieceColor targetColor) {
+        return piecePositions.values()
+                .stream()
+                .anyMatch(piece -> piece.isTeam(targetColor) && piece.pieceType() == PieceType.KING);
     }
 }

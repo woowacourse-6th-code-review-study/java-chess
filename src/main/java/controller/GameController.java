@@ -21,7 +21,7 @@ public class GameController {
     public void run() {
         initGame();
 
-        if (chessGame.isGameRunning()) {
+        if (chessGame.isRunning()) {
             gameStart();
         }
     }
@@ -43,7 +43,7 @@ public class GameController {
 
     private void gameStart() {
         outputView.printWelcomeMessage();
-        while (chessGame.isGameRunning()) {
+        while (chessGame.isRunning()) {
             BoardDto boardDto = BoardDto.from(chessGame.piecePositions());
             outputView.printBoard(boardDto);
             playTurn();

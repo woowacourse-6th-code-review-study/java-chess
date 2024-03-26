@@ -13,7 +13,7 @@ public class Move implements GameCommand {
 
     @Override
     public void execute(final ChessGame chessGame) {
-        if (!chessGame.isGameRunning()) {
+        if (!chessGame.isRunning()) {
             throw new IllegalArgumentException("아직 게임이 시작되지 않았습니다.");
         }
 

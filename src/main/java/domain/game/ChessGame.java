@@ -12,16 +12,18 @@ import static domain.piece.PieceColor.WHITE;
 
 public class ChessGame {
     private final Board board;
+    private final GameStatus gameStatus;
 
     private PieceColor currentColor = WHITE;
     private boolean isGameRunning = false;
 
-    private ChessGame(final Board board) {
+    public ChessGame(final Board board, final GameStatus gameStatus) {
         this.board = board;
+        this.gameStatus = gameStatus;
     }
 
     public static ChessGame initGame() {
-        return new ChessGame(BoardInitializer.initBoard());
+        return new ChessGame(BoardInitializer.initBoard(), GameStatus.WAITING);
     }
 
     public void gameStart() {
@@ -32,8 +34,16 @@ public class ChessGame {
         isGameRunning = false;
     }
 
-    public boolean isGameRunning() {
-        return isGameRunning;
+    public boolean isWaiting() {
+        return gameStatus == GameStatus.WAITING;
+    }
+
+    public boolean isRunning() {
+        return gameStatus == GameStatus.RUNNING;
+    }
+
+    public boolean isEnd() {
+        return gameStatus == GameStatus.END;
     }
 
     public Map<Position, Piece> piecePositions() {
