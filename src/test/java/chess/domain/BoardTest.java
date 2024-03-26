@@ -11,6 +11,7 @@ import chess.domain.piece.Rook;
 import chess.domain.position.File;
 import chess.domain.position.Position;
 import chess.domain.position.Rank;
+import chess.dto.ProgressStatus;
 import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,13 +45,15 @@ class BoardTest {
     }
 
     /*
-     * .R......
-     * ........
-     * ........
-     * .q.k....
-     * ........
-     * ........
-     * ........
+     * ........ 8
+     * ........ 7
+     * ........ 6
+     * ........ 5
+     * ....k... 4
+     * ........ 3
+     * K...q..R 2
+     * ........ 1
+     * abcdefgh
      * */
     @Nested
     @DisplayName("말 이동 테스트")
@@ -62,8 +65,10 @@ class BoardTest {
         private static final Queen QUEEN = new Queen(Team.WHITE);
         private static final Rook ENEMY_ROOK = new Rook(Team.BLACK);
         private static final Position START_ENEMY_ROOK = new Position(File.H, Rank.TWO);
+        private static final King ENEMY_KING = new King(Team.BLACK);
+        private static final Position START_ENEMY_KING = new Position(File.A, Rank.TWO);
         private static final Map<Position, Piece> MAP = Map.of(
-                START_KING, KING, START_QUEEN, QUEEN, START_ENEMY_ROOK, ENEMY_ROOK);
+                START_KING, KING, START_QUEEN, QUEEN, START_ENEMY_ROOK, ENEMY_ROOK, START_ENEMY_KING, ENEMY_KING);
         private Board board;
 
         @BeforeEach
@@ -142,6 +147,20 @@ class BoardTest {
             assertThatThrownBy(() -> board.move(START_ENEMY_ROOK, legalPosition))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("해당 팀의 차례가 아닙니다.");
+        }
+
+        @Test
+        @DisplayName("상대편 왕을 잡을 경우, 해당 팀이 이긴다.")
+        void moveTest_whenCaptureKing_winGame() {
+            assertThat(board.move(START_QUEEN, START_ENEMY_KING)).isEqualTo(ProgressStatus.WHITE_WIN);
+        }
+
+        @Test
+        @DisplayName("상대편 왕을 잡지 않은 경우, 게임이 진행된다.")
+        void moveTest_whenNotCaptureKing_progressGame() {
+            Position possiblePosition = new Position(File.E, Rank.THREE);
+
+            assertThat(board.move(START_QUEEN, possiblePosition)).isEqualTo(ProgressStatus.PROGRESS);
         }
     }
 }

@@ -2,6 +2,7 @@ package chess.domain;
 
 import chess.domain.piece.Piece;
 import chess.domain.position.Position;
+import chess.dto.ProgressStatus;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,15 +23,13 @@ public class Board {
         return Optional.ofNullable(piece);
     }
 
-    public void move(Position start, Position end) {
+    public ProgressStatus move(Position start, Position end) {
         validate(start, end);
         Piece piece = board.get(start);
         List<Position> path = piece.findPath(start, end, isExistEnemy(end));
 
         validateEmpty(path);
-        board.remove(start);
-        board.put(end, piece);
-        turn = turn.nextTurn();
+        return movePiece(start, end);
     }
 
     public void validate(Position start, Position end) {
@@ -72,8 +71,32 @@ public class Board {
                 .anyMatch(this::isExistPiece);
     }
 
+    private ProgressStatus movePiece(Position start, Position end) {
+        Piece movingPiece = find(start).orElseThrow();
+        ProgressStatus status = findStatus(end);
+
+        board.remove(start);
+        board.put(end, movingPiece);
+        turn = turn.nextTurn();
+
+        return status;
+    }
+
+    private ProgressStatus findStatus(Position end) {
+        boolean isKingCaptured = find(end).map(Piece::isKing)
+                .orElse(false);
+
+        if (!isKingCaptured) {
+            return ProgressStatus.PROGRESS;
+        }
+        if (turn.isBlack()) {
+            return ProgressStatus.BLACK_WIN;
+        }
+        return ProgressStatus.WHITE_WIN;
+    }
+
     private boolean isExistPiece(Position position) {
-        return board.get(position) != null;
+        return board.containsKey(position);
     }
 
     private boolean isNotExistPiece(Position position) {
