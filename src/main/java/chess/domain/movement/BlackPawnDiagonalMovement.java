@@ -5,12 +5,15 @@ import java.util.List;
 
 public final class BlackPawnDiagonalMovement implements MovementRule {
 
+    private static final int TO_SOUTH_ONE_BLOCK = -1;
+    private static final int ONE_BLOCK = 1;
+
     @Override
     public boolean isMovable(Position start, Position end, boolean isAttack) {
         int rankDifference = start.calculateRankDifference(end);
         int fileDifference = start.calculateFileDifference(end);
 
-        boolean isMatchDifference = rankDifference == -1 && Math.abs(fileDifference) == 1;
+        boolean isMatchDifference = (rankDifference == TO_SOUTH_ONE_BLOCK && Math.abs(fileDifference) == ONE_BLOCK);
         return isAttack && isMatchDifference;
     }
 

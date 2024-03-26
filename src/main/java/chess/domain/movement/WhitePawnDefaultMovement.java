@@ -5,13 +5,16 @@ import java.util.List;
 
 public final class WhitePawnDefaultMovement implements MovementRule {
 
+    private static final int TO_NORTH_ONE_BLOCK = 1;
+    private static final int SAME_FILE = 0;
+
     @Override
     public boolean isMovable(Position start, Position end, boolean isAttack) {
         int rankDifference = start.calculateRankDifference(end);
         int fileDifference = start.calculateFileDifference(end);
 
         boolean isEmptyAtEnd = !isAttack;
-        boolean isMatchDifference = rankDifference == 1 && fileDifference == 0;
+        boolean isMatchDifference = (rankDifference == TO_NORTH_ONE_BLOCK && fileDifference == SAME_FILE);
 
         return isEmptyAtEnd && isMatchDifference;
     }

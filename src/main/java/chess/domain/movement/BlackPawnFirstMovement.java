@@ -7,6 +7,8 @@ import java.util.List;
 public final class BlackPawnFirstMovement implements MovementRule {
 
     private static final Rank BLACK_PAWN_INIT_RANK = Rank.SEVEN;
+    private static final int TO_SOUTH_TWO_BLOCK = -2;
+    private static final int SAME_FILE = 0;
 
     @Override
     public boolean isMovable(Position start, Position end, boolean isAttack) {
@@ -15,7 +17,7 @@ public final class BlackPawnFirstMovement implements MovementRule {
 
         boolean isEmptyAtEnd = !isAttack;
         boolean isExistInitPosition = start.isSameRank(BLACK_PAWN_INIT_RANK);
-        boolean isMatchDifference = rankDifference == -2 && fileDifference == 0;
+        boolean isMatchDifference = (rankDifference == TO_SOUTH_TWO_BLOCK && fileDifference == SAME_FILE);
 
         return isEmptyAtEnd && isExistInitPosition && isMatchDifference;
     }
