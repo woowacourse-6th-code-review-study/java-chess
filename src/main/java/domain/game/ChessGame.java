@@ -12,26 +12,24 @@ import static domain.piece.PieceColor.WHITE;
 
 public class ChessGame {
     private final Board board;
-    private final GameStatus gameStatus;
 
     private PieceColor currentColor = WHITE;
-    private boolean isGameRunning = false;
+    private GameStatus gameStatus = GameStatus.WAITING;
 
-    public ChessGame(final Board board, final GameStatus gameStatus) {
+    public ChessGame(final Board board) {
         this.board = board;
-        this.gameStatus = gameStatus;
     }
 
     public static ChessGame initGame() {
-        return new ChessGame(BoardInitializer.initBoard(), GameStatus.WAITING);
+        return new ChessGame(BoardInitializer.initBoard());
     }
 
     public void gameStart() {
-        isGameRunning = true;
+        gameStatus = GameStatus.RUNNING;
     }
 
     public void gameEnd() {
-        isGameRunning = false;
+        gameStatus = GameStatus.END;
     }
 
     public boolean isWaiting() {
