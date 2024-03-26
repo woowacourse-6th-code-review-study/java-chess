@@ -5,6 +5,7 @@ import chess.domain.BoardFactory;
 import chess.domain.piece.Piece;
 import chess.domain.position.Position;
 import chess.dto.PieceDto;
+import chess.dto.ProgressStatus;
 import chess.view.GameCommand;
 import chess.view.InputView;
 import chess.view.OutputView;
@@ -23,26 +24,32 @@ public class ChessGame {
         this.outputView = outputView;
     }
 
-    public void start() {
+    public void run() {
+        Board board = startGame();
+        play(board);
+    }
+
+    private Board startGame() {
         outputView.printStartGame();
         GameCommand command = inputView.readCommand();
         if (command.isStart()) {
             Board board = BoardFactory.createInitBoard();
             showBoard(board);
-            play(board);
+            return board;
         }
-        if (command.isMove()) {
-            throw new IllegalArgumentException("아직 게임을 시작하지 않았습니다.");
-        }
+        throw new IllegalArgumentException("아직 게임을 시작하지 않았습니다.");
     }
 
     private void play(Board board) {
-        while (true) {
-            processTurn(board);
-        }
+        ProgressStatus status;
+        do {
+            status = processTurn(board);
+        } while (status.isContinue());
+
+        showResult(status);
     }
 
-    private void processTurn(Board board) {
+    private ProgressStatus processTurn(Board board) {
         GameCommand command = inputView.readCommand();
         if (command.isStart()) {
             throw new IllegalArgumentException("이미 게임을 시작했습니다.");
@@ -50,14 +57,19 @@ public class ChessGame {
         if (command.isEnd()) {
             System.exit(0);
         }
-        executeMove(board);
+        return executeMove(board);
     }
 
-    private void executeMove(Board board) {
+    private ProgressStatus executeMove(Board board) {
         Position start = inputView.readPosition();
         Position end = inputView.readPosition();
-        board.move(start, end);
+        ProgressStatus status = board.move(start, end);
         showBoard(board);
+        return status;
+    }
+
+    private void showResult(ProgressStatus status) {
+        outputView.printWinnerMessage(status);
     }
 
     private void showBoard(Board board) {

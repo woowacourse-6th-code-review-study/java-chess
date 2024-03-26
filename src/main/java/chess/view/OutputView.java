@@ -5,6 +5,7 @@ import chess.domain.position.Position;
 import chess.domain.position.Rank;
 import chess.dto.PieceDto;
 import chess.dto.PieceType;
+import chess.dto.ProgressStatus;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -30,10 +31,10 @@ public class OutputView {
     }
 
     public void printBoard(Map<Position, PieceDto> board) {
+        System.out.println();
         for (Rank rank : RANK_ORDER) {
             printBoardOneLine(board, rank);
         }
-        System.out.println();
     }
 
     private void printBoardOneLine(Map<Position, PieceDto> board, Rank rank) {
@@ -61,6 +62,18 @@ public class OutputView {
     private void printWhitePiece(PieceType type) {
         String display = PIECE_DISPLAY.get(type);
         System.out.print(display.toLowerCase());
+    }
+
+    public void printWinnerMessage(ProgressStatus status) {
+        if (status.isContinue()) {
+            throw new IllegalArgumentException("우승자가 결정되지 않았습니다.");
+        }
+
+        if (status == ProgressStatus.BLACK_WIN) {
+            System.out.println("검정 팀이 승리했습니다.");
+            return;
+        }
+        System.out.println("하양 팀이 승리했습니다.");
     }
 
     public void printExceptionMessage(Exception exception) {

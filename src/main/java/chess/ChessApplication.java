@@ -11,7 +11,7 @@ public class ChessApplication {
         ChessGame chessGame = new ChessGame(inputView, outputView);
 
         try {
-            chessGame.start();
+            chessGame.run();
         } catch (IllegalArgumentException exception) {
             outputView.printExceptionMessage(exception);
         }
