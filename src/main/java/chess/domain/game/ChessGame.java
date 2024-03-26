@@ -7,6 +7,7 @@ import chess.domain.piece.Piece;
 import chess.domain.piece.PieceMoveResult;
 import chess.domain.piece.Team;
 import java.util.List;
+import java.util.Map;
 
 public class ChessGame {
     private final ChessBoardForChessGame chessBoard;
@@ -19,8 +20,8 @@ public class ChessGame {
         return chessBoard.move(moveCommand);
     }
 
-    public double calculatePoint(Team team) {
-        return chessBoard.calculateTeamScore(team);
+    public Map<Team, Double> calculateScores() {
+        return chessBoard.calculateScores();
     }
 
     public List<Piece> getPiecesOnBoard() {

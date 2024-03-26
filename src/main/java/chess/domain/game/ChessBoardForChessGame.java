@@ -5,11 +5,12 @@ import chess.domain.piece.Piece;
 import chess.domain.piece.PieceMoveResult;
 import chess.domain.piece.Team;
 import java.util.List;
+import java.util.Map;
 
 public interface ChessBoardForChessGame {
     PieceMoveResult move(MoveCommand moveCommand);
 
     List<Piece> getPiecesOnBoard();
 
-    double calculateTeamScore(Team team);
+    Map<Team, Double> calculateScores();
 }

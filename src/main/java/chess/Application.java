@@ -1,6 +1,8 @@
 package chess;
 
 import static chess.domain.game.command.EndCommand.END_COMMAND;
+import static chess.domain.piece.Team.BLACK;
+import static chess.domain.piece.Team.WHITE;
 
 import chess.domain.game.ChessGame;
 import chess.domain.game.command.Command;
@@ -14,6 +16,7 @@ import chess.dto.PieceDTO;
 import chess.view.InputView;
 import chess.view.OutputView;
 import java.util.List;
+import java.util.Map;
 
 public class Application {
     public static void main(String[] args) {
@@ -63,19 +66,19 @@ public class Application {
             printStatus(chessGame);
             return PieceMoveResult.FAILURE;
         }
-        return playGame(moveOrStatus, chessGame);
+        return playGame((MoveCommand) moveOrStatus, chessGame);
     }
 
     private static void printStatus(ChessGame chessGame) {
-        double whiteTeamPoint = chessGame.calculatePoint(Team.WHITE);
-        OutputView.printStatus(Team.WHITE, whiteTeamPoint);
-        double blackTeamPoint = chessGame.calculatePoint(Team.BLACK);
-        OutputView.printStatus(Team.BLACK, blackTeamPoint);
+        Map<Team, Double> scoresGroupingByTeam = chessGame.calculateScores();
+        scoresGroupingByTeam.forEach(OutputView::printStatus);
+        double whiteTeamPoint = scoresGroupingByTeam.get(WHITE);
+        double blackTeamPoint = scoresGroupingByTeam.get(BLACK);
         OutputView.currentWinner(whiteTeamPoint, blackTeamPoint);
     }
 
-    private static PieceMoveResult playGame(Command moveCommand, ChessGame chessGame) {
-        PieceMoveResult moveResult = chessGame.move((MoveCommand) moveCommand);
+    private static PieceMoveResult playGame(MoveCommand moveCommand, ChessGame chessGame) {
+        PieceMoveResult moveResult = chessGame.move(moveCommand);
         printPiecesOnChessBoard(chessGame);
         printReInputGuideIfNeed(moveResult);
         printWinnerIfNeed(moveResult);
