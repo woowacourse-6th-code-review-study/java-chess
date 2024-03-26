@@ -1,5 +1,6 @@
 package domain.game;
 
+import controller.GameController;
 import domain.board.Position;
 
 public class Move implements GameCommand {
@@ -12,11 +13,11 @@ public class Move implements GameCommand {
     }
 
     @Override
-    public void execute(final ChessGame chessGame) {
-        if (!chessGame.isRunning()) {
+    public void execute(final GameController gameController) {
+        if (gameController.gameStatus() != GameStatus.RUNNING) {
             throw new IllegalArgumentException("아직 게임이 시작되지 않았습니다.");
         }
 
-        chessGame.movePiece(source, destination);
+        gameController.movePiece(source, destination);
     }
 }

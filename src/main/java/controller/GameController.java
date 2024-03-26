@@ -1,8 +1,10 @@
 package controller;
 
+import domain.board.Position;
 import domain.game.ChessGame;
 import domain.game.GameCommand;
 import domain.game.GameCommandType;
+import domain.game.GameStatus;
 import dto.BoardDto;
 import view.InputView;
 import view.OutputView;
@@ -22,14 +24,14 @@ public class GameController {
         initGame();
 
         if (chessGame.isRunning()) {
-            gameStart();
+            start();
         }
     }
 
     private void initGame() {
         try {
             GameCommand gameCommand = inputCommand();
-            gameCommand.execute(chessGame);
+            gameCommand.execute(this);
         } catch (Exception e) {
             outputView.printErrorMessage(e.getMessage());
             initGame();
@@ -41,7 +43,8 @@ public class GameController {
         return GameCommandType.of(inputValues);
     }
 
-    private void gameStart() {
+    public void start() {
+        chessGame.gameStart();
         outputView.printWelcomeMessage();
         while (chessGame.isRunning()) {
             BoardDto boardDto = BoardDto.from(chessGame.piecePositions());
@@ -53,10 +56,22 @@ public class GameController {
     private void playTurn() {
         try {
             GameCommand gameCommand = inputCommand();
-            gameCommand.execute(chessGame);
+            gameCommand.execute(this);
         } catch (Exception e) {
             outputView.printErrorMessage(e.getMessage());
             playTurn();
         }
+    }
+
+    public GameStatus gameStatus() {
+        return chessGame.gameStatus();
+    }
+
+    public void movePiece(final Position source, final Position destination) {
+        chessGame.movePiece(source, destination);
+    }
+
+    public void end() {
+        chessGame.gameEnd();
     }
 }

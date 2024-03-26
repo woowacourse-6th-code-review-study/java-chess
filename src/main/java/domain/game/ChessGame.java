@@ -50,6 +50,15 @@ public class ChessGame {
 
     public void movePiece(final Position source, final Position destination) {
         board.movePiece(currentColor, source, destination);
+        if (!board.isKingAlive(currentColor.toggle())) {
+            gameEnd();
+            return;
+        }
+
         currentColor = currentColor.toggle();
+    }
+
+    public GameStatus gameStatus() {
+        return gameStatus;
     }
 }

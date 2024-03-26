@@ -1,5 +1,7 @@
 package domain.game;
 
+import controller.GameController;
+
 public interface GameCommand {
-    void execute(ChessGame chessGame);
+    void execute(GameController gameController);
 }
