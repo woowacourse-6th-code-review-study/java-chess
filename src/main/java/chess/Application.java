@@ -22,17 +22,21 @@ public class Application {
         if (isEndCommand(startOrEnd)) {
             return;
         }
+
         ChessGame chessGame = new ChessGame();
+        printPiecesOnChessBoard(chessGame);
+
+        playChess(chessGame);
+    }
+
+    private static boolean isEndCommand(Command command) {
+        return command.equals(END_COMMAND);
+    }
+
+    private static void printPiecesOnChessBoard(ChessGame chessGame) {
         List<Piece> piecesOnBoard = chessGame.getPiecesOnBoard();
         List<PieceDTO> pieceDTOS = piecesToDTO(piecesOnBoard);
         OutputView.printChessBoard(pieceDTOS);
-
-        Command endOrMoveOrStatus;
-        PieceMoveResult pieceMoveResult;
-        do {
-            endOrMoveOrStatus = InputView.readEndOrMoveOrStatus();
-            pieceMoveResult = playGameOrPrintStatus(endOrMoveOrStatus, chessGame);
-        } while (!isEndCommand(endOrMoveOrStatus) && !pieceMoveResult.isEnd());
     }
 
     private static List<PieceDTO> piecesToDTO(List<Piece> piecesOnBoard) {
@@ -45,8 +49,13 @@ public class Application {
         }).toList();
     }
 
-    private static boolean isEndCommand(Command command) {
-        return command.equals(END_COMMAND);
+    private static void playChess(ChessGame chessGame) {
+        Command endOrMoveOrStatus;
+        PieceMoveResult pieceMoveResult;
+        do {
+            endOrMoveOrStatus = InputView.readEndOrMoveOrStatus();
+            pieceMoveResult = playGameOrPrintStatus(endOrMoveOrStatus, chessGame);
+        } while (!isEndCommand(endOrMoveOrStatus) && !pieceMoveResult.isEnd());
     }
 
     private static PieceMoveResult playGameOrPrintStatus(Command moveOrStatus, ChessGame chessGame) {
@@ -57,16 +66,21 @@ public class Application {
         return playGame(moveOrStatus, chessGame);
     }
 
+    private static void printStatus(ChessGame chessGame) {
+        double whiteTeamPoint = chessGame.calculatePoint(Team.WHITE);
+        OutputView.printStatus(Team.WHITE, whiteTeamPoint);
+        double blackTeamPoint = chessGame.calculatePoint(Team.BLACK);
+        OutputView.printStatus(Team.BLACK, blackTeamPoint);
+    }
+
     private static PieceMoveResult playGame(Command moveCommand, ChessGame chessGame) {
         List<Position> options = moveCommand.getOptions();
         Position from = options.get(0);
         Position to = options.get(1);
         PieceMoveResult moveResult = chessGame.move(from, to);
-        List<Piece> piecesOnBoard = chessGame.getPiecesOnBoard();
-        List<PieceDTO> pieceDTOS = piecesToDTO(piecesOnBoard);
-        OutputView.printChessBoard(pieceDTOS);
+        printPiecesOnChessBoard(chessGame);
         printReInputGuideIfNeed(moveResult);
-        OutputView.printWinner(moveResult);
+        printWinnerIfNeed(moveResult);
         return moveResult;
     }
 
@@ -76,10 +90,9 @@ public class Application {
         }
     }
 
-    private static void printStatus(ChessGame chessGame) {
-        double whiteTeamPoint = chessGame.calculatePoint(Team.WHITE);
-        OutputView.printStatus(Team.WHITE, whiteTeamPoint);
-        double blackTeamPoint = chessGame.calculatePoint(Team.BLACK);
-        OutputView.printStatus(Team.BLACK, blackTeamPoint);
+    private static void printWinnerIfNeed(PieceMoveResult moveResult) {
+        if (moveResult.isEnd()) {
+            OutputView.printWinner(moveResult);
+        }
     }
 }
