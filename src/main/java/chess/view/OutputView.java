@@ -59,6 +59,18 @@ public class OutputView {
         }
     }
 
+    public static void currentWinner(double whitePoint, double blackPoint) {
+        if (blackPoint > whitePoint) {
+            System.out.println("BLACK이 이기는 중");
+            return;
+        }
+        if (whitePoint > blackPoint) {
+            System.out.println("WHITE가 이기는 중");
+            return;
+        }
+        System.out.println("비기는 중");
+    }
+
     enum PieceAsset {
         BLACK_KING('K'),
         BLACK_QUEEN('Q'),

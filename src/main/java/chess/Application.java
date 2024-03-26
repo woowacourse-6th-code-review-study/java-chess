@@ -71,6 +71,7 @@ public class Application {
         OutputView.printStatus(Team.WHITE, whiteTeamPoint);
         double blackTeamPoint = chessGame.calculatePoint(Team.BLACK);
         OutputView.printStatus(Team.BLACK, blackTeamPoint);
+        OutputView.currentWinner(whiteTeamPoint, blackTeamPoint);
     }
 
     private static PieceMoveResult playGame(Command moveCommand, ChessGame chessGame) {
