@@ -1,14 +1,14 @@
 package chess.view;
 
-import chess.domain.piece.Piece;
 import chess.domain.board.Board;
+import chess.domain.piece.Piece;
 import chess.view.mapper.PieceMapper;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OutputView {
 
-    private static final String EMPTY_BOARD = "........";
+    private static final String EMPTY_BOARD = ". . . . . . . .";
 
     public void printStartMessage() {
         System.out.println("체스 게임을 시작합니다.");
@@ -19,25 +19,26 @@ public class OutputView {
 
     public void printBoard(Board board) {
         List<StringBuilder> result = new ArrayList<>();
-        result.add(new StringBuilder(EMPTY_BOARD));
-        result.add(new StringBuilder(EMPTY_BOARD));
-        result.add(new StringBuilder(EMPTY_BOARD));
-        result.add(new StringBuilder(EMPTY_BOARD));
-        result.add(new StringBuilder(EMPTY_BOARD));
-        result.add(new StringBuilder(EMPTY_BOARD));
-        result.add(new StringBuilder(EMPTY_BOARD));
-        result.add(new StringBuilder(EMPTY_BOARD));
+        for (int i = 0; i < 8; i++) {
+            result.add(new StringBuilder(EMPTY_BOARD));
+        }
 
         board.getBoard().keySet()
                 .forEach(position -> {
                     Piece piece = board.getBoard().get(position);
                     int rowIndex = position.getRowIndex();
                     int columnIndex = position.getColumnIndex();
-                    result.get(rowIndex).replace(columnIndex, columnIndex + 1, PieceMapper.findByPieceType(piece));
+                    result.get(rowIndex).replace(columnIndex * 2, columnIndex * 2 + 1, PieceMapper.findByPieceType(piece));
                 });
 
         result.forEach(System.out::println);
         System.out.println();
+    }
+
+    public void printTeamScore(double whiteTeamScore, double blackTeamScore) {
+        System.out.println("---현재 점수---");
+        System.out.println("흰색 팀: " + whiteTeamScore);
+        System.out.println("검정 팀: " + blackTeamScore);
     }
 
     public void printError(Exception exception) {

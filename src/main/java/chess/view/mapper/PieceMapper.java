@@ -1,5 +1,6 @@
 package chess.view.mapper;
 
+import chess.domain.piece.Color;
 import chess.domain.piece.Piece;
 import chess.domain.piece.PieceType;
 import java.util.Arrays;
@@ -28,7 +29,7 @@ public enum PieceMapper {
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("일치하는 기물이 없습니다."))
                 .value;
-        if (piece.isBlack()) {
+        if (piece.isSameColor(Color.BLACK)) {
             return value.toUpperCase();
         }
         return value;

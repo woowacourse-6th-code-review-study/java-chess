@@ -1,9 +1,13 @@
 package chess.domain.board;
 
+import chess.domain.board.position.Column;
 import chess.domain.board.position.Position;
+import chess.domain.piece.Color;
 import chess.domain.piece.Piece;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Board {
 
@@ -17,6 +21,40 @@ public class Board {
 
     public Board(Map<Position, Piece> board) {
         this.board = board;
+    }
+
+    public Map<Color, Double> calculateScore() {
+        return Arrays.stream(Color.values()).collect(Collectors.toMap(
+                color -> color,
+                this::calculateTotalScore
+        ));
+    }
+
+    private double calculateTotalScore(Color color) {
+        double sum = sumTotalScore(color);
+        double pawnMinus = calculatePawnScore(color);
+        return sum - pawnMinus;
+    }
+
+    private double sumTotalScore(Color color) {
+        return board.values().stream()
+                .filter(piece -> piece.isSameColor(color))
+                .mapToDouble(Piece::getScore)
+                .sum();
+    }
+
+    private Map<Column, Long> countPawnByColumn(Color color) {
+        return board.keySet().stream()
+                .filter(position -> board.get(position).isPawnByColor(color))
+                .collect(Collectors.groupingBy(Position::getColumn, Collectors.counting()));
+    }
+
+    private double calculatePawnScore(Color color) {
+        Map<Column, Long> pawnCountByColumn = countPawnByColumn(color);
+        return pawnCountByColumn.values().stream()
+                .filter(pawnCount -> pawnCount >= 2)
+                .mapToDouble(pawnCount -> pawnCount * 0.5)
+                .sum();
     }
 
     public void movePiece(Position from, Position to) {

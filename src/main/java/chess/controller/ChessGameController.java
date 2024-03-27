@@ -5,12 +5,14 @@ import chess.domain.board.position.Column;
 import chess.domain.board.position.Position;
 import chess.domain.board.position.Row;
 import chess.domain.game.ChessGame;
+import chess.domain.piece.Color;
 import chess.view.Command;
 import chess.view.InputView;
 import chess.view.MoveRequestDto;
 import chess.view.OutputView;
 import chess.view.mapper.ColumnMapper;
 import chess.view.mapper.RowMapper;
+import java.util.Map;
 
 public class ChessGameController {
     private final InputView inputView = new InputView();
@@ -32,17 +34,33 @@ public class ChessGameController {
     private boolean processGame(ChessGame chessGame) {
         try {
             Command command = inputView.readCommend();
-            if (command == Command.START) {
-                handleStart(chessGame);
-            }
-            if (command == Command.MOVE) {
-                handleMove(chessGame);
-            }
+            processGameStart(chessGame, command);
+            processMove(chessGame, command);
+            processStatus(chessGame, command);
             return command != Command.END;
         } catch (IllegalArgumentException error) {
             outputView.printError(error);
             process(chessGame);
             return false;
+        }
+    }
+
+    private void processStatus(ChessGame chessGame, Command command) {
+        if (command == Command.STATUS) {
+            Map<Color, Double> teamScore = chessGame.calculateTeamScore();
+            outputView.printTeamScore(teamScore.get(Color.WHITE), teamScore.get(Color.BLACK));
+        }
+    }
+
+    private void processMove(ChessGame chessGame, Command command) {
+        if (command == Command.MOVE) {
+            handleMove(chessGame);
+        }
+    }
+
+    private void processGameStart(ChessGame chessGame, Command command) {
+        if (command == Command.START) {
+            handleStart(chessGame);
         }
     }
 

@@ -24,12 +24,23 @@ public class Piece {
         return isNotSameColor(piece.color);
     }
 
-    public boolean isBlack() {
-        return this.color == Color.BLACK;
+    public boolean isSameColor(Color color) {
+        return this.color == color;
     }
 
-    public boolean isNotSameColor(Color turn) {
-        return this.color != turn;
+    public boolean isNotSameColor(Color color) {
+        return !isSameColor(color);
+    }
+
+    public boolean isPawnByColor(Color color) {
+        if (color == Color.BLACK) {
+            return pieceType.isBlackPawn();
+        }
+        return pieceType.isWhitePawn();
+    }
+
+    public double getScore() {
+        return pieceType.getScore();
     }
 
     public boolean isPawnAttackPossible(Direction direction) {

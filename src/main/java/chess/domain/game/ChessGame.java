@@ -21,6 +21,10 @@ public class ChessGame {
         currentTurn = START_TURN;
     }
 
+    public Map<Color, Double> calculateTeamScore() {
+        return board.calculateScore();
+    }
+
     public void movePiece(Position from, Position to) {
         validateUserTurn(from);
         List<Position> movablePositions = generateMovablePositions(from);

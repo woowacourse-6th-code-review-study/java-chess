@@ -14,21 +14,35 @@ import java.util.Map;
 import java.util.Queue;
 
 public enum PieceType {
-    BLACK_PAWN(new BlackPawnMoveStrategy()),
-    WHITE_PAWN(new WhitePawnMoveStrategy()),
-    ROOK(new RookMoveStrategy()),
-    KNIGHT(new KnightMoveStrategy()),
-    BISHOP(new BishopMoveStrategy()),
-    QUEEN(new QueenMoveStrategy()),
-    KING(new KingMoveStrategy());
+    BLACK_PAWN(new BlackPawnMoveStrategy(), 1),
+    WHITE_PAWN(new WhitePawnMoveStrategy(), 1),
+    ROOK(new RookMoveStrategy(), 5),
+    KNIGHT(new KnightMoveStrategy(), 2.5),
+    BISHOP(new BishopMoveStrategy(), 3),
+    QUEEN(new QueenMoveStrategy(), 9),
+    KING(new KingMoveStrategy(), 0);
 
     private final MoveStrategy moveStrategy;
+    private final double score;
 
-    PieceType(MoveStrategy moveStrategy) {
+    PieceType(MoveStrategy moveStrategy, double score) {
         this.moveStrategy = moveStrategy;
+        this.score = score;
     }
 
     public Map<Direction, Queue<Position>> generateAllDirectionPositions(Position currentPosition) {
         return this.moveStrategy.generateMovablePositions(currentPosition);
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public boolean isBlackPawn() {
+        return this == BLACK_PAWN;
+    }
+
+    public boolean isWhitePawn() {
+        return this == WHITE_PAWN;
     }
 }

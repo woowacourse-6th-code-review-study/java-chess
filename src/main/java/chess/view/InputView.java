@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class InputView {
 
-    private static final Pattern COMMAND_REGEX = Pattern.compile("(move)|(start)|(end)");
+    private static final Pattern COMMAND_REGEX = Pattern.compile("(move)|(start)|(end)|(status)");
     private static final Pattern POSITION_REGEX = Pattern.compile("([a-h][1-8]\\s+[a-h][1-8])");
 
     private final Scanner scanner = new Scanner(System.in);
