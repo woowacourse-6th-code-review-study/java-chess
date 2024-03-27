@@ -1,5 +1,7 @@
 package chess.domain;
 
+import java.util.Objects;
+
 public class Point {
 
     public static final Point ZERO = new Point(0);
@@ -23,5 +25,22 @@ public class Point {
 
     public double toDouble() {
         return value;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        Point point = (Point) object;
+        return Double.compare(value, point.value) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }
