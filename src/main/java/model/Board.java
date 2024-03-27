@@ -2,6 +2,7 @@ package model;
 
 import constant.ErrorCode;
 import exception.InvalidTurnException;
+import exception.KingDeadException;
 import exception.PieceDoesNotExistException;
 import exception.PieceExistInRouteException;
 import java.util.Collections;
@@ -74,6 +75,13 @@ public class Board {
         validateUnBlocked(route);
         final Position nextPosition = moving.getNextPosition();
         validateTargetEnemy(currentCamp, nextPosition);
+        validateIsKing(nextPosition);
+    }
+
+    private void validateIsKing(final Position nextPosition) {
+        if (pieces.containsKey(nextPosition) && pieces.get(nextPosition).isKing()) {
+            throw new KingDeadException(ErrorCode.KING_DEAD);
+        }
     }
 
     private void validateExistPiece(final Position currentPosition) {

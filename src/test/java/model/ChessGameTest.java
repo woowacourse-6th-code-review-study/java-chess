@@ -23,25 +23,34 @@ import static model.Fixtures.D7;
 import static model.Fixtures.D8;
 import static model.Fixtures.E1;
 import static model.Fixtures.E2;
+import static model.Fixtures.E3;
 import static model.Fixtures.E5;
 import static model.Fixtures.E7;
 import static model.Fixtures.E8;
 import static model.Fixtures.F1;
 import static model.Fixtures.F2;
+import static model.Fixtures.F3;
+import static model.Fixtures.F6;
 import static model.Fixtures.F7;
 import static model.Fixtures.F8;
 import static model.Fixtures.G1;
 import static model.Fixtures.G2;
+import static model.Fixtures.G4;
 import static model.Fixtures.G7;
 import static model.Fixtures.G8;
 import static model.Fixtures.H1;
 import static model.Fixtures.H2;
+import static model.Fixtures.H3;
+import static model.Fixtures.H4;
+import static model.Fixtures.H5;
+import static model.Fixtures.H6;
 import static model.Fixtures.H7;
 import static model.Fixtures.H8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import exception.InvalidTurnException;
+import exception.KingDeadException;
 import exception.PieceDoesNotExistException;
 import exception.PieceExistInRouteException;
 import java.util.HashMap;
@@ -214,5 +223,44 @@ class ChessGameTest {
         chessGame.move(new Moving(A2, A3));
 
         assertThat(chessGame.getCamp()).isEqualTo(Camp.BLACK);
+    }
+
+    @DisplayName("킹을 잡으면 예외가 발생한다. 블랙 이기는 경우")
+    @Test
+    void failToCatchBlackKing() {
+        //given
+        final ChessGame chessGame = ChessGame.setupStartingPosition();
+
+        //when
+        chessGame.move(new Moving(F2, F3));
+        chessGame.move(new Moving(E7, E5));
+        chessGame.move(new Moving(G2, G4));
+        chessGame.move(new Moving(D8, H4));
+        chessGame.move(new Moving(H2, H3));
+
+        final Moving catchKingMove = new Moving(H4, E1);
+
+        //then
+        assertThatThrownBy(() -> chessGame.move(catchKingMove))
+                .isInstanceOf(KingDeadException.class);
+    }
+
+    @DisplayName("킹을 잡으면 예외가 발생한다. 화이트 이기는 경우")
+    @Test
+    void failToCatchWhiteKing() {
+        //given
+        final ChessGame chessGame = ChessGame.setupStartingPosition();
+
+        //when
+        chessGame.move(new Moving(E2, E3));
+        chessGame.move(new Moving(F7, F6));
+        chessGame.move(new Moving(D1, H5));
+        chessGame.move(new Moving(G8, H6));
+
+        final Moving catchKingMove = new Moving(H5, E8);
+
+        //then
+        assertThatThrownBy(() -> chessGame.move(catchKingMove))
+                .isInstanceOf(KingDeadException.class);
     }
 }
