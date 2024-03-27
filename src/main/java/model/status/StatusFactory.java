@@ -9,7 +9,7 @@ public class StatusFactory {
     private StatusFactory() {
     }
 
-    public static GameStatus create(CommandLine commandLine) {
+    public static GameStatus create(final CommandLine commandLine) {
         if (commandLine.isStart()) {
             return new Running();
         }
