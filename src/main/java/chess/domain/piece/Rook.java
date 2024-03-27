@@ -22,7 +22,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    Score score() {
+    public Score score() {
         return new Score(SCORE_VALUE);
     }
 }
