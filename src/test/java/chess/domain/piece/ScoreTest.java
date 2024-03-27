@@ -25,4 +25,22 @@ class ScoreTest {
 
         assertThat(multiplied.getValue()).isEqualTo(1.32);
     }
+
+    @DisplayName("특정 점수가 더 높은지 계산할 수 있다")
+    @Test
+    void should_ScoreCouldCheckIsAbove_When_OtherScoreIsGiven() {
+        Score higher = new Score(1.3);
+        Score lower = new Score(1.2);
+
+        assertThat(higher.isAbove(lower)).isTrue();
+    }
+
+    @DisplayName("특정 점수가 더 낮은지 계산할 수 있다")
+    @Test
+    void should_ScoreCouldCheckIsBelow_When_OtherScoreIsGiven() {
+        Score higher = new Score(1.3);
+        Score lower = new Score(1.2);
+
+        assertThat(lower.isBelow(higher)).isTrue();
+    }
 }

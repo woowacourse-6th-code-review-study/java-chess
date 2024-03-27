@@ -21,6 +21,14 @@ public class Score {
         return new Score(this.value * other.value);
     }
 
+    public boolean isAbove(Score other) {
+        return this.value > other.value;
+    }
+
+    public boolean isBelow(Score other) {
+        return this.value < other.value;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
