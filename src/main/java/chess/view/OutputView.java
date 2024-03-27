@@ -64,6 +64,6 @@ public class OutputView {
     }
 
     private String resolveTeamStatusMessage(Team team, Score score) {
-        return String.format("%s팀: %lf점", team, score.getValue());
+        return String.format("%s팀: %.1f점", team, score.getValue());
     }
 }
