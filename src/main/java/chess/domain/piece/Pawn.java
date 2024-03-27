@@ -1,5 +1,6 @@
 package chess.domain.piece;
 
+import chess.Point;
 import chess.domain.Team;
 import chess.domain.movement.BlackPawnDefaultMovement;
 import chess.domain.movement.BlackPawnDiagonalMovement;
@@ -16,6 +17,9 @@ public final class Pawn extends Piece {
             new BlackPawnFirstMovement(), new BlackPawnDefaultMovement(), new BlackPawnDiagonalMovement());
     private static final List<MovementRule> WHITE_MOVEMENT_RULES = List.of(
             new WhitePawnFirstMovement(), new WhitePawnDefaultMovement(), new WhitePawnDiagonalMovement());
+    private static final Point PIECE_BASIC_POINT = new Point(1.0);
+    private static final Point PIECE_OVERLAPPED_POINT = new Point(0.5); // TODO 변수명 변경
+
 
     public Pawn(Team team) {
         super(team, findMovementRule(team));
@@ -26,5 +30,13 @@ public final class Pawn extends Piece {
             return BLACK_MOVEMENT_RULES;
         }
         return WHITE_MOVEMENT_RULES;
+    }
+
+    @Override
+    public Point getPoint(boolean isOverlapped) {
+        if (isOverlapped) {
+            return PIECE_OVERLAPPED_POINT;
+        }
+        return PIECE_BASIC_POINT;
     }
 }

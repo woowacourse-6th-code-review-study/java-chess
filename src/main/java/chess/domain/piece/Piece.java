@@ -1,5 +1,6 @@
 package chess.domain.piece;
 
+import chess.Point;
 import chess.domain.Team;
 import chess.domain.movement.MovementRule;
 import chess.domain.position.Position;
@@ -38,4 +39,6 @@ public abstract sealed class Piece permits King, Queen, Rook, Bishop, Knight, Pa
     public final boolean isKing() {
         return this.getClass() == King.class;
     }
+
+    public abstract Point getPoint(boolean isOverlapped);
 }
