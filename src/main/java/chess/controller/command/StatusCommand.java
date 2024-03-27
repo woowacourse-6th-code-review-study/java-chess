@@ -11,8 +11,15 @@ public class StatusCommand implements Command {
     public ExecuteResult execute(ChessGame chessGame, OutputView outputView) {
         Score whiteScore = chessGame.calculateTeamScore(Team.WHITE);
         Score blackScore = chessGame.calculateTeamScore(Team.BLACK);
-        outputView.printTeamStatusMessage(Team.WHITE, whiteScore);
-        outputView.printTeamStatusMessage(Team.BLACK, blackScore);
+        Team winner = selectWinnerTeam(whiteScore, blackScore);
+        outputView.printStatusMessage(whiteScore, blackScore, winner);
         return new ExecuteResult(true, true);
+    }
+
+    private Team selectWinnerTeam(Score whiteScore, Score blackScore) {
+        if (whiteScore.isAbove(blackScore)) {
+            return Team.WHITE;
+        }
+        return Team.BLACK;
     }
 }

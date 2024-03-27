@@ -28,8 +28,8 @@ public class OutputView {
         System.out.println(resolveChessBoardMessage(chessBoard));
     }
 
-    public void printTeamStatusMessage(Team team, Score score) {
-        System.out.println(resolveTeamStatusMessage(team, score));
+    public void printStatusMessage(Score whiteScore, Score blackScore, Team winner) {
+        System.out.println(resolveStatusMessage(whiteScore, blackScore, winner));
     }
 
     private String resolveStartMessage() {
@@ -63,7 +63,19 @@ public class OutputView {
         return PieceMessage.messageOf(foundPiece);
     }
 
+    private String resolveStatusMessage(Score whiteScore, Score blackScore, Team winner) {
+        return new StringJoiner(LINE_SEPARATOR)
+                .add(resolveTeamStatusMessage(Team.WHITE, whiteScore))
+                .add(resolveTeamStatusMessage(Team.BLACK, blackScore))
+                .add(resolveStatusWinnerMessage(winner))
+                .toString();
+    }
+
     private String resolveTeamStatusMessage(Team team, Score score) {
         return String.format("%s팀: %.1f점", team, score.getValue());
+    }
+
+    private String resolveStatusWinnerMessage(Team winner) {
+        return String.format("현 시점 기물 점수 승부 %s 승리");
     }
 }
