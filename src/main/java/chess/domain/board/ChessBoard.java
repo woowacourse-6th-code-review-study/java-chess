@@ -1,6 +1,7 @@
 package chess.domain.board;
 
 import chess.domain.piece.Piece;
+import chess.domain.piece.Score;
 import chess.domain.piece.Team;
 import chess.domain.position.Position;
 import java.util.List;
@@ -50,5 +51,13 @@ public class ChessBoard {
 
     public boolean isNoHostilePieceAt(Position position, Team team) {
         return positionIsEmpty(position) || !findPieceByPosition(position).isOtherTeam(team);
+    }
+
+    public Score calcualteDefaultScore(Team team) {
+        return board.keySet().stream()
+                .map(board::get)
+                .filter(piece -> !piece.isOtherTeam(team))
+                .map(Piece::score)
+                .reduce(new Score(0), Score::add);
     }
 }
