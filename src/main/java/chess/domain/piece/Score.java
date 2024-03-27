@@ -1,5 +1,7 @@
 package chess.domain.piece;
 
+import java.util.Objects;
+
 public class Score {
     private final double value;
 
@@ -13,5 +15,22 @@ public class Score {
 
     public Score add(Score other) {
         return new Score(this.value + other.value);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Score score = (Score) o;
+        return Double.compare(value, score.value) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }
