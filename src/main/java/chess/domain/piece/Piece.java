@@ -14,6 +14,8 @@ public abstract class Piece {
 
     abstract boolean canNotMoveByBoardStatus(Position start, Position destination, ChessBoard chessBoard);
 
+    abstract Score score();
+
     public final boolean canMove(Position start, Position destination, ChessBoard chessBoard) {
         if (start == destination) {
             return false;

@@ -7,6 +7,7 @@ import chess.domain.position.Position;
 public class Pawn extends Piece {
     private static final int DEFAULT_MOVE_DISTANCE = 1;
     private static final int INITIAL_MOVE_DISTANCE = 2;
+    private static final int SCORE_VALUE = 1;
 
     public Pawn(Team team) {
         super(team);
@@ -47,5 +48,10 @@ public class Pawn extends Piece {
             return chessBoard.isNoHostilePieceAt(destination, team);
         }
         return false;
+    }
+
+    @Override
+    Score score() {
+        return new Score(SCORE_VALUE);
     }
 }

@@ -4,6 +4,8 @@ import chess.domain.board.ChessBoard;
 import chess.domain.position.Position;
 
 public class Bishop extends Piece {
+    private static final int SCORE_VALUE = 3;
+
     public Bishop(Team team) {
         super(team);
     }
@@ -16,5 +18,10 @@ public class Bishop extends Piece {
     @Override
     boolean canNotMoveByBoardStatus(Position start, Position destination, ChessBoard chessBoard) {
         return chessBoard.isPathHasObstacle(start.calculateSlidingPath(destination));
+    }
+
+    @Override
+    Score score() {
+        return new Score(SCORE_VALUE);
     }
 }
