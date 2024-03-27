@@ -1,6 +1,7 @@
 package chess.controller;
 
 import chess.controller.command.Command;
+import chess.controller.command.ExecuteResult;
 import chess.domain.ChessGame;
 import chess.domain.board.ChessBoard;
 import chess.domain.board.ChessBoardCreator;
@@ -18,16 +19,14 @@ public class ChessGameController {
 
     public void run() {
         outputView.printStartMessage();
-        Command command = inputView.readCommand();
-        if (command.isNotStartCommand()) {
-            return;
-        }
-
         ChessGame chessGame = initializeChessGame();
-        while (command.isNotEndCommand()) {
-            command.execute(chessGame, outputView);
-            command = inputView.readCommand();
+
+        ExecuteResult result;
+        do {
+            Command command = inputView.readCommand();
+            result = command.execute(chessGame, outputView);
         }
+        while (result.isSuccess() && result.isNeedNextCommand());
     }
 
     private ChessGame initializeChessGame() {

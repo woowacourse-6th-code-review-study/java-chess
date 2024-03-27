@@ -14,18 +14,9 @@ public class MoveCommand implements Command {
     }
 
     @Override
-    public void execute(ChessGame chessGame, OutputView outputView) {
+    public ExecuteResult execute(ChessGame chessGame, OutputView outputView) {
         chessGame.move(start, destination);
         outputView.printChessBoardMessage(chessGame.getChessBoard());
-    }
-
-    @Override
-    public boolean isNotEndCommand() {
-        return true;
-    }
-
-    @Override
-    public boolean isNotStartCommand() {
-        return true;
+        return new ExecuteResult(true, true);
     }
 }
