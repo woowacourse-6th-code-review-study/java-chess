@@ -1,7 +1,7 @@
 package constant;
 
 public enum ErrorCode {
-
+    //TODO: 같은 곳으로 이동할 때 예외 다르게 errorCode
     INVALID_INPUT,
     INVALID_STATUS,
     INVALID_COMMAND,
