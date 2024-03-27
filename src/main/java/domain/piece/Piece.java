@@ -14,6 +14,10 @@ public abstract class Piece {
 
     public abstract PieceType pieceType();
 
+    public abstract double score();
+
+    public abstract boolean matchPieceType(PieceType pieceType);
+
     public boolean isTeam(final PieceColor teamColor) {
         return this.color == teamColor;
     }

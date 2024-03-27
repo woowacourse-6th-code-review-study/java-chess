@@ -1,10 +1,7 @@
 package controller;
 
 import domain.board.Position;
-import domain.game.ChessGame;
-import domain.game.GameCommand;
-import domain.game.GameCommandType;
-import domain.game.GameStatus;
+import domain.game.*;
 import dto.BoardDto;
 import view.InputView;
 import view.OutputView;
@@ -73,5 +70,13 @@ public class GameController {
 
     public void end() {
         chessGame.gameEnd();
+    }
+
+    public void printGameStatus() {
+        GameScore gameScore = chessGame.getGameResult();
+        outputView.printGameResult(
+                gameScore.whiteTeamScore(),
+                gameScore.blackTeamScore(),
+                gameScore.gameResult());
     }
 }

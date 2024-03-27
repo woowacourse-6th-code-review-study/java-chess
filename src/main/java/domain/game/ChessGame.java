@@ -8,6 +8,7 @@ import domain.piece.PieceColor;
 
 import java.util.Map;
 
+import static domain.piece.PieceColor.BLACK;
 import static domain.piece.PieceColor.WHITE;
 
 public class ChessGame {
@@ -32,16 +33,8 @@ public class ChessGame {
         gameStatus = GameStatus.END;
     }
 
-    public boolean isWaiting() {
-        return gameStatus == GameStatus.WAITING;
-    }
-
     public boolean isRunning() {
         return gameStatus == GameStatus.RUNNING;
-    }
-
-    public boolean isEnd() {
-        return gameStatus == GameStatus.END;
     }
 
     public Map<Position, Piece> piecePositions() {
@@ -60,5 +53,12 @@ public class ChessGame {
 
     public GameStatus gameStatus() {
         return gameStatus;
+    }
+
+    public GameScore getGameResult() {
+        double whiteTeamScore = board.calculateTeamScore(WHITE);
+        double blackTeamScore = board.calculateTeamScore(BLACK);
+
+        return new GameScore(new Score(whiteTeamScore), new Score(blackTeamScore));
     }
 }

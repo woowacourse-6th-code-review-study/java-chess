@@ -5,6 +5,7 @@ import domain.piece.PieceColor;
 import domain.piece.PieceType;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public class Board {
@@ -55,5 +56,46 @@ public class Board {
         return piecePositions.values()
                 .stream()
                 .anyMatch(piece -> piece.isTeam(targetColor) && piece.pieceType() == PieceType.KING);
+    }
+
+    public double calculateTeamScore(final PieceColor teamColor) {
+        double existTargetColorPiecesScoreSum = sumExistTargetPiecesScore(teamColor);
+
+        return existTargetColorPiecesScoreSum - calculateDecreaseScoreForExistSameFilePawns(teamColor);
+    }
+
+    private double sumExistTargetPiecesScore(final PieceColor pieceColor) {
+        return piecePositions.values()
+                .stream()
+                .filter(piece -> piece.isTeam(pieceColor))
+                .mapToDouble(Piece::score)
+                .sum();
+    }
+
+    private double calculateDecreaseScoreForExistSameFilePawns(final PieceColor pieceColor) {
+        List<Position> targetColorPawnPositions = piecePositions.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().isTeam(pieceColor) && entry.getValue().matchPieceType(PieceType.PAWN))
+                .map(Map.Entry::getKey)
+                .toList();
+
+        int sameFilePawnCount = 0;
+        for (File file : File.values()) {
+            sameFilePawnCount += calculateSameFilePawnCount(targetColorPawnPositions, file);
+        }
+
+        return 0.5 * sameFilePawnCount;
+    }
+
+    private int calculateSameFilePawnCount(final List<Position> pawnPositions, final File file) {
+        int sameFilePawnCount = (int) pawnPositions.stream()
+                .filter(position -> position.file() == file)
+                .count();
+
+        if (sameFilePawnCount <= 1) {
+            return 0;
+        }
+
+        return sameFilePawnCount;
     }
 }

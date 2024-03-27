@@ -52,4 +52,14 @@ public class Rook extends Piece {
     public PieceType pieceType() {
         return PIECE_TYPE;
     }
+
+    @Override
+    public double score() {
+        return pieceType().score();
+    }
+
+    @Override
+    public boolean matchPieceType(final PieceType target) {
+        return PIECE_TYPE == target;
+    }
 }

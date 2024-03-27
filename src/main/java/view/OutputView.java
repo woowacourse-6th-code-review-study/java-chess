@@ -1,5 +1,7 @@
 package view;
 
+import domain.game.GameResult;
+import domain.game.Score;
 import domain.piece.PieceColor;
 import domain.piece.PieceType;
 import dto.BoardDto;
@@ -75,5 +77,24 @@ public class OutputView {
         }
 
         return pieceMessage;
+    }
+
+    public void printGameResult(final Score whiteTeamScore, final Score blackTeamScore, final GameResult gameResult) {
+        System.out.println("White Score : " + whiteTeamScore.value());
+        System.out.println("Black Score : " + blackTeamScore.value());
+        System.out.println(convertToGameResultMessage(gameResult));
+        System.out.println();
+    }
+
+    private String convertToGameResultMessage(final GameResult gameResult) {
+        if (gameResult == GameResult.BLACK_WIN) {
+            return "블랙이 이기고 있습니다!";
+        }
+
+        if (gameResult == GameResult.WHITE_WIN) {
+            return "화이트가 이기고 있습니다!";
+        }
+
+        return "막상막하입니다!";
     }
 }
