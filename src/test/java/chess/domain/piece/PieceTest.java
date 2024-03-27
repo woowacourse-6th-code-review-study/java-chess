@@ -31,6 +31,11 @@ class PieceTest {
             }
 
             @Override
+            public boolean isPawn() {
+                return false;
+            }
+
+            @Override
             public Score score() {
                 return new Score(29.3);
             }
@@ -46,7 +51,12 @@ class PieceTest {
             boolean canNotMoveByBoardStatus(Position start, Position destination, ChessBoard chessBoard) {
                 return false;
             }
-            
+
+            @Override
+            public boolean isPawn() {
+                return false;
+            }
+
             @Override
             public Score score() {
                 return new Score(29.3);
