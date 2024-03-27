@@ -10,11 +10,13 @@ public abstract class Piece {
         this.team = team;
     }
 
+    public abstract boolean isPawn();
+
+    public abstract Score score();
+
     abstract boolean canNotMoveByItsOwnInPassing(Position start, Position destination);
 
     abstract boolean canNotMoveByBoardStatus(Position start, Position destination, ChessBoard chessBoard);
-
-    public abstract Score score();
 
     public final boolean canMove(Position start, Position destination, ChessBoard chessBoard) {
         if (start == destination) {

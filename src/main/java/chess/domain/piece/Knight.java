@@ -25,4 +25,9 @@ public class Knight extends Piece {
     public Score score() {
         return new Score(SCORE_VALUE);
     }
+
+    @Override
+    public boolean isPawn() {
+        return false;
+    }
 }
