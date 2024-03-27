@@ -3,6 +3,7 @@ package chess.view;
 import static chess.view.CommandParser.END;
 import static chess.view.CommandParser.MOVE;
 import static chess.view.CommandParser.START;
+import static chess.view.CommandParser.STATUS;
 
 import chess.domain.board.ChessBoard;
 import chess.domain.piece.Piece;
@@ -36,6 +37,7 @@ public class OutputView {
                 .add("체스 게임을 시작합니다.")
                 .add(String.format("> 게임 시작 : %s", START))
                 .add(String.format("> 게임 종료 : %s", END))
+                .add(String.format("> 점수 출력 : %s", STATUS))
                 .add(String.format("> 게임 이동 : %s source위치 target위치 - 예. %s b2 b3", MOVE, MOVE))
                 .toString();
     }

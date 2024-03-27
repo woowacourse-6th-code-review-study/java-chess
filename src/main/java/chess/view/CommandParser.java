@@ -4,6 +4,7 @@ import chess.controller.command.Command;
 import chess.controller.command.EndCommand;
 import chess.controller.command.MoveCommand;
 import chess.controller.command.StartCommand;
+import chess.controller.command.StatusCommand;
 import chess.domain.position.File;
 import chess.domain.position.Position;
 import chess.domain.position.Rank;
@@ -12,6 +13,8 @@ public class CommandParser {
     static final String START = "start";
     static final String END = "end";
     static final String MOVE = "move";
+    static final String STATUS = "status";
+
     private static final int START_POSITION_INDEX = 1;
     private static final int DESTINATION_POSITION_INDEX = 2;
     private static final int FILE_INDEX = 0;
@@ -26,6 +29,9 @@ public class CommandParser {
         }
         if (input.equals(END)) {
             return new EndCommand();
+        }
+        if (input.equals(STATUS)) {
+            return new StatusCommand();
         }
         if (input.startsWith(MOVE)) {
             String[] split = input.split(" ");
