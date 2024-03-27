@@ -2,10 +2,11 @@ package controller;
 
 import controller.command.Command;
 import controller.command.EndOnCommand;
-import repository.DaoService;
+import controller.command.StartOnCommand;
 import domain.board.ChessBoard;
 import domain.board.ChessBoardFactory;
 import dto.TurnDto;
+import repository.DaoService;
 import view.InputView;
 import view.OutputView;
 
@@ -23,7 +24,7 @@ public class ChessController {
         ChessBoard board = createChessBoard(daoService);
 
         outputView.printGameGuideMessage();
-        Command command = readStartCommandUntilValid();
+        Command command = new StartOnCommand();
         while (command.isNotEnded()) {
             command.execute(board, outputView);
             command = readNextCommand(board);
@@ -40,14 +41,14 @@ public class ChessController {
         return ChessBoardFactory.createInitialChessBoard();
     }
 
-    private Command readStartCommandUntilValid() {
-        try {
-            return inputView.readStartCommand();
-        } catch (Exception e) {
-            outputView.printErrorMessage(e.getMessage());
-            return readStartCommandUntilValid();
-        }
-    }
+//    private Command readStartCommandUntilValid() {
+//        try {
+//            return inputView.readStartCommand();
+//        } catch (Exception e) {
+//            outputView.printErrorMessage(e.getMessage());
+//            return readStartCommandUntilValid();
+//        }
+//    }
 
     private Command readNextCommand(final ChessBoard board) {
         if (board.isKingNotExist()) {

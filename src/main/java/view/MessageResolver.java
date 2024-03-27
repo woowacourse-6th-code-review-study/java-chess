@@ -14,9 +14,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static view.CommandType.END;
-import static view.CommandType.MOVE;
-import static view.CommandType.START;
+import static view.command.CommandType.END;
+import static view.command.CommandType.MOVE;
+import static view.command.CommandType.START;
 
 public class MessageResolver {
     public static final int BOARD_LENGTH = 8;

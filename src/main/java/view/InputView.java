@@ -1,7 +1,8 @@
 package view;
 
 import controller.command.Command;
-import controller.command.StartOnCommand;
+import view.command.CommandInput;
+import view.command.CommandType;
 
 import java.util.Scanner;
 
@@ -15,42 +16,20 @@ public class InputView {
         this.scanner = new Scanner(System.in);
     }
 
-    public Command readStartCommand() {
-        String[] tokens = readUserInput();
-        if (tokens.length == 1 && CommandType.START.name().equals(tokens[0])) {
-            return new StartOnCommand();
-        }
-        throw new IllegalArgumentException(GAME_NOT_STARTED_ERROR_MESSAGE);
-    }
+//    public Command readStartCommand() {
+//        return CommandType.getCommand(readCommandInput());
+//    }
 
     public Command readCommand() {
-        String[] tokens = readUserInput();
         try {
-            validateCommand(tokens);
-            return CommandType.getCommand(tokens);
+            CommandInput input = readCommandInput();
+            return CommandType.getCommand(input);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(WRONG_COMMAND_ERROR_MESSAGE);
         }
     }
 
-    private void validateCommand(String[] tokens) {
-        for (int i = 1; i < tokens.length; i++) {
-            validatePositionFormat(tokens[i]);
-        }
-    }
-
-    private void validatePositionFormat(String token) {
-        if (token.length() != 2) {
-            throw new IllegalArgumentException();
-        }
-        try {
-            Integer.parseInt(token.substring(1));
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException();
-        }
-    }
-
-    private String[] readUserInput() {
-        return scanner.nextLine().trim().toUpperCase().split(" ");
+    private CommandInput readCommandInput() {
+        return new CommandInput(scanner.nextLine());
     }
 }
