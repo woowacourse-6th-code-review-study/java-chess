@@ -4,9 +4,8 @@ import constant.ErrorCode;
 import exception.InvalidTurnException;
 import exception.PieceDoesNotExistException;
 import exception.PieceExistInRouteException;
-import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -116,14 +115,22 @@ public class Board {
     }
 
     public Score calculateScore(final Camp camp) { //TODO 람다 스트림으로 빼보기
-        //TODO 폰 특수 처리
-        final List<Piece> sameCamp = new ArrayList<>();
+        final Map<File, Integer> count = new EnumMap<>(File.class);
         Score result = new Score(0);
         for (final Entry<Position, Piece> entry : pieces.entrySet()) {
             final Piece piece = entry.getValue();
             if (piece.isSameCamp(camp)) {
-                sameCamp.add(piece);
+                if (piece.isPawn()) {
+                    final File file = entry.getKey().getFile();
+                    count.put(file, count.getOrDefault(file, 0) + 1);
+                }
                 result = result.add(PieceScore.getScore(piece));
+            }
+        }
+        final Score score = new Score(0.5F);
+        for (Integer sameFilePawnCount : count.values()) {
+            for (int i = 1; i < sameFilePawnCount; i++) {
+                result = result.minus(score);
             }
         }
         return result;
