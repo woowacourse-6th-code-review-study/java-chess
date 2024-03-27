@@ -10,4 +10,8 @@ public class Score {
     public double getValue() {
         return value;
     }
+
+    public Score add(Score other) {
+        return new Score(this.value + other.value);
+    }
 }
