@@ -1,6 +1,6 @@
 package chess.domain.piece;
 
-import chess.Point;
+import chess.domain.Point;
 import chess.domain.Team;
 import chess.domain.movement.BlackPawnDefaultMovement;
 import chess.domain.movement.BlackPawnDiagonalMovement;
