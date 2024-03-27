@@ -2,6 +2,7 @@ package model.command;
 
 import constant.ErrorCode;
 import exception.InvalidCommandException;
+import java.util.Collections;
 import java.util.List;
 
 public class CommandLine {
@@ -58,8 +59,7 @@ public class CommandLine {
         return head == Command.STATUS;
     }
 
-    //TODO: 방어적 복사
     public List<String> getBody() {
-        return body;
+        return Collections.unmodifiableList(body);
     }
 }

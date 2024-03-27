@@ -4,6 +4,7 @@ import constant.ErrorCode;
 import exception.InvalidTurnException;
 import exception.PieceDoesNotExistException;
 import exception.PieceExistInRouteException;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class Board {
     }
 
     public static Board create() {
-        Map<Position, Piece> result = new HashMap<>();
+        final Map<Position, Piece> result = new HashMap<>();
         settingExceptPawn(result, Camp.BLACK, Rank.EIGHT);
         settingPawn(result, Camp.BLACK, Rank.SEVEN);
         settingPawn(result, Camp.WHITE, Rank.TWO);
@@ -136,8 +137,7 @@ public class Board {
         return result;
     }
 
-    //TODO 방어적 복사
     public Map<Position, Piece> getPieces() {
-        return pieces;
+        return Collections.unmodifiableMap(pieces);
     }
 }

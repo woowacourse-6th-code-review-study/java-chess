@@ -9,10 +9,16 @@ import static model.Fixtures.B8;
 import static model.Fixtures.C2;
 import static model.Fixtures.C3;
 import static model.Fixtures.C6;
+import static model.Fixtures.F4;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.util.Map;
+import model.piece.Piece;
+import model.piece.WhitePawn;
 import model.position.Moving;
+import model.position.Position;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -90,5 +96,20 @@ class BoardTest {
                 () -> assertThat(chessGame.calculateScore(Camp.WHITE)).isEqualTo(whiteExpected),
                 () -> assertThat(chessGame.calculateScore(Camp.BLACK)).isEqualTo(blackExpected)
         );
+    }
+
+    @Test
+    @DisplayName("getter로 가져온 값을 수정하려고 하면 예외가 발생한다..")
+    void doNotUpdate() {
+        //given
+        final Board board = Board.create();
+        final Piece piece = new WhitePawn();
+
+        //when
+        final Map<Position, Piece> pieces = board.getPieces();
+
+        //then
+        assertThatThrownBy(() -> pieces.put(F4, piece))
+                .isInstanceOf(UnsupportedOperationException.class);
     }
 }
