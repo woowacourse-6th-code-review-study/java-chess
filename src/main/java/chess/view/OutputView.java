@@ -1,5 +1,6 @@
 package chess.view;
 
+import chess.domain.Team;
 import chess.domain.position.File;
 import chess.domain.position.Position;
 import chess.domain.position.Rank;
@@ -16,6 +17,7 @@ public class OutputView {
             Rank.EIGHT, Rank.SEVEN, Rank.SIX, Rank.FIVE, Rank.FOUR, Rank.THREE, Rank.TWO, Rank.ONE);
     private static final List<File> FILE_ORDER = List.of(
             File.A, File.B, File.C, File.D, File.E, File.F, File.G, File.H);
+    private static final List<Team> TEAM_ORDER = List.of(Team.WHITE, Team.BLACK);
     private static final Map<PieceType, String> PIECE_DISPLAY = Map.of(
             PieceType.KING, "K", PieceType.QUEEN, "Q", PieceType.KNIGHT, "N",
             PieceType.BISHOP, "B", PieceType.ROOK, "R", PieceType.PAWN, "P");
@@ -62,6 +64,20 @@ public class OutputView {
     private void printWhitePiece(PieceType type) {
         String display = PIECE_DISPLAY.get(type);
         System.out.print(display.toLowerCase());
+    }
+
+    public void printStatus(Map<Team, Double> status) {
+        System.out.println();
+        TEAM_ORDER.stream()
+                .forEach(team -> printStatus(team, status.get(team)));
+    }
+
+    private void printStatus(Team team, double score) {
+        if (team.isBlack()) {
+            System.out.println("검정 팀 : %.1f".formatted(score));
+            return;
+        }
+        System.out.println("하양 팀 : %.1f".formatted(score));
     }
 
     public void printWinnerMessage(ProgressStatus status) {

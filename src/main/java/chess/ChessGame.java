@@ -2,6 +2,8 @@ package chess;
 
 import chess.domain.Board;
 import chess.domain.BoardFactory;
+import chess.domain.Point;
+import chess.domain.Team;
 import chess.domain.piece.Piece;
 import chess.domain.position.Position;
 import chess.dto.PieceDto;
@@ -13,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ChessGame {
 
@@ -56,6 +59,16 @@ public class ChessGame {
         }
         if (command.isEnd()) {
             System.exit(0);
+        }
+        if (command.isStatus()) {
+            Map<Team, Point> status = board.calculatePoints();
+            Map<Team, Double> dto = status.entrySet().stream()
+                    .collect(Collectors.toMap(
+                            entry -> entry.getKey(),
+                            entry -> entry.getValue().toDouble()
+                    ));
+            outputView.printStatus(dto);
+            return ProgressStatus.PROGRESS;
         }
         return executeMove(board);
     }
