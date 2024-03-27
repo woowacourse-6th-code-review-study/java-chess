@@ -13,7 +13,7 @@ public class JdbcTemplate {
         this.connectionManager = new ConnectionManager();
     }
 
-    void add(final String query, final String... parameters) {
+    public void add(final String query, final String... parameters) {
         execute(query, parameters);
     }
 

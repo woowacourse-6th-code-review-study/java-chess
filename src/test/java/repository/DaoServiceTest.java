@@ -1,4 +1,4 @@
-package db;
+package repository;
 
 import domain.dto.PieceDto;
 import domain.dto.TurnDto;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DBServiceTest {
+class DaoServiceTest {
     private static final PieceDto A2WhitePawn = new PieceDto("A", "2", "WHITE", "PAWN");
     private static final PieceDto B2WhitePawn = new PieceDto("B", "2", "WHITE", "PAWN");
     private static final PieceDto C2WhitePawn = new PieceDto("C", "2", "WHITE", "PAWN");
@@ -19,7 +19,7 @@ class DBServiceTest {
 
     private final PieceDao pieceDao = new PieceDao();
     private final TurnDao turnDao = new TurnDao();
-    private final DBService dbService = new DBService();
+    private final DaoService daoService = new DaoService();
 
     @BeforeEach
     void setData() {
@@ -37,18 +37,18 @@ class DBServiceTest {
 
     @Test
     void 이전_게임_데이터가_존재한다() {
-        assertThat(dbService.isPreviousDataExist()).isTrue();
+        assertThat(daoService.isPreviousDataExist()).isTrue();
     }
 
     @Test
     void 이전_게임_데이터를_불러온다() {
-        assertThat(dbService.loadPreviousData())
+        assertThat(daoService.loadPreviousData())
                 .containsExactlyInAnyOrder(A2WhitePawn, B2WhitePawn, C2WhitePawn);
     }
 
     @Test
     void 이전_게임의_턴_데이터를_불러온다() {
-        assertThat(dbService.loadPreviousTurn().getTurn())
+        assertThat(daoService.loadPreviousTurn().getTurn())
                 .isEqualTo(Color.WHITE);
     }
 
@@ -60,9 +60,9 @@ class DBServiceTest {
 
         List<PieceDto> pieceDtos = List.of(A3WhitePawn, B3WhitePawn, C3WhitePawn);
 
-        dbService.updatePiece(pieceDtos);
+        daoService.updatePiece(pieceDtos);
 
-        assertThat(dbService.loadPreviousData())
+        assertThat(daoService.loadPreviousData())
                 .containsExactlyInAnyOrder(A3WhitePawn, B3WhitePawn, C3WhitePawn);
     }
 
@@ -70,15 +70,15 @@ class DBServiceTest {
     void 턴_데이터를_갱신한다() {
         TurnDto blackTurn = new TurnDto("BLACK");
 
-        dbService.updateTurn(blackTurn);
+        daoService.updateTurn(blackTurn);
 
-        assertThat(dbService.loadPreviousTurn().getTurn()).isEqualTo(Color.BLACK);
+        assertThat(daoService.loadPreviousTurn().getTurn()).isEqualTo(Color.BLACK);
     }
 
     @Test
     void 모든_데이터를_삭제한다() {
-        dbService.deletePreviousData();
+        daoService.deletePreviousData();
 
-        assertThat(dbService.isPreviousDataExist()).isFalse();
+        assertThat(daoService.isPreviousDataExist()).isFalse();
     }
 }

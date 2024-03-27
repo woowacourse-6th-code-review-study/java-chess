@@ -1,5 +1,7 @@
-package db;
+package repository;
 
+import db.JdbcTemplate;
+import db.RowMapper;
 import domain.dto.PieceDto;
 
 import java.util.List;
@@ -19,7 +21,7 @@ public class PieceDao {
         this(new JdbcTemplate());
     }
 
-    private PieceDao(final JdbcTemplate jdbcTemplate) {
+    PieceDao(final JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

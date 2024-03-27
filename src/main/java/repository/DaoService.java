@@ -1,13 +1,20 @@
-package db;
+package repository;
 
+import db.JdbcTemplate;
 import domain.dto.PieceDto;
 import domain.dto.TurnDto;
 
 import java.util.List;
 
-public class DBService {
-    private final PieceDao pieceDao = new PieceDao();
-    private final TurnDao turnDao = new TurnDao();
+public class DaoService {
+    private final PieceDao pieceDao;
+    private final TurnDao turnDao;
+
+    public DaoService() {
+        final JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        this.pieceDao = new PieceDao(jdbcTemplate);
+        this.turnDao = new TurnDao(jdbcTemplate);
+    }
 
     public boolean isPreviousDataExist() {
         return pieceDao.hasRecords();

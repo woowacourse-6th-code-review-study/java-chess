@@ -1,4 +1,4 @@
-package db;
+package repository;
 
 import domain.dto.PieceDto;
 import org.junit.jupiter.api.AfterEach;

@@ -1,5 +1,7 @@
-package db;
+package repository;
 
+import db.JdbcTemplate;
+import db.RowMapper;
 import domain.dto.TurnDto;
 
 import java.util.List;
@@ -15,7 +17,7 @@ public class TurnDao {
         this(new JdbcTemplate());
     }
 
-    private TurnDao(final JdbcTemplate jdbcTemplate) {
+    TurnDao(final JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

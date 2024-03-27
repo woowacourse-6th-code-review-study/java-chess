@@ -1,4 +1,4 @@
-package db;
+package repository;
 
 import domain.dto.TurnDto;
 import domain.piece.Color;

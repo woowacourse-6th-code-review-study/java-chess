@@ -2,7 +2,7 @@ package controller;
 
 import controller.command.Command;
 import controller.command.EndOnCommand;
-import db.DBService;
+import repository.DaoService;
 import domain.board.ChessBoard;
 import domain.board.ChessBoardFactory;
 import domain.dto.TurnDto;
@@ -19,8 +19,8 @@ public class ChessController {
     }
 
     public void start() {
-        DBService dbService = new DBService();
-        ChessBoard board = createChessBoard(dbService);
+        DaoService daoService = new DaoService();
+        ChessBoard board = createChessBoard(daoService);
 
         outputView.printGameGuideMessage();
         Command command = readStartCommandUntilValid();
@@ -29,13 +29,13 @@ public class ChessController {
             command = readNextCommand(board);
         }
         command.execute(board, outputView);
-        updateGameStatus(dbService, board);
+        updateGameStatus(daoService, board);
     }
 
-    private ChessBoard createChessBoard(DBService dbService) {
-        if (dbService.isPreviousDataExist()) {
-            TurnDto turnDto = dbService.loadPreviousTurn();
-            return ChessBoardFactory.loadPreviousChessBoard(dbService.loadPreviousData(), turnDto.getTurn());
+    private ChessBoard createChessBoard(DaoService daoService) {
+        if (daoService.isPreviousDataExist()) {
+            TurnDto turnDto = daoService.loadPreviousTurn();
+            return ChessBoardFactory.loadPreviousChessBoard(daoService.loadPreviousData(), turnDto.getTurn());
         }
         return ChessBoardFactory.createInitialChessBoard();
     }
@@ -65,12 +65,12 @@ public class ChessController {
         }
     }
 
-    private void updateGameStatus(final DBService dbService, final ChessBoard board) {
+    private void updateGameStatus(final DaoService daoService, final ChessBoard board) {
         if (board.isKingNotExist()) {
-            dbService.deletePreviousData();
+            daoService.deletePreviousData();
             return;
         }
-        dbService.updatePiece(board.getPieces());
-        dbService.updateTurn(board.getTurn());
+        daoService.updatePiece(board.getPieces());
+        daoService.updateTurn(board.getTurn());
     }
 }
