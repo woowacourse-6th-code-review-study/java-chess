@@ -25,9 +25,9 @@ public class ChessController {
         final ChessGame chessGame = ChessGame.setupStartingPosition();
         outputView.printStartMessage();
         GameStatus gameStatus = initGame();
+        outputView.printChessBoard(ChessBoardDto.from(chessGame));
 
         while (gameStatus.isRunning()) {
-            printChessBoard(chessGame);
             gameStatus = play(gameStatus, chessGame);
         }
     }
@@ -44,28 +44,28 @@ public class ChessController {
     private GameStatus play(final GameStatus gameStatus, final ChessGame chessGame) {
         try {
             final CommandLine commandLine = readCommandLine();
-            printStatusOrNot(chessGame, commandLine);
-            return gameStatus.play(commandLine, chessGame);
+            final GameStatus tmp = gameStatus.play(commandLine, chessGame); // TODO tmp 말고 딴거
+            print(commandLine, chessGame);
+            return tmp;
         } catch (final CustomException exception) {
             outputView.printException(exception.getErrorCode());
             return play(gameStatus, chessGame);
         }
     }
 
-    //TODO 메서드 이름 이상해ㅐㅐㅐㅐ 형태도 이상해
-    private void printStatusOrNot(final ChessGame chessGame, final CommandLine commandLine) {
+    //TODO 뭔가 이녀석도 옮겨주기
+    private void print(final CommandLine commandLine, final ChessGame chessGame) {
         if (commandLine.isStatus()) {
             outputView.printScore(ScoreDto.from(chessGame));
         }
-    }
-
-    private void printChessBoard(final ChessGame chessGame) {
-        outputView.printChessBoard(ChessBoardDto.from(chessGame));
+        if (commandLine.isStart() || commandLine.isMove()) {
+            outputView.printChessBoard(ChessBoardDto.from(chessGame));
+        }
     }
 
     private CommandLine readCommandLine() {
         try {
-            List<String> command = inputView.readCommandList();
+            final List<String> command = inputView.readCommandList();
             return CommandLine.from(command);
         } catch (final CustomException exception) {
             outputView.printException(exception.getErrorCode());
