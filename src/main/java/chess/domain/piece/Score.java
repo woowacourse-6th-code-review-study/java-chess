@@ -17,6 +17,10 @@ public class Score {
         return new Score(this.value + other.value);
     }
 
+    public Score multiply(Score other) {
+        return new Score(this.value * other.value);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
