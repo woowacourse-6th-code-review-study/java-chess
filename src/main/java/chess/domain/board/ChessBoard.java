@@ -70,6 +70,26 @@ public class ChessBoard {
                 .sum();
     }
 
+    public boolean isBlackKingAlive() {
+        return Arrays.stream(File.values())
+                .flatMap(file -> Arrays.stream(Rank.values())
+                        .map(rank -> new Position(file, rank)))
+                .filter(position -> !this.positionIsEmpty(position))
+                .map(this::findPieceByPosition)
+                .filter(Piece::isKing)
+                .anyMatch(Piece::isBlackTeam);
+    }
+
+    public boolean isWhiteKingAlive() {
+        return Arrays.stream(File.values())
+                .flatMap(file -> Arrays.stream(Rank.values())
+                        .map(rank -> new Position(file, rank)))
+                .filter(position -> !this.positionIsEmpty(position))
+                .map(this::findPieceByPosition)
+                .filter(Piece::isKing)
+                .anyMatch(piece -> piece.isOtherTeam(Team.BLACK));
+    }
+
     private int countFriendlyPawnAtFile(Team friendlyTeam, File file) {
         int count = (int) Arrays.stream(Rank.values())
                 .map(rank -> new Position(file, rank))

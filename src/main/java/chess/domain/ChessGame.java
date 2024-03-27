@@ -31,6 +31,10 @@ public class ChessGame {
         return defaultScore.add(weight);
     }
 
+    public boolean isNotEnd() {
+        return chessBoard.isBlackKingAlive() && chessBoard.isWhiteKingAlive();
+    }
+
     public ChessBoard getChessBoard() {
         return chessBoard;
     }

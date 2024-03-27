@@ -121,4 +121,30 @@ class ChessBoardTest {
                 () -> assertThat(chessBoard.countSameFilePawn(Team.BLACK)).isEqualTo(0)
         );
     }
+
+    @DisplayName("흑팀의 킹이 살아있는지 확인할 수 있다")
+    @Test
+    void should_CheckBlackKingIsAlive() {
+        Map<Position, Piece> positionPiece = new HashMap<>();
+
+        positionPiece.put(A1, new King(Team.WHITE));
+        positionPiece.put(B3, new King(Team.BLACK));
+
+        ChessBoard chessBoard = new ChessBoard(positionPiece);
+
+        assertThat(chessBoard.isBlackKingAlive()).isTrue();
+    }
+
+    @DisplayName("백팀의 킹이 살아있는지 확인할 수 있다")
+    @Test
+    void should_CheckWhiteKingIsAlive() {
+        Map<Position, Piece> positionPiece = new HashMap<>();
+
+        positionPiece.put(A1, new King(Team.WHITE));
+        positionPiece.put(B3, new King(Team.BLACK));
+
+        ChessBoard chessBoard = new ChessBoard(positionPiece);
+
+        assertThat(chessBoard.isWhiteKingAlive()).isTrue();
+    }
 }

@@ -26,7 +26,7 @@ public class ChessGameController {
             Command command = inputView.readCommand();
             result = command.execute(chessGame, outputView);
         }
-        while (result.isSuccess() && result.isNeedNextCommand());
+        while (result.isSuccess() && result.isNeedNextCommand() && chessGame.isNotEnd());
     }
 
     private ChessGame initializeChessGame() {
