@@ -34,4 +34,8 @@ public class ChessGame {
     public Camp getCamp() {
         return camp;
     }
+
+    public Score calculateScore(final Camp camp) {
+        return board.calculateScore(camp);
+    }
 }

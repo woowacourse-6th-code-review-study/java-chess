@@ -4,8 +4,11 @@ import constant.ErrorCode;
 import exception.InvalidTurnException;
 import exception.PieceDoesNotExistException;
 import exception.PieceExistInRouteException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Function;
 import model.piece.Bishop;
@@ -112,6 +115,21 @@ public class Board {
         pieces.remove(moving.getCurrentPosition());
     }
 
+    public Score calculateScore(final Camp camp) { //TODO 람다 스트림으로 빼보기
+        //TODO 폰 특수 처리
+        final List<Piece> sameCamp = new ArrayList<>();
+        Score result = new Score(0);
+        for (final Entry<Position, Piece> entry : pieces.entrySet()) {
+            final Piece piece = entry.getValue();
+            if (piece.isSameCamp(camp)) {
+                sameCamp.add(piece);
+                result = result.add(PieceScore.getScore(piece));
+            }
+        }
+        return result;
+    }
+
+    //TODO 방어적 복사
     public Map<Position, Piece> getPieces() {
         return pieces;
     }

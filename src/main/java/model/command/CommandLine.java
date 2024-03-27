@@ -54,6 +54,7 @@ public class CommandLine {
         return head == Command.MOVE;
     }
 
+    //TODO: 방어적 복사
     public List<String> getBody() {
         return body;
     }
