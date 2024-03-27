@@ -6,6 +6,7 @@ import chess.domain.piece.Team;
 import chess.domain.position.File;
 import chess.domain.position.Position;
 import chess.domain.position.Rank;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -64,23 +65,23 @@ public class ChessBoard {
     }
 
     public int countSameFilePawn(Team team) {
-        int total = 0;
-        for (File file : File.values()) {
-            int sameTeamPawnCount = 0;
-            for (Rank rank : Rank.values()) {
-                Position position = new Position(file, rank);
-                if (positionIsEmpty(position)) {
-                    continue;
-                }
-                Piece piece = findPieceByPosition(position);
-                if (piece.isPawn() && !piece.isOtherTeam(team)) {
-                    sameTeamPawnCount++;
-                }
-            }
-            if (sameTeamPawnCount > 1) {
-                total += sameTeamPawnCount;
-            }
-        }
-        return total;
+        return Arrays.stream(File.values())
+                .mapToInt(file -> countFriendlyPawnAtFile(team, file))
+                .sum();
     }
+
+    private int countFriendlyPawnAtFile(Team friendlyTeam, File file) {
+        int count = (int) Arrays.stream(Rank.values())
+                .map(rank -> new Position(file, rank))
+                .filter(position -> !this.positionIsEmpty(position))
+                .map(this::findPieceByPosition)
+                .filter(Piece::isPawn)
+                .filter(piece -> !piece.isOtherTeam(friendlyTeam))
+                .count();
+        if (count > 1) {
+            return count;
+        }
+        return 0;
+    }
+
 }
