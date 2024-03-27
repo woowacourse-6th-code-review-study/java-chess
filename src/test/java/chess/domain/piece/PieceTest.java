@@ -29,6 +29,11 @@ class PieceTest {
             boolean canNotMoveByBoardStatus(Position start, Position destination, ChessBoard chessBoard) {
                 return false;
             }
+
+            @Override
+            public Score score() {
+                return new Score(29.3);
+            }
         };
 
         whitePiece = new Piece(Team.WHITE) {
@@ -40,6 +45,11 @@ class PieceTest {
             @Override
             boolean canNotMoveByBoardStatus(Position start, Position destination, ChessBoard chessBoard) {
                 return false;
+            }
+            
+            @Override
+            public Score score() {
+                return new Score(29.3);
             }
         };
     }
