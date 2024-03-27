@@ -76,6 +76,6 @@ public class OutputView {
     }
 
     private String resolveStatusWinnerMessage(Team winner) {
-        return String.format("현 시점 기물 점수 승부 %s 승리");
+        return String.format("현 시점 기물 점수 승부 %s 승리", winner);
     }
 }
