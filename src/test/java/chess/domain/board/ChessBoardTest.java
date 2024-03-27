@@ -4,6 +4,7 @@ import static chess.fixture.PositionFixtures.A1;
 import static chess.fixture.PositionFixtures.A2;
 import static chess.fixture.PositionFixtures.A3;
 import static chess.fixture.PositionFixtures.A4;
+import static chess.fixture.PositionFixtures.B3;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -11,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import chess.domain.piece.Bishop;
 import chess.domain.piece.King;
 import chess.domain.piece.Knight;
+import chess.domain.piece.Pawn;
 import chess.domain.piece.Piece;
 import chess.domain.piece.Rook;
 import chess.domain.piece.Score;
@@ -99,6 +101,24 @@ class ChessBoardTest {
         assertAll(
                 () -> assertThat(chessBoard.calcualteDefaultScore(Team.WHITE)).isEqualTo(new Score(5.5)),
                 () -> assertThat(chessBoard.calcualteDefaultScore(Team.BLACK)).isEqualTo(new Score(10))
+        );
+    }
+
+    @DisplayName("세로 라인이 같은 폰이 총 몇개인지 셀 수 있다")
+    @Test
+    void should_CountSameFilePawn() {
+        Map<Position, Piece> positionPiece = new HashMap<>();
+
+        positionPiece.put(A1, new Pawn(Team.WHITE));
+        positionPiece.put(A2, new Pawn(Team.WHITE));
+        positionPiece.put(B3, new Pawn(Team.BLACK));
+        positionPiece.put(A4, new Pawn(Team.BLACK));
+
+        ChessBoard chessBoard = new ChessBoard(positionPiece);
+
+        assertAll(
+                () -> assertThat(chessBoard.countSameFilePawn(Team.WHITE)).isEqualTo(2),
+                () -> assertThat(chessBoard.countSameFilePawn(Team.BLACK)).isEqualTo(0)
         );
     }
 }

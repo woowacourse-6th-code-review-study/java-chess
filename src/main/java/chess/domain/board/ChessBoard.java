@@ -3,7 +3,9 @@ package chess.domain.board;
 import chess.domain.piece.Piece;
 import chess.domain.piece.Score;
 import chess.domain.piece.Team;
+import chess.domain.position.File;
 import chess.domain.position.Position;
+import chess.domain.position.Rank;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -59,5 +61,26 @@ public class ChessBoard {
                 .filter(piece -> !piece.isOtherTeam(team))
                 .map(Piece::score)
                 .reduce(new Score(0), Score::add);
+    }
+
+    public int countSameFilePawn(Team team) {
+        int total = 0;
+        for (File file : File.values()) {
+            int sameTeamPawnCount = 0;
+            for (Rank rank : Rank.values()) {
+                Position position = new Position(file, rank);
+                if (positionIsEmpty(position)) {
+                    continue;
+                }
+                Piece piece = findPieceByPosition(position);
+                if (piece.isPawn() && !piece.isOtherTeam(team)) {
+                    sameTeamPawnCount++;
+                }
+            }
+            if (sameTeamPawnCount > 1) {
+                total += sameTeamPawnCount;
+            }
+        }
+        return total;
     }
 }
