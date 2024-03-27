@@ -54,6 +54,10 @@ public class CommandLine {
         return head == Command.MOVE;
     }
 
+    public boolean isStatus() {
+        return head == Command.STATUS;
+    }
+
     //TODO: 방어적 복사
     public List<String> getBody() {
         return body;

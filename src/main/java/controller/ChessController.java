@@ -1,6 +1,7 @@
 package controller;
 
 import dto.ChessBoardDto;
+import dto.ScoreDto;
 import exception.CustomException;
 import java.util.List;
 import model.ChessGame;
@@ -26,7 +27,7 @@ public class ChessController {
         GameStatus gameStatus = initGame();
 
         while (gameStatus.isRunning()) {
-            printCurrentStatus(chessGame);
+            printChessBoard(chessGame);
             gameStatus = play(gameStatus, chessGame);
         }
     }
@@ -42,14 +43,23 @@ public class ChessController {
 
     private GameStatus play(final GameStatus gameStatus, final ChessGame chessGame) {
         try {
-            return gameStatus.play(readCommandLine(), chessGame);
+            final CommandLine commandLine = readCommandLine();
+            printStatusOrNot(chessGame, commandLine);
+            return gameStatus.play(commandLine, chessGame);
         } catch (final CustomException exception) {
             outputView.printException(exception.getErrorCode());
             return play(gameStatus, chessGame);
         }
     }
 
-    private void printCurrentStatus(final ChessGame chessGame) {
+    //TODO 메서드 이름 이상해ㅐㅐㅐㅐ 형태도 이상해
+    private void printStatusOrNot(final ChessGame chessGame, final CommandLine commandLine) {
+        if (commandLine.isStatus()) {
+            outputView.printScore(ScoreDto.from(chessGame));
+        }
+    }
+
+    private void printChessBoard(final ChessGame chessGame) {
         outputView.printChessBoard(ChessBoardDto.from(chessGame));
     }
 

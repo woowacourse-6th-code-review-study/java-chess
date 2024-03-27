@@ -20,6 +20,9 @@ public class Running implements GameStatus {
             chessGame.move(moving);
             return new Running();
         }
+        if (commandLine.isStatus()) {
+            return new Running();
+        }
         throw new InvalidStatusException(ErrorCode.INVALID_STATUS);
     }
 
