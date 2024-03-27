@@ -2,7 +2,7 @@ package repository;
 
 import db.JdbcTemplate;
 import db.RowMapper;
-import domain.dto.PieceDto;
+import dto.PieceDto;
 
 import java.util.List;
 

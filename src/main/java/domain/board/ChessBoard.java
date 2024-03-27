@@ -1,7 +1,7 @@
 package domain.board;
 
-import domain.dto.PieceDto;
-import domain.dto.TurnDto;
+import dto.PieceDto;
+import dto.TurnDto;
 import domain.piece.Color;
 import domain.piece.Empty;
 import domain.piece.Piece;

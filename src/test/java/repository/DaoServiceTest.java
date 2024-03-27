@@ -1,7 +1,7 @@
 package repository;
 
-import domain.dto.PieceDto;
-import domain.dto.TurnDto;
+import dto.PieceDto;
+import dto.TurnDto;
 import domain.piece.Color;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

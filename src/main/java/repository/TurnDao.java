@@ -2,7 +2,7 @@ package repository;
 
 import db.JdbcTemplate;
 import db.RowMapper;
-import domain.dto.TurnDto;
+import dto.TurnDto;
 
 import java.util.List;
 

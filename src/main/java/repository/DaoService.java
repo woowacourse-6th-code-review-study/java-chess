@@ -1,8 +1,8 @@
 package repository;
 
 import db.JdbcTemplate;
-import domain.dto.PieceDto;
-import domain.dto.TurnDto;
+import dto.PieceDto;
+import dto.TurnDto;
 
 import java.util.List;
 

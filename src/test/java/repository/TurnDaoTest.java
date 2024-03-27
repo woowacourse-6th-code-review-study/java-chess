@@ -1,6 +1,6 @@
 package repository;
 
-import domain.dto.TurnDto;
+import dto.TurnDto;
 import domain.piece.Color;
 import org.junit.jupiter.api.Test;
 

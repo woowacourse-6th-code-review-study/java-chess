@@ -5,7 +5,7 @@ import controller.command.EndOnCommand;
 import repository.DaoService;
 import domain.board.ChessBoard;
 import domain.board.ChessBoardFactory;
-import domain.dto.TurnDto;
+import dto.TurnDto;
 import view.InputView;
 import view.OutputView;
 

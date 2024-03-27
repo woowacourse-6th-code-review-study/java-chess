@@ -12,6 +12,7 @@ import domain.piece.pawn.WhitePawn;
 import domain.position.File;
 import domain.position.Position;
 import domain.position.Rank;
+import dto.PieceDto;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
