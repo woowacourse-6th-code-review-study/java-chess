@@ -21,10 +21,10 @@ public class CommandParser {
     public static final int MAX_RANK = 8;
 
     public Command parse(String input) {
-        if (input.startsWith(START)) {
+        if (input.equals(START)) {
             return new StartCommand();
         }
-        if (input.startsWith(END)) {
+        if (input.equals(END)) {
             return new EndCommand();
         }
         if (input.startsWith(MOVE)) {
