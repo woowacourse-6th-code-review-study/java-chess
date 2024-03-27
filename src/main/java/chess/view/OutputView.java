@@ -6,6 +6,8 @@ import static chess.view.CommandParser.START;
 
 import chess.domain.board.ChessBoard;
 import chess.domain.piece.Piece;
+import chess.domain.piece.Score;
+import chess.domain.piece.Team;
 import chess.domain.position.File;
 import chess.domain.position.Position;
 import chess.domain.position.Rank;
@@ -23,6 +25,10 @@ public class OutputView {
 
     public void printChessBoardMessage(ChessBoard chessBoard) {
         System.out.println(resolveChessBoardMessage(chessBoard));
+    }
+
+    public void printTeamStatusMessage(Team team, Score score) {
+        System.out.println(resolveTeamStatusMessage(team, score));
     }
 
     private String resolveStartMessage() {
@@ -53,5 +59,9 @@ public class OutputView {
         }
         Piece foundPiece = chessBoard.findPieceByPosition(position);
         return PieceMessage.messageOf(foundPiece);
+    }
+
+    private String resolveTeamStatusMessage(Team team, Score score) {
+        return String.format("%s팀: %lf점", team, score.getValue());
     }
 }
