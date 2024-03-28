@@ -21,11 +21,15 @@ public class OutputView {
     }
 
     public void printScore(final ScoreDto scoreDto) {
-        System.out.printf("흑 점수: %s%n", scoreDto.getBlackScore());
-        System.out.printf("백 점수: %s%n", scoreDto.getWhiteScore());
+        System.out.printf("BLACK 점수: %s%n", scoreDto.getBlackScore());
+        System.out.printf("WHITE 점수: %s%n", scoreDto.getWhiteScore());
     }
 
     public void printException(final ErrorCode errorCode) {
         System.out.printf("[ERROR] %s%n", ErrorCodeMessage.from(errorCode).getMessage());
+    }
+
+    public void printWinner(final String camp) {
+        System.out.printf("%s 승리%n", camp);
     }
 }

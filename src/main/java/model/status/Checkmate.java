@@ -5,7 +5,7 @@ import exception.InvalidStatusException;
 import model.ChessGame;
 import model.command.CommandLine;
 
-public class End implements GameStatus {
+public class Checkmate implements GameStatus {
 
     @Override
     public GameStatus play(final CommandLine commandLine, final ChessGame chessGame) {
@@ -19,6 +19,6 @@ public class End implements GameStatus {
 
     @Override
     public boolean isCheck() {
-        return false;
+        return true;
     }
 }

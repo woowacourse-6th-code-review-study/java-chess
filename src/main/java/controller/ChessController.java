@@ -45,7 +45,7 @@ public class ChessController {
         try {
             final CommandLine commandLine = readCommandLine();
             final GameStatus tmp = gameStatus.play(commandLine, chessGame); // TODO tmp 말고 딴거
-            print(commandLine, chessGame);
+            print(tmp, commandLine, chessGame);
             return tmp;
         } catch (final CustomException exception) {
             outputView.printException(exception.getErrorCode());
@@ -54,7 +54,11 @@ public class ChessController {
     }
 
     //TODO 뭔가 이녀석도 옮겨주기
-    private void print(final CommandLine commandLine, final ChessGame chessGame) {
+    private void print(final GameStatus gameStatus, final CommandLine commandLine, final ChessGame chessGame) {
+        if (gameStatus.isCheck()) {
+            outputView.printWinner(chessGame.getCamp().toString());
+            return;
+        }
         if (commandLine.isStatus()) {
             outputView.printScore(ScoreDto.from(chessGame));
         }
