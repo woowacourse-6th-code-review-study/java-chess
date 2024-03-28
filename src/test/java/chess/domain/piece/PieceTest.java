@@ -8,65 +8,17 @@ import chess.domain.position.Position;
 import chess.fixture.PositionFixtures;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class PieceTest {
-    private Piece blackPiece;
-    private Piece whitePiece;
-
-
-    @BeforeEach
-    void setUp() {
-        blackPiece = new Piece(Team.BLACK) {
-            @Override
-            boolean canNotMoveByItsOwnInPassing(Position start, Position destination) {
-                return false;
-            }
-
-            @Override
-            boolean canNotMoveByBoardStatus(Position start, Position destination, ChessBoard chessBoard) {
-                return false;
-            }
-
-            @Override
-            public boolean isPawn() {
-                return false;
-            }
-
-            @Override
-            public Score score() {
-                return new Score(29.3);
-            }
-        };
-
-        whitePiece = new Piece(Team.WHITE) {
-            @Override
-            boolean canNotMoveByItsOwnInPassing(Position start, Position destination) {
-                return false;
-            }
-
-            @Override
-            boolean canNotMoveByBoardStatus(Position start, Position destination, ChessBoard chessBoard) {
-                return false;
-            }
-
-            @Override
-            public boolean isPawn() {
-                return false;
-            }
-
-            @Override
-            public Score score() {
-                return new Score(29.3);
-            }
-        };
-    }
 
     @DisplayName("기물의 팀이 흑팀인지 확인할 수 있다")
     @Test
     void should_CheckPieceIsBlackTeam() {
+        Piece blackPiece = new King(Team.BLACK);
+        Piece whitePiece = new King(Team.WHITE);
+
         assertAll(
                 () -> assertThat(blackPiece.isBlackTeam()).isTrue(),
                 () -> assertThat(whitePiece.isBlackTeam()).isFalse()
@@ -76,15 +28,19 @@ class PieceTest {
     @DisplayName("기물간 서로 같은 팀인지 다른 팀인지 확인할 수 있다")
     @Test
     void should_ComparePieceTeam() {
+        Piece blackPiece = new King(Team.BLACK);
+        Piece whitePiece = new King(Team.WHITE);
         assertAll(
                 () -> assertThat(blackPiece.isOtherTeam(Team.WHITE)).isTrue(),
                 () -> assertThat(whitePiece.isOtherTeam(Team.WHITE)).isFalse()
         );
     }
 
-    @DisplayName("모든 기물은 시작위치와 같은 곳으로 이동하지 못한다")
+    @DisplayName("기물은 시작위치와 같은 곳으로 이동하지 못한다")
     @Test
     void should_AllPieceCanNotMove_When_StartAndDestinationIsSame() {
+        Piece blackPiece = new King(Team.BLACK);
+        Piece whitePiece = new King(Team.WHITE);
         Map<Position, Piece> board = new HashMap<>();
         board.put(PositionFixtures.A1, whitePiece);
         ChessBoard chessBoard = new ChessBoard(board);
@@ -93,9 +49,11 @@ class PieceTest {
         assertThat(canMoveSamePosition).isFalse();
     }
 
-    @DisplayName("모든 기물은 도착지에 아군이 있는 경우 이동하지 못한다")
+    @DisplayName("기물은 도착지에 아군이 있는 경우 이동하지 못한다")
     @Test
     void should_AllPieceCanNotMove_When_FriendlyPieceAtDestination() {
+        Piece blackPiece = new King(Team.BLACK);
+        Piece whitePiece = new King(Team.WHITE);
         Map<Position, Piece> board = new HashMap<>();
         board.put(PositionFixtures.A1, whitePiece);
         board.put(PositionFixtures.A2, new King(Team.WHITE));
