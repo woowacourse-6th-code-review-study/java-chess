@@ -24,7 +24,7 @@ public enum Position {
         this.column = column;
     }
 
-    static Position getInstance(int row, int column) {
+    public static Position getInstance(int row, int column) {
         return Arrays.stream(values())
                 .filter(position -> position.row == row)
                 .filter(position -> position.column == column)

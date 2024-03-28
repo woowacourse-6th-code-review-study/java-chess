@@ -81,6 +81,30 @@ public final class Pawn extends AbstractPiece {
     }
 
     @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (initialPosition != null ? initialPosition.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+
+        Pawn pawn = (Pawn) o;
+
+        return initialPosition == pawn.initialPosition;
+    }
+
+    @Override
     public PieceType getPieceType() {
         return PieceType.PAWN;
     }
