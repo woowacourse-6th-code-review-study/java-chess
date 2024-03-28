@@ -80,6 +80,7 @@
     - [x] 점수 출력 기능
 - [ ] 데이터 베이스에 저장하는 기능
     - [x] 기물을 저장하는 기능
+    - [x] 턴을 저장하는 기능
 
 ## 데이터베이스
 
@@ -128,3 +129,8 @@ CREATE TABLE `pieces_on_board` (
   CONSTRAINT `fk-team-pieces_on_board` FOREIGN KEY (`team_name`) REFERENCES `team` (`team_name`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ```
+
+### 데이터 저장시 고려해야 하는 것
+
+1. 데이터가 저장된 적이 없는 경우 혹은 복구를 하지 않겠다고 하는 경우 => 데이터를 모두 지우고, 초기 체스 판을 저장한다. 최초 턴을 white로 지정한다.
+2. 말을 움직인 경우, 시작 위치의 말을 지우고, 도착위치의 말을 지운 뒤, 도착 위치로 이동한 기물을 새로 저장한다. 그리고 턴을 바꿔준다.
