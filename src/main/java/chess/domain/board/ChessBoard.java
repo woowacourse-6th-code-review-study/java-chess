@@ -1,6 +1,7 @@
 package chess.domain.board;
 
 import static chess.domain.board.InitialPieces.INITIAL_PIECES;
+import static chess.domain.piece.Team.WHITE;
 
 import chess.domain.Position;
 import chess.domain.game.PointCalculator;
@@ -8,25 +9,29 @@ import chess.domain.piece.Piece;
 import chess.domain.piece.PieceMoveResult;
 import chess.domain.piece.PieceType;
 import chess.domain.piece.Team;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 public class ChessBoard {
     private final List<Piece> piecesOnBoard;
-    private Team currentTeam = Team.WHITE;
+    private Team currentTeam;
 
     public ChessBoard() {
         this(INITIAL_PIECES);
     }
 
     public ChessBoard(List<Piece> pieces) {
-        piecesOnBoard = new ArrayList<>(pieces);
+        this(pieces, WHITE);
+    }
+
+    public ChessBoard(List<Piece> pieces, Team currentTeam) {
+        this.piecesOnBoard = pieces;
+        this.currentTeam = currentTeam;
     }
 
     public ChessBoard(Piece... pieces) {
-        this(List.of(pieces));
+        this(List.of(pieces), WHITE);
     }
 
     PieceMoveResult move(Position from, Position to) {
@@ -43,7 +48,7 @@ public class ChessBoard {
 
     private PieceMoveResult fixMoveResultWhenGameEnd(Position to, PieceMoveResult moveResult) {
         boolean gameEnd = isGameEnd(to);
-        if (gameEnd && currentTeam.equals(Team.WHITE)) {
+        if (gameEnd && currentTeam.equals(WHITE)) {
             return PieceMoveResult.WHITE_WIN;
         }
         if (gameEnd && currentTeam.equals(Team.BLACK)) {

@@ -12,6 +12,10 @@ import java.util.Map;
 public class ChessGame {
     private final ChessBoardForChessGame chessBoard;
 
+    public ChessGame(List<Piece> pieces, Team currentTeam) {
+        this.chessBoard = new ChessBoardAdaptor(new ChessBoard(pieces, currentTeam));
+    }
+
     public ChessGame() {
         this.chessBoard = new ChessBoardAdaptor(new ChessBoard());
     }

@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class TurnDAOForMysql implements TurnDAO {
     private static final String DB_URL = "jdbc:mysql://localhost:13306/chess?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
@@ -21,7 +22,7 @@ public class TurnDAOForMysql implements TurnDAO {
     }
 
     @Override
-    public Team select() {
+    public Optional<Team> select() {
         Connection connection = dbConnectionCache.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -29,10 +30,10 @@ public class TurnDAOForMysql implements TurnDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             if (!(resultSet.isFirst() && resultSet.isLast())) {
-                throw new IllegalStateException("데이터베이스가 잘못되어있습니다.");
+                return Optional.empty();
             }
             String teamName = resultSet.getString(1);
-            return Team.valueOf(teamName);
+            return Optional.of(Team.valueOf(teamName));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

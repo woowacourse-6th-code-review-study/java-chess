@@ -1,9 +1,10 @@
 package chess.dao;
 
 import chess.domain.piece.Team;
+import java.util.Optional;
 
 public interface TurnDAO {
-    Team select();
+    Optional<Team> select();
 
     boolean save(Team team);
 

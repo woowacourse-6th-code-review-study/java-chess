@@ -32,7 +32,7 @@ class TurnDAOForMysqlTest {
     void select() {
         TurnDAO turnDAO = new TurnDAOForMysql();
         turnDAO.save(WHITE);
-        Team selected = turnDAO.select();
+        Team selected = turnDAO.select().orElseThrow();
         Assertions.assertThat(selected)
                 .isEqualTo(WHITE);
     }
