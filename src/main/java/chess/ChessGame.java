@@ -14,6 +14,7 @@ import chess.view.OutputView;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -61,16 +62,24 @@ public class ChessGame {
             System.exit(0);
         }
         if (command.isStatus()) {
-            Map<Team, Point> status = board.calculatePoints();
-            Map<Team, Double> dto = status.entrySet().stream()
-                    .collect(Collectors.toMap(
-                            entry -> entry.getKey(),
-                            entry -> entry.getValue().toDouble()
-                    ));
-            outputView.printStatus(dto);
-            return ProgressStatus.PROGRESS;
+            return executeStatus(board);
         }
         return executeMove(board);
+    }
+
+    private ProgressStatus executeStatus(Board board) {
+        Map<Team, Point> status = board.calculateTotalPoints();
+        Map<Team, Double> statusDto = toDto(status);
+        outputView.printStatus(statusDto);
+        return ProgressStatus.PROGRESS;
+    }
+
+    private Map<Team, Double> toDto(Map<Team, Point> status) {
+        return status.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Entry::getKey,
+                        entry -> entry.getValue().toDouble()
+                ));
     }
 
     private ProgressStatus executeMove(Board board) {
@@ -94,7 +103,6 @@ public class ChessGame {
 
     private void addPiece(Board board, Position position, Map<Position, PieceDto> boardDto) {
         Optional<Piece> optionalPiece = board.find(position);
-
         if (optionalPiece.isEmpty()) {
             return;
         }

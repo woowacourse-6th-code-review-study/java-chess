@@ -107,27 +107,31 @@ public class Board {
         return !isExistPiece(position);
     }
 
-    public Map<Team, Point> calculatePoints() {
+    public Map<Team, Point> calculateTotalPoints() {
         return Arrays.stream(Team.values())
                 .collect(Collectors.toMap(
                         team -> team,
-                        this::calculatePoints
+                        this::calculateTotalPoints
                 ));
     }
 
-    private Point calculatePoints(Team team) {
+    private Point calculateTotalPoints(Team team) {
         return Arrays.stream(File.values())
                 .map(file -> calculatePoints(team, file))
                 .reduce(Point.ZERO, Point::add);
     }
 
     private Point calculatePoints(Team team, File file) {
-        List<Piece> teamPieces = Arrays.stream(Rank.values())
+        List<Piece> sameFilePieces = Arrays.stream(Rank.values())
                 .map(rank -> new Position(file, rank))
                 .map(this::find)
                 .flatMap(Optional::stream)
                 .filter(piece -> piece.isSameTeam(team))
                 .toList();
+        return calculatePoints(sameFilePieces);
+    }
+
+    private Point calculatePoints(List<Piece> teamPieces) {
         boolean isOverlappedPawn = isOverlappedPawn(teamPieces);
         return teamPieces.stream()
                 .map(piece -> piece.getPoint(isOverlappedPawn))
