@@ -1,13 +1,12 @@
 package domain.board;
 
-import dto.PieceDto;
-import dto.TurnDto;
 import domain.piece.Color;
 import domain.piece.Empty;
 import domain.piece.Piece;
 import domain.piece.Type;
 import domain.position.Position;
 import domain.position.Route;
+import dto.PieceDto;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,15 +15,15 @@ import java.util.Map;
 
 public class ChessBoard {
     private final Map<Position, Piece> board;
-    private Color turn;
+    private GameStatus status;
 
-    public ChessBoard(Map<Position, Piece> board, Color color) {
+    public ChessBoard(Map<Position, Piece> board, GameStatus status) {
         this.board = board;
-        this.turn = color;
+        this.status = status;
     }
 
     public ChessBoard(Map<Position, Piece> board) {
-        this(new HashMap<>(board), Color.WHITE);
+        this(new HashMap<>(board), GameStatus.NOT_STARTED);
     }
 
     public void move(final Position source, final Position target) {
@@ -45,8 +44,8 @@ public class ChessBoard {
 
     private void validateTurn(final Position source) {
         final Piece piece = findPieceByPosition(source);
-        if (this.turn.isOpposite(piece.color())) {
-            throw new IllegalArgumentException("상대 턴입니다.");
+        if (!this.status.isTurnOf(piece.color())) {
+            throw new IllegalArgumentException(piece.color() + "의 턴입니다.");
         }
     }
 
@@ -68,22 +67,34 @@ public class ChessBoard {
         board.put(target, piece);
     }
 
-    private void changeTurn() {
-        if (this.turn.isBlack()) {
-            this.turn = Color.WHITE;
-            return;
-        }
-        this.turn = Color.BLACK;
-    }
-
     private Piece findPieceByPosition(final Position position) {
         return board.getOrDefault(position, Empty.getInstance());
+    }
+
+    private void changeTurn() {
+        if (this.status.isTurnOf(Color.BLACK)) {
+            this.status = GameStatus.WHITE_TURN;
+            return;
+        }
+        this.status = GameStatus.BLACK_TURN;
     }
 
     public boolean isKingNotExist() {
         return board.values().stream()
                 .filter(piece -> piece.type() == Type.KING)
                 .count() != 2;
+    }
+
+    public void start() {
+        this.status = GameStatus.WHITE_TURN;
+    }
+
+    public void end() {
+        this.status = GameStatus.ENDED;
+    }
+
+    public boolean isGameRunning() {
+        return this.status == GameStatus.ENDED;
     }
 
     public Score calculateScore() {
@@ -100,7 +111,8 @@ public class ChessBoard {
                 .toList();
     }
 
-    public TurnDto getTurn() {
-        return new TurnDto(this.turn.name());
+    // TODO: DTO 수정하기
+    public GameStatus getStatus() {
+        return this.status;
     }
 }

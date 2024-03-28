@@ -13,6 +13,10 @@ public class EndOnCommand implements Command {
     }
 
     public EndOnCommand(final List<String> arguments) {
+        validateArgumentSize(arguments);
+    }
+
+    private void validateArgumentSize(final List<String> arguments) {
         if (arguments.size() != ARGUMENT_SIZE) {
             throw new IllegalArgumentException();
         }
@@ -20,11 +24,7 @@ public class EndOnCommand implements Command {
 
     @Override
     public void execute(final ChessBoard board, final OutputView outputView) {
+        board.end();
         outputView.printScore(board.calculateScore());
-    }
-
-    @Override
-    public boolean isNotEnded() {
-        return false;
     }
 }

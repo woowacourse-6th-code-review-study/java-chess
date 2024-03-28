@@ -1,8 +1,6 @@
 package controller;
 
 import controller.command.Command;
-import controller.command.EndOnCommand;
-import controller.command.StartOnCommand;
 import domain.board.ChessBoard;
 import domain.board.ChessBoardFactory;
 import dto.TurnDto;
@@ -24,12 +22,12 @@ public class ChessController {
         ChessBoard board = createChessBoard(daoService);
 
         outputView.printGameGuideMessage();
-        Command command = new StartOnCommand();
-        while (command.isNotEnded()) {
+        Command command;
+        do {
+            command = readCommandUntilValid();
             command.execute(board, outputView);
-            command = readNextCommand(board);
-        }
-        command.execute(board, outputView);
+        } while (board.isGameRunning());
+
         updateGameStatus(daoService, board);
     }
 
@@ -39,22 +37,6 @@ public class ChessController {
             return ChessBoardFactory.loadPreviousChessBoard(daoService.loadPreviousData(), turnDto.getTurn());
         }
         return ChessBoardFactory.createInitialChessBoard();
-    }
-
-//    private Command readStartCommandUntilValid() {
-//        try {
-//            return inputView.readStartCommand();
-//        } catch (Exception e) {
-//            outputView.printErrorMessage(e.getMessage());
-//            return readStartCommandUntilValid();
-//        }
-//    }
-
-    private Command readNextCommand(final ChessBoard board) {
-        if (board.isKingNotExist()) {
-            return new EndOnCommand();
-        }
-        return readCommandUntilValid();
     }
 
     private Command readCommandUntilValid() {
@@ -72,6 +54,6 @@ public class ChessController {
             return;
         }
         daoService.updatePiece(board.getPieces());
-        daoService.updateTurn(board.getTurn());
+        daoService.updateTurn(board.getStatus());
     }
 }
