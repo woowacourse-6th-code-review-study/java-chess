@@ -78,6 +78,8 @@
     - [x] 체스 판 출력 기능
     - [x] 안내 문구 출력 기능
     - [x] 점수 출력 기능
+- [ ] 데이터 베이스에 저장하는 기능
+    - [ ] 기물을 저장하는 기능
 
 ## 데이터베이스
 
@@ -106,23 +108,23 @@ create table team (
 
 CREATE TABLE `game` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `team_name` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `current_team_name` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fj_team_game` (`team_name`),
-  CONSTRAINT `fj_team_game` FOREIGN KEY (`team_name`) REFERENCES `team` (`team_name`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  KEY `fj_team_game` (`current_team_name`),
+  CONSTRAINT `fj_team_game` FOREIGN KEY (`current_team_name`) REFERENCES `team` (`team_name`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `pieces_on_board` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `piece_type` varchar(16) NOT NULL,
   `team_name` varchar(16) NOT NULL,
-  `name` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `position_name` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk-piece-pieces_on_board` (`piece_type`),
-  KEY `fk-position-pieces_on_board` (`name`),
+  KEY `fk-position-pieces_on_board` (`position_name`),
   KEY `fk-team-pieces_on_board` (`team_name`),
   CONSTRAINT `fk-piece-pieces_on_board` FOREIGN KEY (`piece_type`) REFERENCES `piece` (`piece_type`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `fk-position-pieces_on_board` FOREIGN KEY (`name`) REFERENCES `position` (`name`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `fk-position-pieces_on_board` FOREIGN KEY (`position_name`) REFERENCES `position` (`name`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk-team-pieces_on_board` FOREIGN KEY (`team_name`) REFERENCES `team` (`team_name`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ```
