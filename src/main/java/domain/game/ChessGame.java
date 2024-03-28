@@ -61,4 +61,8 @@ public class ChessGame {
 
         return new GameScore(new Score(whiteTeamScore), new Score(blackTeamScore));
     }
+
+    public PieceColor currentPlayTeamColor() {
+        return currentColor;
+    }
 }

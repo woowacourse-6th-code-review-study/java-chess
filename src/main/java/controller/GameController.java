@@ -2,6 +2,7 @@ package controller;
 
 import domain.board.Position;
 import domain.game.*;
+import domain.piece.PieceColor;
 import dto.BoardDto;
 import view.InputView;
 import view.OutputView;
@@ -45,7 +46,8 @@ public class GameController {
         outputView.printWelcomeMessage();
         while (chessGame.isRunning()) {
             BoardDto boardDto = BoardDto.from(chessGame.piecePositions());
-            outputView.printBoard(boardDto);
+            PieceColor currentPlayTeamColor = chessGame.currentPlayTeamColor();
+            outputView.printTurnStatus(boardDto, currentPlayTeamColor);
             playTurn();
         }
     }

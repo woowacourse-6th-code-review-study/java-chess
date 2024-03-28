@@ -8,6 +8,7 @@ public class InputView {
     public String inputCommand() {
         String input = sc.nextLine();
         validateEmpty(input);
+        System.out.println();
 
         return input;
     }
