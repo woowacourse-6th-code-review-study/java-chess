@@ -85,3 +85,44 @@
 
 1. 각 기물의 위치
 2. 현재 기물을 움직일 수 있는 팀
+
+### 테이블 스키마
+
+``` SQL
+create table piece (
+    piece_type varchar(16),
+    primary key(piece_type)
+);
+
+create table position (
+	`name` char(2),
+	primary key(`name`)
+);
+
+create table team (
+    team_name varchar(16),
+    primary key(team_name)
+);
+
+CREATE TABLE `game` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `team_name` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fj_team_game` (`team_name`),
+  CONSTRAINT `fj_team_game` FOREIGN KEY (`team_name`) REFERENCES `team` (`team_name`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `pieces_on_board` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `piece_type` varchar(16) NOT NULL,
+  `team_name` varchar(16) NOT NULL,
+  `name` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk-piece-pieces_on_board` (`piece_type`),
+  KEY `fk-position-pieces_on_board` (`name`),
+  KEY `fk-team-pieces_on_board` (`team_name`),
+  CONSTRAINT `fk-piece-pieces_on_board` FOREIGN KEY (`piece_type`) REFERENCES `piece` (`piece_type`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `fk-position-pieces_on_board` FOREIGN KEY (`name`) REFERENCES `position` (`name`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `fk-team-pieces_on_board` FOREIGN KEY (`team_name`) REFERENCES `team` (`team_name`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+```
