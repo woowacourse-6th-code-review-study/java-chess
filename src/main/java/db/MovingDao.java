@@ -31,15 +31,17 @@ public class MovingDao {
     }
 
     public long addMoving(final MovingDto moving) {
-        final var query = "INSERT INTO moving VALUES(?, ?, ?, ?)";
+        final var query = "INSERT INTO moving VALUES(?, ?, ?, ?, ?, ?)";
         try (final var connection = getConnection();
              final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         ) {
             long autoIncrement = 0;
             preparedStatement.setNull(1, 0);
             preparedStatement.setString(2, moving.camp());
-            preparedStatement.setString(3, moving.current());
-            preparedStatement.setString(4, moving.next());
+            preparedStatement.setString(3, moving.currentFile());
+            preparedStatement.setString(4, moving.currentRank());
+            preparedStatement.setString(5, moving.nextFile());
+            preparedStatement.setString(6, moving.nextRank());
 
             preparedStatement.executeUpdate();
             final var generatedKeys = preparedStatement.getGeneratedKeys();
@@ -64,8 +66,10 @@ public class MovingDao {
             if (resultSet.next()) {
                 return new MovingDto(
                         resultSet.getString("camp"),
-                        resultSet.getString("current"),
-                        resultSet.getString("next")
+                        resultSet.getString("start_rank"),
+                        resultSet.getString("start_file"),
+                        resultSet.getString("destination_rank"),
+                        resultSet.getString("destination_file")
                 );
             }
         } catch (final SQLException e) {
