@@ -10,5 +10,5 @@ public interface TurnDAO {
 
     boolean update(Team targetTeam, Team updatedTeam);
 
-    boolean delete();
+    void delete();
 }

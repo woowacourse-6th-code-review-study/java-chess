@@ -38,8 +38,7 @@ public class FakePiecesOnChessBoardDAO implements PiecesOnChessBoardDAO {
     }
 
     @Override
-    public boolean deleteAll() {
+    public void deleteAll() {
         pieces.clear();
-        return true;
     }
 }

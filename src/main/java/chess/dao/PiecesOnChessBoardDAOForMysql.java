@@ -61,21 +61,6 @@ public class PiecesOnChessBoardDAOForMysql implements PiecesOnChessBoardDAO {
         }
     }
 
-    private static void setPieceToPreparedStatement(List<Piece> pieces, PreparedStatement preparedStatement)
-            throws SQLException {
-        for (int index = 0; index < pieces.size(); index++) {
-            Piece piece = pieces.get(index);
-            PieceType pieceType = piece.getPieceType();
-            Team team = piece.getTeam();
-            int row = piece.getRow();
-            int column = piece.getColumn();
-            Position position = Position.getInstance(row, column);
-            preparedStatement.setString((index * 3) + 1, pieceType.name());
-            preparedStatement.setString((index * 3) + 2, team.name());
-            preparedStatement.setString((index * 3) + 3, position.name());
-        }
-    }
-
     @Override
     public List<Piece> selectAll() {
         Connection connection = dbConnectionCache.getConnection();
@@ -129,17 +114,28 @@ public class PiecesOnChessBoardDAOForMysql implements PiecesOnChessBoardDAO {
     }
 
     @Override
-    public boolean deleteAll() {
+    public void deleteAll() {
         try {
             Connection connection = dbConnectionCache.getConnection();
-            connection.setAutoCommit(false);
-            int rowCount = selectAll().size();
             PreparedStatement preparedStatement = connection.prepareStatement("delete from pieces_on_board");
-            connection.commit();
-            connection.setAutoCommit(true);
-            return preparedStatement.executeUpdate() == rowCount;
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static void setPieceToPreparedStatement(List<Piece> pieces, PreparedStatement preparedStatement)
+            throws SQLException {
+        for (int index = 0; index < pieces.size(); index++) {
+            Piece piece = pieces.get(index);
+            PieceType pieceType = piece.getPieceType();
+            Team team = piece.getTeam();
+            int row = piece.getRow();
+            int column = piece.getColumn();
+            Position position = Position.getInstance(row, column);
+            preparedStatement.setString((index * 3) + 1, pieceType.name());
+            preparedStatement.setString((index * 3) + 2, team.name());
+            preparedStatement.setString((index * 3) + 3, position.name());
         }
     }
 }

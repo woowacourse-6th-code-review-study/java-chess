@@ -30,8 +30,7 @@ public class FakeTurnDAO implements TurnDAO {
     }
 
     @Override
-    public boolean delete() {
+    public void delete() {
         team = null;
-        return true;
     }
 }

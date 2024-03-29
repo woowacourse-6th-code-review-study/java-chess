@@ -69,11 +69,11 @@ public class TurnDAOForMysql implements TurnDAO {
     }
 
     @Override
-    public boolean delete() {
+    public void delete() {
         try {
             Connection connection = dbConnectionCache.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("delete from game");
-            return preparedStatement.executeUpdate() == 1;
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

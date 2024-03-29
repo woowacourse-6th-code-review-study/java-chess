@@ -13,6 +13,6 @@ public interface PiecesOnChessBoardDAO {
 
     boolean delete(Position targetPosition);
 
-    boolean deleteAll();
+    void deleteAll();
 
 }
