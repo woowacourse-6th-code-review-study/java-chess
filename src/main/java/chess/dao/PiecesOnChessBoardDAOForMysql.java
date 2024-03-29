@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PiecesOnChessBoardDAOForMysql implements PiecesOnChessBoardDAO {
     private static final String DB_URL = "jdbc:mysql://localhost:13306/chess?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
@@ -33,14 +34,56 @@ public class PiecesOnChessBoardDAOForMysql implements PiecesOnChessBoardDAO {
     }
 
     @Override
+    public boolean save(Piece piece) {
+        try {
+            Connection connection = dbConnectionCache.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "insert into pieces_on_board (piece_type, team_name, position_name) values ( ?, ? ,? )");
+            setPieceToPreparedStatement(List.of(piece), preparedStatement);
+            return preparedStatement.executeUpdate() == 1;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean saveAll(List<Piece> pieces) {
+        String sql = pieces.stream().map(piece -> "( ?, ? ,? )")
+                .collect(Collectors.joining(","));
+        sql = "insert into pieces_on_board (piece_type, team_name, position_name) values " + sql;
+        try {
+            Connection connection = dbConnectionCache.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            setPieceToPreparedStatement(pieces, preparedStatement);
+            return preparedStatement.executeUpdate() == pieces.size();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void setPieceToPreparedStatement(List<Piece> pieces, PreparedStatement preparedStatement)
+            throws SQLException {
+        for (int index = 0; index < pieces.size(); index++) {
+            Piece piece = pieces.get(index);
+            PieceType pieceType = piece.getPieceType();
+            Team team = piece.getTeam();
+            int row = piece.getRow();
+            int column = piece.getColumn();
+            Position position = Position.getInstance(row, column);
+            preparedStatement.setString((index * 3) + 1, pieceType.name());
+            preparedStatement.setString((index * 3) + 2, team.name());
+            preparedStatement.setString((index * 3) + 3, position.name());
+        }
+    }
+
+    @Override
     public List<Piece> selectAll() {
         Connection connection = dbConnectionCache.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "select piece_type, team_name, position_name from pieces_on_board");
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<Piece> selected = parsingResultSet(resultSet);
-            return selected;
+            return parsingResultSet(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -86,37 +129,19 @@ public class PiecesOnChessBoardDAOForMysql implements PiecesOnChessBoardDAO {
     }
 
     @Override
-    public boolean save(Piece piece) {
+    public boolean deleteAll() {
         try {
             Connection connection = dbConnectionCache.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "insert into pieces_on_board (piece_type, team_name, position_name) values ( ?, ? ,? )");
-            PieceType pieceType = piece.getPieceType();
-            Team team = piece.getTeam();
-            int row = piece.getRow();
-            int column = piece.getColumn();
-            Position position = Position.getInstance(row, column);
-            preparedStatement.setString(1, pieceType.name());
-            preparedStatement.setString(2, team.name());
-            preparedStatement.setString(3, position.name());
-            return preparedStatement.executeUpdate() == 1;
+            connection.setAutoCommit(false);
+            int rowCount = selectAll().size();
+            PreparedStatement preparedStatement = connection.prepareStatement("delete from pieces_on_board");
+            connection.commit();
+            connection.setAutoCommit(true);
+            return preparedStatement.executeUpdate() == rowCount;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    @Override
-    public boolean update(Position targetPosition, PieceType pieceType, Team team) {
-        try {
-            Connection connection = dbConnectionCache.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "update pieces_on_board set piece_type = ?, team_name = ? where position_name = ?");
-            preparedStatement.setString(1, pieceType.name());
-            preparedStatement.setString(2, team.name());
-            preparedStatement.setString(3, targetPosition.name());
-            return preparedStatement.executeUpdate() == 1;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 }

@@ -13,4 +13,6 @@ public interface ChessBoardForChessGame {
     List<Piece> getPiecesOnBoard();
 
     Map<Team, Double> calculateScores();
+
+    Team getCurrentTeam();
 }

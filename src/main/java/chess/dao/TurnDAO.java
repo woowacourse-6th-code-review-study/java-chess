@@ -9,4 +9,6 @@ public interface TurnDAO {
     boolean save(Team team);
 
     boolean update(Team targetTeam, Team updatedTeam);
+
+    boolean delete();
 }

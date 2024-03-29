@@ -9,6 +9,7 @@ import chess.domain.piece.Piece;
 import chess.domain.piece.PieceMoveResult;
 import chess.domain.piece.PieceType;
 import chess.domain.piece.Team;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +27,7 @@ public class ChessBoard {
     }
 
     public ChessBoard(List<Piece> pieces, Team currentTeam) {
-        this.piecesOnBoard = pieces;
+        this.piecesOnBoard = new ArrayList<>(pieces);
         this.currentTeam = currentTeam;
     }
 
@@ -124,5 +125,9 @@ public class ChessBoard {
 
     double calculatePoint(Team team) {
         return PointCalculator.calculatePoint(team, piecesOnBoard);
+    }
+
+    Team getCurrentTeam() {
+        return currentTeam;
     }
 }

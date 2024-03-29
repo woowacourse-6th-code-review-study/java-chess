@@ -31,4 +31,8 @@ public class ChessGame {
     public List<Piece> getPiecesOnBoard() {
         return chessBoard.getPiecesOnBoard();
     }
+
+    public Team currentTeam() {
+        return chessBoard.getCurrentTeam();
+    }
 }

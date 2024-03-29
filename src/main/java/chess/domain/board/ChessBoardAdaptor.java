@@ -38,4 +38,9 @@ public class ChessBoardAdaptor implements ChessBoardForChessGame {
         double whiteTeamScore = chessBoard.calculatePoint(WHITE);
         return Map.of(BLACK, blackTeamScore, WHITE, whiteTeamScore);
     }
+
+    @Override
+    public Team getCurrentTeam() {
+        return chessBoard.getCurrentTeam();
+    }
 }

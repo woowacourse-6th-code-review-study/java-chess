@@ -68,4 +68,9 @@ public class TurnDAOForMysql implements TurnDAO {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public boolean delete() {
+        return false;
+    }
 }
