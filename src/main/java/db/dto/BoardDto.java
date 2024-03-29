@@ -9,10 +9,6 @@ import model.position.Position;
 
 public record BoardDto(Map<PositionDto, PieceDto> pieces) {
 
-    public BoardDto(final Map<PositionDto, PieceDto> pieces) {
-        this.pieces = pieces;
-    }
-
     public static BoardDto from(final Board board) {
         final Map<PositionDto, PieceDto> result = new HashMap<>();
 
@@ -25,5 +21,13 @@ public record BoardDto(Map<PositionDto, PieceDto> pieces) {
         }
 
         return new BoardDto(result);
+    }
+
+    public Board convert() {
+        final Map<Position, Piece> result = new HashMap<>();
+        for (Entry<PositionDto, PieceDto> entry : pieces.entrySet()) {
+            result.put(entry.getKey().convert(), entry.getValue().convert());
+        }
+        return new Board(result);
     }
 }

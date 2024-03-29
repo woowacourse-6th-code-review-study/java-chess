@@ -4,6 +4,7 @@ import db.dto.BoardDto;
 import db.dto.MovingDto;
 import db.dto.PieceDto;
 import db.dto.PositionDto;
+import db.dto.TurnDto;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -11,8 +12,9 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import model.Camp;
 
-public class MovingDao {
+public class MovingDao { // TODO 이름 수정
 
     private static final String SERVER = "localhost:13306"; // MySQL 서버 주소
     private static final String OPTION = "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
@@ -29,9 +31,9 @@ public class MovingDao {
         // 드라이버 연결
         try {
             return DriverManager.getConnection("jdbc:mysql://" + SERVER + "/" + database + OPTION, USERNAME, PASSWORD);
-        } catch (final SQLException e) {
-            System.err.println("DB 연결 오류:" + e.getMessage());
-            e.printStackTrace();
+        } catch (final SQLException exception) {
+            System.err.println("DB 연결 오류:" + exception.getMessage());
+            exception.printStackTrace();
             return null;
         }
     }
@@ -55,8 +57,8 @@ public class MovingDao {
 
             preparedStatement.executeUpdate();
 
-        } catch (final SQLException e) {
-            throw new RuntimeException(e);
+        } catch (final SQLException exception) {
+            throw new RuntimeException(exception);
         }
 
     }
@@ -81,8 +83,8 @@ public class MovingDao {
                 autoIncrement = generatedKeys.getLong(1);
             }
             return autoIncrement;
-        } catch (final SQLException e) {
-            throw new RuntimeException(e);
+        } catch (final SQLException exception) {
+            throw new RuntimeException(exception);
         }
     }
 
@@ -103,8 +105,8 @@ public class MovingDao {
                         resultSet.getString("destination_file")
                 );
             }
-        } catch (final SQLException e) {
-            throw new RuntimeException(e);
+        } catch (final SQLException exception) {
+            throw new RuntimeException(exception);
         }
 
         return null;
@@ -130,11 +132,12 @@ public class MovingDao {
 
             }
             return new BoardDto(result);
-        } catch (final SQLException e) {
-            throw new RuntimeException(e);
+        } catch (final SQLException exception) {
+            throw new RuntimeException(exception);
         }
     }
 
+    //TODO 접근제한자 변경
     public void createMoving() {
         final var query = """
                 create table moving
@@ -151,8 +154,8 @@ public class MovingDao {
         ) {
             preparedStatement.executeUpdate();
 
-        } catch (final SQLException e) {
-            throw new RuntimeException(e);
+        } catch (final SQLException exception) {
+            throw new RuntimeException(exception);
         }
     }
 
@@ -170,8 +173,8 @@ public class MovingDao {
         ) {
             preparedStatement.executeUpdate();
 
-        } catch (final SQLException e) {
-            throw new RuntimeException(e);
+        } catch (final SQLException exception) {
+            throw new RuntimeException(exception);
         }
     }
 
@@ -182,8 +185,54 @@ public class MovingDao {
         ) {
             preparedStatement.executeUpdate();
 
-        } catch (final SQLException e) {
-            throw new RuntimeException(e);
+        } catch (final SQLException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    public TurnDto findTurn() {
+        final var query = "SELECT * FROM turn";
+
+        try (final var connection = getConnection();
+             final var preparedStatement = connection.prepareStatement(query)) {
+            final var resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return new TurnDto(resultSet.getString("camp"));
+            }
+            return null;
+
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    public void addTurn(final Camp camp) {
+        final var query = "INSERT INTO turn values(?)";
+        try (final var connection = getConnection();
+             final var preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setString(1, camp.toString());
+            preparedStatement.executeUpdate();
+
+        } catch (final SQLException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    public void createTurn() {
+        final var query = """
+                create table turn
+                (
+                    camp varchar(5) not null
+                )""";
+        try (final var connection = getConnection();
+             final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        ) {
+            preparedStatement.executeUpdate();
+
+        } catch (final SQLException exception) {
+            throw new RuntimeException(exception);
         }
     }
 }

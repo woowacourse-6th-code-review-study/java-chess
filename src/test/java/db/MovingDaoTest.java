@@ -6,6 +6,7 @@ import db.dto.BoardDto;
 import db.dto.MovingDto;
 import java.sql.SQLException;
 import model.Board;
+import model.Camp;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -56,5 +57,12 @@ class MovingDaoTest {
 
         //then
         assertThat(board).isEqualTo(findBoard);
+    }
+
+    @Test
+    @DisplayName("턴 저장 확인")
+    void addTurn() {
+        movingDao.addTurn(Camp.BLACK);
+
     }
 }

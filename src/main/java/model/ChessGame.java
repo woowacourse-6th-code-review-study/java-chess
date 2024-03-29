@@ -12,13 +12,13 @@ public class ChessGame {
     private final Board board;
     private Camp camp;
 
-    private ChessGame(final Board board) {
+    public ChessGame(final Board board, final Camp camp) {
         this.board = board;
-        this.camp = STARTING_CAMP;
+        this.camp = camp;
     }
 
     public static ChessGame setupStartingPosition() {
-        return new ChessGame(Board.create());
+        return new ChessGame(Board.create(), STARTING_CAMP);
     }
 
     public void move(final Moving moving) {
