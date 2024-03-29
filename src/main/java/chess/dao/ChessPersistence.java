@@ -1,9 +1,5 @@
-package chess.service;
+package chess.dao;
 
-import chess.dao.PiecesOnChessBoardDAO;
-import chess.dao.PiecesOnChessBoardDAOForMysql;
-import chess.dao.TurnDAO;
-import chess.dao.TurnDAOForMysql;
 import chess.domain.Position;
 import chess.domain.game.ChessGame;
 import chess.domain.game.command.MoveCommand;
@@ -12,15 +8,15 @@ import chess.domain.piece.Team;
 import java.util.List;
 import java.util.Optional;
 
-public class ChessPersistenceService {
+public class ChessPersistence {
     private final PiecesOnChessBoardDAO piecesOnChessBoardDAO;
     private final TurnDAO turnDAO;
 
-    public ChessPersistenceService() {
+    public ChessPersistence() {
         this(new PiecesOnChessBoardDAOForMysql(), new TurnDAOForMysql());
     }
 
-    ChessPersistenceService(PiecesOnChessBoardDAO piecesOnChessBoardDAO, TurnDAO turnDAO) {
+    ChessPersistence(PiecesOnChessBoardDAO piecesOnChessBoardDAO, TurnDAO turnDAO) {
         this.piecesOnChessBoardDAO = piecesOnChessBoardDAO;
         this.turnDAO = turnDAO;
     }

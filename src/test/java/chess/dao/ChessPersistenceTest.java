@@ -1,12 +1,10 @@
-package chess.service;
+package chess.dao;
 
 import static chess.domain.Position.A1;
 import static chess.domain.piece.Team.BLACK;
 import static chess.domain.piece.Team.WHITE;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import chess.dao.FakePiecesOnChessBoardDAO;
-import chess.dao.FakeTurnDAO;
 import chess.domain.game.ChessGame;
 import chess.domain.game.command.MoveCommand;
 import chess.domain.piece.Pawn;
@@ -17,14 +15,14 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class ChessPersistenceServiceTest {
+class ChessPersistenceTest {
 
     @Test
     @DisplayName("저장된 게임이 있는 경우, 잘 불러오는지 확인")
     void loadChessGame() {
         FakePiecesOnChessBoardDAO piecesOnChessBoardDAO = new FakePiecesOnChessBoardDAO();
         FakeTurnDAO turnDAO = new FakeTurnDAO();
-        ChessPersistenceService chessPersistenceService = new ChessPersistenceService(piecesOnChessBoardDAO, turnDAO);
+        ChessPersistence chessPersistenceService = new ChessPersistence(piecesOnChessBoardDAO, turnDAO);
         List<Piece> pieces = List.of(new Pawn(A1, WHITE));
         Team currentTeam = BLACK;
         ChessGame chessGame = new ChessGame(pieces, currentTeam);
@@ -46,7 +44,7 @@ class ChessPersistenceServiceTest {
     void isSaveDataExistWhenExist() {
         FakePiecesOnChessBoardDAO piecesOnChessBoardDAO = new FakePiecesOnChessBoardDAO();
         FakeTurnDAO turnDAO = new FakeTurnDAO();
-        ChessPersistenceService chessPersistenceService = new ChessPersistenceService(piecesOnChessBoardDAO, turnDAO);
+        ChessPersistence chessPersistenceService = new ChessPersistence(piecesOnChessBoardDAO, turnDAO);
         ChessGame chessGame = new ChessGame();
         chessPersistenceService.saveChessGame(chessGame);
 
@@ -61,7 +59,7 @@ class ChessPersistenceServiceTest {
     void isSaveDataExistWhenNotExist() {
         FakePiecesOnChessBoardDAO piecesOnChessBoardDAO = new FakePiecesOnChessBoardDAO();
         FakeTurnDAO turnDAO = new FakeTurnDAO();
-        ChessPersistenceService chessPersistenceService = new ChessPersistenceService(piecesOnChessBoardDAO, turnDAO);
+        ChessPersistence chessPersistenceService = new ChessPersistence(piecesOnChessBoardDAO, turnDAO);
 
         boolean saveDataExist = chessPersistenceService.isSaveDataExist();
 
@@ -74,7 +72,7 @@ class ChessPersistenceServiceTest {
     void saveChessGame() {
         FakePiecesOnChessBoardDAO piecesOnChessBoardDAO = new FakePiecesOnChessBoardDAO();
         FakeTurnDAO turnDAO = new FakeTurnDAO();
-        ChessPersistenceService chessPersistenceService = new ChessPersistenceService(piecesOnChessBoardDAO, turnDAO);
+        ChessPersistence chessPersistenceService = new ChessPersistence(piecesOnChessBoardDAO, turnDAO);
         boolean saveChessGameSuccess = chessPersistenceService.saveChessGame(new ChessGame());
         Assertions.assertThat(saveChessGameSuccess)
                 .isTrue();
@@ -85,7 +83,7 @@ class ChessPersistenceServiceTest {
     void saveChessGameFail() {
         FakePiecesOnChessBoardDAO piecesOnChessBoardDAO = new FakePiecesOnChessBoardDAO();
         FakeTurnDAO turnDAO = new FakeTurnDAO();
-        ChessPersistenceService chessPersistenceService = new ChessPersistenceService(piecesOnChessBoardDAO, turnDAO);
+        ChessPersistence chessPersistenceService = new ChessPersistence(piecesOnChessBoardDAO, turnDAO);
         chessPersistenceService.saveChessGame(new ChessGame());
 
         boolean saveChessGameSuccess = chessPersistenceService.saveChessGame(new ChessGame());
@@ -98,7 +96,7 @@ class ChessPersistenceServiceTest {
     void updateChessGame() {
         FakePiecesOnChessBoardDAO piecesOnChessBoardDAO = new FakePiecesOnChessBoardDAO();
         FakeTurnDAO turnDAO = new FakeTurnDAO();
-        ChessPersistenceService chessPersistenceService = new ChessPersistenceService(piecesOnChessBoardDAO, turnDAO);
+        ChessPersistence chessPersistenceService = new ChessPersistence(piecesOnChessBoardDAO, turnDAO);
         ChessGame chessGame = new ChessGame();
         chessPersistenceService.saveChessGame(chessGame);
         MoveCommand moveCommand = new MoveCommand("a2", "a4");

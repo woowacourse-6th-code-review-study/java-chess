@@ -5,6 +5,7 @@ import static chess.domain.piece.PieceMoveResult.FAILURE;
 import static chess.domain.piece.Team.BLACK;
 import static chess.domain.piece.Team.WHITE;
 
+import chess.dao.ChessPersistence;
 import chess.domain.game.ChessGame;
 import chess.domain.game.command.Command;
 import chess.domain.game.command.MoveCommand;
@@ -14,14 +15,13 @@ import chess.domain.piece.PieceMoveResult;
 import chess.domain.piece.PieceType;
 import chess.domain.piece.Team;
 import chess.dto.PieceDTO;
-import chess.service.ChessPersistenceService;
 import chess.view.InputView;
 import chess.view.OutputView;
 import java.util.List;
 import java.util.Map;
 
 public class Application {
-    private static final ChessPersistenceService CHESS_PERSISTENCE_SERVICE = new ChessPersistenceService();
+    private static final ChessPersistence CHESS_PERSISTENCE_SERVICE = new ChessPersistence();
 
     public static void main(String[] args) {
         OutputView.printGuide();
