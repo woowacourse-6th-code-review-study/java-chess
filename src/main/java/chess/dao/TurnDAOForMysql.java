@@ -25,8 +25,7 @@ public class TurnDAOForMysql implements TurnDAO {
     public Optional<Team> select() {
         Connection connection = dbConnectionCache.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select current_team_name from game");
+            PreparedStatement preparedStatement = connection.prepareStatement("select current_team_name from game");
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             if (!(resultSet.isFirst() && resultSet.isLast())) {

@@ -142,6 +142,4 @@ public class PiecesOnChessBoardDAOForMysql implements PiecesOnChessBoardDAO {
             throw new RuntimeException(e);
         }
     }
-
-
 }
