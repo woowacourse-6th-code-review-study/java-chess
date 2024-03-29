@@ -53,4 +53,8 @@ public abstract class Piece {
     public boolean isOtherTeam(Team other) {
         return this.team != other;
     }
+
+    public Team getTeam() {
+        return team;
+    }
 }
