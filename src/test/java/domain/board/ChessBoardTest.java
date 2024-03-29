@@ -78,7 +78,6 @@ class ChessBoardTest {
         Position target = new Position(File.F, Rank.EIGHT);
         ChessBoard board = new ChessBoard(Map.of(resource, new Queen(Color.WHITE)), State.WHITE_TURN);
 
-        board.start();
         board.move(resource, target);
 
         assertThatThrownBy(() -> board.move(target, resource))
