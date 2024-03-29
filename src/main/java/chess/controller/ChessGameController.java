@@ -29,8 +29,7 @@ public class ChessGameController {
         ExecuteResult result;
         do {
             Command command = inputView.readCommand();
-            result = command.execute(chessGame, outputView);
-            chessGameService.saveChessGame(chessGame);
+            result = command.execute(chessGameService, chessGame, outputView);
         }
         while (result.isSuccess() && result.isNeedNextCommand() && chessGame.isNotEnd());
     }

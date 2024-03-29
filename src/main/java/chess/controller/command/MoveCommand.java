@@ -2,6 +2,7 @@ package chess.controller.command;
 
 import chess.domain.ChessGame;
 import chess.domain.position.Position;
+import chess.service.ChessGameService;
 import chess.view.OutputView;
 
 public class MoveCommand implements Command {
@@ -14,8 +15,9 @@ public class MoveCommand implements Command {
     }
 
     @Override
-    public ExecuteResult execute(ChessGame chessGame, OutputView outputView) {
+    public ExecuteResult execute(ChessGameService chessGameService, ChessGame chessGame, OutputView outputView) {
         chessGame.move(start, destination);
+        chessGameService.saveChessGame(chessGame);
         outputView.printChessBoardMessage(chessGame.getChessBoard());
         return new ExecuteResult(true, true);
     }

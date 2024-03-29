@@ -40,7 +40,7 @@ public class TurnRepository {
              ResultSet resultSet = pstmt.executeQuery()) {
 
             if (resultSet.next()) {
-                String value = resultSet.getString(1);
+                String value = resultSet.getString(2);
                 return Optional.of(DomainMapper.mapToTurn(value));
             }
         } catch (SQLException e) {
