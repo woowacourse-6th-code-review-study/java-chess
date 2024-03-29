@@ -1,0 +1,7 @@
+CREATE TABLE turn
+(
+    id   BIGINT     NOT NULL AUTO_INCREMENT,
+    turn VARCHAR(8) NOT NULL,
+
+    PRIMARY KEY (id)
+);
