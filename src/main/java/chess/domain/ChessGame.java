@@ -39,6 +39,10 @@ public class ChessGame {
         return chessBoard;
     }
 
+    public Team getTurn() {
+        return turn;
+    }
+
     private void validateTurn(Piece piece) {
         if (piece.isOtherTeam(turn)) {
             throw new IllegalArgumentException(turn + "의 차례입니다");
