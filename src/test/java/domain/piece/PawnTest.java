@@ -1,9 +1,6 @@
 package domain.piece;
 
-import domain.board.Board;
-import domain.board.File;
-import domain.board.Position;
-import domain.board.Rank;
+import domain.board.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -35,7 +32,7 @@ class PawnTest {
                 position(E, FOUR), new Rook(enemyColor),
                 position(C, FOUR), new Rook(enemyColor)
         );
-        Board board = new Board(piecePositions);
+        Board board = board(piecePositions);
 
         // When & Then
         assertThatCode(() -> pawn.move(source, destination, board))
@@ -62,7 +59,7 @@ class PawnTest {
         // Given
         Pawn pawn = new Pawn(pieceColor);
         Map<Position, Piece> piecePositions = Collections.emptyMap();
-        Board board = new Board(piecePositions);
+        Board board = board(piecePositions);
 
         // When & Then
         assertThatThrownBy(() -> pawn.move(source, destination, board))
@@ -86,7 +83,7 @@ class PawnTest {
         // Given
         Pawn pawn = new Pawn(pieceColor);
         Map<Position, Piece> piecePositions = Collections.emptyMap();
-        Board board = new Board(piecePositions);
+        Board board = board(piecePositions);
 
         // When & Then
         assertThatThrownBy(() -> pawn.move(source, destination, board))
@@ -111,7 +108,7 @@ class PawnTest {
                 position(D, THREE), new Rook(WHITE),
                 position(C, THREE), new Rook(BLACK)
         );
-        Board board = new Board(piecePositions);
+        Board board = board(piecePositions);
 
         // When & Then
         assertThatThrownBy(() -> pawn.move(source, destination, board))
@@ -128,5 +125,9 @@ class PawnTest {
 
     private static Position position(final File file, final Rank rank) {
         return new Position(file, rank);
+    }
+
+    private static Board board(final Map<Position, Piece> piecePositions) {
+        return new Board(new TestPieceDao(), piecePositions);
     }
 }

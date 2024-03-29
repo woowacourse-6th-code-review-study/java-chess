@@ -1,9 +1,6 @@
 package domain.piece;
 
-import domain.board.Board;
-import domain.board.File;
-import domain.board.Position;
-import domain.board.Rank;
+import domain.board.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +18,7 @@ class KnightTest {
         Position destination = new Position(File.D, Rank.SIX);
         Knight knight = new Knight(PieceColor.WHITE);
         Map<Position, Piece> piecePositions = Map.of(destination, new Rook(PieceColor.WHITE));
-        Board board = new Board(piecePositions);
+        Board board = new Board(new TestPieceDao(), piecePositions);
 
         // When & Then
         assertThatThrownBy(() -> knight.move(source, destination, board))

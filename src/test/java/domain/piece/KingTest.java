@@ -1,9 +1,6 @@
 package domain.piece;
 
-import domain.board.Board;
-import domain.board.File;
-import domain.board.Position;
-import domain.board.Rank;
+import domain.board.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,7 +23,7 @@ class KingTest {
         // Given
         King king = new King(PieceColor.WHITE);
         Map<Position, Piece> piecePositions = Map.of(position(File.D, Rank.TWO), new Rook(PieceColor.BLACK));
-        Board board = new Board(piecePositions);
+        Board board = board(piecePositions);
 
         // When & Then
         assertThatCode(() -> king.move(source, destination, board))
@@ -54,7 +51,7 @@ class KingTest {
         Position destination = position(File.B, Rank.SIX);
         King king = new King(PieceColor.WHITE);
         Map<Position, Piece> piecePositions = Collections.emptyMap();
-        Board board = new Board(piecePositions);
+        Board board = board(piecePositions);
 
         // When & Then
         assertThatThrownBy(() -> king.move(source, destination, board))
@@ -70,7 +67,7 @@ class KingTest {
         Position destination = position(File.B, Rank.THREE);
         King king = new King(PieceColor.WHITE);
         Map<Position, Piece> piecePositions = Map.of(destination, new Rook(PieceColor.WHITE));
-        Board board = new Board(piecePositions);
+        Board board = board(piecePositions);
 
         // When & Then
         assertThatThrownBy(() -> king.move(source, destination, board))
@@ -80,5 +77,9 @@ class KingTest {
 
     private static Position position(final File file, final Rank rank) {
         return new Position(file, rank);
+    }
+
+    private Board board(final Map<Position, Piece> piecePositions) {
+        return new Board(new TestPieceDao(), piecePositions);
     }
 }

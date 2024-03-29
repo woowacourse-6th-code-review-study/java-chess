@@ -1,9 +1,6 @@
 package domain.piece;
 
-import domain.board.Board;
-import domain.board.File;
-import domain.board.Position;
-import domain.board.Rank;
+import domain.board.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,7 +23,7 @@ class RookTest {
         // Given
         Rook rook = new Rook(PieceColor.WHITE);
         Map<Position, Piece> piecePositions = Map.of(position(File.D, Rank.TWO), new Rook(PieceColor.BLACK));
-        Board board = new Board(piecePositions);
+        Board board = board(piecePositions);
 
         // When & Then
         assertThatCode(() -> rook.move(source, destination, board))
@@ -49,7 +46,7 @@ class RookTest {
         // Given
         Rook rook = new Rook(PieceColor.WHITE);
         Map<Position, Piece> piecePositions = Collections.emptyMap();
-        Board board = new Board(piecePositions);
+        Board board = board(piecePositions);
 
         // When & Then
         assertThatThrownBy(() ->rook.move(source, destination, board))
@@ -74,7 +71,7 @@ class RookTest {
                 position(File.B, Rank.FOUR), new Rook(PieceColor.BLACK),
                 position(File.D, Rank.TWO), new Rook(PieceColor.WHITE)
         );
-        Board board = new Board(piecePositions);
+        Board board = board(piecePositions);
 
         // When & Then
         assertThatThrownBy(() -> rook.move(source, destination, board))
@@ -97,7 +94,7 @@ class RookTest {
         Position destination = position(File.B, Rank.SIX);
         Rook rook = new Rook(PieceColor.WHITE);
         Map<Position, Piece> piecePositions = Map.of(destination, new Rook(PieceColor.WHITE));
-        Board board = new Board(piecePositions);
+        Board board = board(piecePositions);
 
         // When & Then
         assertThatThrownBy(() -> rook.move(source, destination, board))
@@ -107,5 +104,9 @@ class RookTest {
 
     private static Position position(final File file, final Rank rank) {
         return new Position(file, rank);
+    }
+
+    private static Board board(final Map<Position, Piece> piecePositions) {
+        return new Board(new TestPieceDao(), piecePositions);
     }
 }

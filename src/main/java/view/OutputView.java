@@ -101,4 +101,11 @@ public class OutputView {
 
         return "막상막하입니다!";
     }
+
+    public void printInputRoadGameMessage() {
+        System.out.println("> 이전 게임이 존재합니다. 불러오시겠습니까?");
+        System.out.println("> 불러오기 : continue");
+        System.out.println("> 새게임 : new");
+        System.out.println();
+    }
 }

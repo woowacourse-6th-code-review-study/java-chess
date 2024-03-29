@@ -41,6 +41,25 @@ public class GameController {
         return GameCommandType.of(inputValues);
     }
 
+    public void buildGame() {
+        if (chessGame.existPrevGame()) {
+            outputView.printInputRoadGameMessage();
+            GameCommand gameCommand = inputCommand();
+            gameCommand.execute(this);
+            return;
+        }
+        createNewGame();
+        start();
+    }
+
+    public void createNewGame() {
+        chessGame.createNewGame();
+    }
+
+    public void roadPrevGame() {
+        chessGame.roadPrevGame();
+    }
+
     public void start() {
         chessGame.gameStart();
         outputView.printWelcomeMessage();
@@ -62,12 +81,12 @@ public class GameController {
         }
     }
 
-    public GameStatus gameStatus() {
-        return chessGame.gameStatus();
-    }
-
     public void movePiece(final Position source, final Position destination) {
         chessGame.movePiece(source, destination);
+    }
+
+    public GameStatus gameStatus() {
+        return chessGame.gameStatus();
     }
 
     public void end() {

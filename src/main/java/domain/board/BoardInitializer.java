@@ -6,24 +6,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static domain.board.File.D;
-import static domain.board.File.E;
-import static domain.board.File.A;
-import static domain.board.File.B;
-import static domain.board.File.C;
-import static domain.board.File.F;
-import static domain.board.File.G;
-import static domain.board.File.H;
-import static domain.board.Rank.ONE;
-import static domain.board.Rank.TWO;
-import static domain.board.Rank.SEVEN;
-import static domain.board.Rank.EIGHT;
+import static domain.board.File.*;
+import static domain.board.Rank.*;
 import static domain.piece.PieceColor.BLACK;
 import static domain.piece.PieceColor.WHITE;
 
 public class BoardInitializer {
-    public static Board initBoard() {
-        return new Board(new HashMap<>(initPieces()));
+    public static Map<Position, Piece> initBoard() {
+        return new HashMap<>(initPieces());
     }
 
     private static Map<Position, Piece> initPieces() {

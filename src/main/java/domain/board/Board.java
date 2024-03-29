@@ -1,5 +1,7 @@
 package domain.board;
 
+import dao.PieceDao;
+import dao.PieceEntity;
 import domain.piece.Piece;
 import domain.piece.PieceColor;
 import domain.piece.PieceType;
@@ -9,10 +11,45 @@ import java.util.List;
 import java.util.Map;
 
 public class Board {
+    private final PieceDao pieceDao;
     private final Map<Position, Piece> piecePositions;
 
-    public Board(final Map<Position, Piece> piecePositions) {
+    public Board(final PieceDao pieceDao, final Map<Position, Piece> piecePositions) {
+        this.pieceDao = pieceDao;
         this.piecePositions = piecePositions;
+    }
+
+    public boolean existPrevPiecePositionsData() {
+        return pieceDao.existPiecePositions();
+    }
+
+    public void createNewPiecePositions() {
+        pieceDao.deleteAll();
+        piecePositions.entrySet()
+                .stream()
+                .map(entry -> convertPieceEntity(entry.getValue(), entry.getKey()))
+                .forEach(pieceDao::savePiece);
+    }
+
+    public void roadPrevPiecePositions() {
+        piecePositions.clear();
+        List<PieceEntity> all = pieceDao.findAll();
+        all.forEach(this::addPiecePosition);
+    }
+
+    private void addPiecePosition(final PieceEntity pieceEntity) {
+        Position position = new Position(pieceEntity.file(), pieceEntity.rank());
+        Piece piece = pieceEntity.pieceType()
+                .createPiece(pieceEntity.pieceColor());
+        piecePositions.put(position, piece);
+    }
+
+    public void clear() {
+        pieceDao.deleteAll();
+    }
+
+    private static PieceEntity convertPieceEntity(final Piece piece, final Position position) {
+        return new PieceEntity(piece.pieceType(), piece.pieceColor(), position.file(), position.rank());
     }
 
     public void movePiece(final PieceColor pieceColor, final Position source, final Position destination) {
@@ -23,6 +60,9 @@ public class Board {
 
         piecePositions.put(destination, targetPiece);
         piecePositions.remove(source);
+
+        pieceDao.deleteByFileAndRank(destination.file(), destination.rank());
+        pieceDao.updatePiecePosition(source.file(), source.rank(), destination.file(), destination.rank());
     }
 
     private void validatePosition(final PieceColor pieceColor, final Position source, final Position destination) {

@@ -6,6 +6,7 @@ import domain.piece.Rook;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ class BoardTest {
         Position source = position(B, TWO);
         Position destination = position(B, FOUR);
         Map<Position, Piece> piecePositions = new HashMap<>(Map.of(source, new Pawn(WHITE)));
-        Board board = new Board(piecePositions);
+        Board board = board(piecePositions);
 
         // When
         board.movePiece(WHITE, source, destination);
@@ -46,7 +47,7 @@ class BoardTest {
         Rook myPiece = new Rook(WHITE);
         Pawn enemyPiece = new Pawn(BLACK);
         Map<Position, Piece> piecePositions = new HashMap<>(Map.of(source, myPiece, destination, enemyPiece));
-        Board board = new Board(piecePositions);
+        Board board = board(piecePositions);
 
         // When
         board.movePiece(WHITE, source, destination);
@@ -63,9 +64,9 @@ class BoardTest {
     @Test
     void throwExceptionWhenSourceEqualsDestinationTest() {
         // Given
-        Board board = BoardInitializer.initBoard();
         Position source = new Position(B, TWO);
         Position destination = new Position(B, TWO);
+        Board board = board(Collections.emptyMap());
 
         // When & Then
         assertThatThrownBy(() -> board.movePiece(WHITE, source, destination))
@@ -77,7 +78,7 @@ class BoardTest {
     @Test
     void throwExceptionWhenNotExistPieceSourceTest() {
         // Given
-        Board board = BoardInitializer.initBoard();
+        Board board = board(Collections.emptyMap());
         Position source = new Position(D, FIVE);
         Position destination = new Position(B, TWO);
 
@@ -91,9 +92,9 @@ class BoardTest {
     @Test
     void throwExceptionWhenMoveEnemyPieceTest() {
         // Given
-        Board board = BoardInitializer.initBoard();
         Position source = new Position(B, SEVEN);
         Position destination = new Position(B, SIX);
+        Board board = board(Map.of(source, new Pawn(BLACK)));
 
         // When & Then
         assertThatThrownBy(() -> board.movePiece(WHITE, source, destination))
@@ -103,5 +104,9 @@ class BoardTest {
 
     private Position position(final File file, final Rank rank) {
         return new Position(file, rank);
+    }
+
+    private Board board(final Map<Position, Piece> piecePositions) {
+        return new Board(new TestPieceDao(), piecePositions);
     }
 }

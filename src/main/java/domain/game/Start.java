@@ -10,6 +10,6 @@ public class Start implements GameCommand {
             throw new IllegalArgumentException("이미 게임이 진행중입니다.");
         }
 
-        gameController.start();
+        gameController.buildGame();
     }
 }
