@@ -17,32 +17,48 @@ public class TurnRepository {
         this.connectionManager = connectionManager;
     }
 
-    public void saveTurn(Team turn) throws SQLException {
-        String query = String.format("INSERT INTO %s VALUES(?", TABLE_NAME);
+    public void saveTurn(Team turn) {
+        String query = String.format("INSERT INTO %s VALUES(?)", TABLE_NAME);
 
-        Connection connection = connectionManager.getConnection();
-        PreparedStatement pstmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-        pstmt.setString(1, turn.name());
-        pstmt.execute();
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+
+            pstmt.setString(1, turn.name());
+            pstmt.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public Team findCurrentTurn() throws SQLException {
-        String query = String.format("SELECT * from %s WHERE ID = 1", TABLE_NAME);
+    public Team findCurrentTurn() {
+        String query = String.format("SELECT * FROM %s WHERE ID = 1", TABLE_NAME);
 
-        Connection connection = connectionManager.getConnection();
-        PreparedStatement pstmt = connection.prepareStatement(query);
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query);
+             ResultSet resultSet = pstmt.executeQuery()) {
 
-        ResultSet resultSet = pstmt.executeQuery();
-        String value = resultSet.getString(1);
+            if (resultSet.next()) {
+                String value = resultSet.getString(1);
+                return DomainMapper.mapToTurn(value);
+            }
 
-        return DomainMapper.mapToTurn(value);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        throw new RuntimeException("턴을 가져오는 과정에서 오류가 발생했습니다");
     }
 
-    public void deleteAll() throws SQLException {
+    public void deleteAll() {
         String query = String.format("DELETE FROM %s", TABLE_NAME);
 
-        Connection connection = connectionManager.getConnection();
-        PreparedStatement pstmt = connection.prepareStatement(query);
-        pstmt.executeUpdate();
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
