@@ -25,7 +25,15 @@ public enum RowMapper {
         return Arrays.stream(values())
                 .filter(row -> row.value.equals(value))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("일치하는 Column 이 없습니다."))
+                .orElseThrow(() -> new IllegalArgumentException("입력과 일치하는 열이 존재하지 않습니다."))
                 .row;
+    }
+
+    public static String findByRow(Row row) {
+        return Arrays.stream(values())
+                .filter(rowMapper -> rowMapper.row == row)
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("열과 일치하는 문자열이 존재하지 않습니다."))
+                .value;
     }
 }

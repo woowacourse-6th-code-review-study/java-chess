@@ -1,84 +1,33 @@
 package chess.controller;
 
-import chess.domain.board.Board;
-import chess.domain.board.position.Column;
-import chess.domain.board.position.Position;
-import chess.domain.board.position.Row;
+import chess.controller.command.Command;
+import chess.controller.command.CommandRouter;
 import chess.domain.game.ChessGame;
-import chess.domain.piece.Color;
-import chess.view.Command;
 import chess.view.InputView;
-import chess.view.MoveRequestDto;
 import chess.view.OutputView;
-import chess.view.mapper.ColumnMapper;
-import chess.view.mapper.RowMapper;
-import java.util.Map;
 
 public class ChessGameController {
-    private final InputView inputView = new InputView();
-    private final OutputView outputView = new OutputView();
 
     public void run() {
-        ChessGame chessGame = new ChessGame(new Board());
-        outputView.printStartMessage();
+        ChessGame chessGame = new ChessGame();
+        OutputView.printStartMessage();
         process(chessGame);
     }
 
     private void process(ChessGame chessGame) {
-        boolean isRunning = true;
-        while (isRunning) {
-            isRunning = processGame(chessGame);
-        }
+        State state = State.RUNNING;
+        do {
+            state = executeCommand(chessGame, state);
+        } while (state != State.END);
     }
 
-    private boolean processGame(ChessGame chessGame) {
+    private State executeCommand(ChessGame chessGame, State state) {
         try {
-            Command command = inputView.readCommend();
-            processGameStart(chessGame, command);
-            processMove(chessGame, command);
-            processStatus(chessGame, command);
-            return command != Command.END;
-        } catch (IllegalArgumentException error) {
-            outputView.printError(error);
-            process(chessGame);
-            return false;
+            Command command = CommandRouter.findCommendByInput(InputView.readCommend());
+            return command.execute(chessGame);
+        } catch (RuntimeException error) {
+            OutputView.printError(error);
+            return state;
         }
-    }
-
-    private void processStatus(ChessGame chessGame, Command command) {
-        if (command == Command.STATUS) {
-            Map<Color, Double> teamScore = chessGame.calculateTeamScore();
-            outputView.printTeamScore(teamScore.get(Color.WHITE), teamScore.get(Color.BLACK));
-        }
-    }
-
-    private void processMove(ChessGame chessGame, Command command) {
-        if (command == Command.MOVE) {
-            handleMove(chessGame);
-        }
-    }
-
-    private void processGameStart(ChessGame chessGame, Command command) {
-        if (command == Command.START) {
-            handleStart(chessGame);
-        }
-    }
-
-    private void handleStart(ChessGame chessGame) {
-        outputView.printBoard(chessGame.getBoard());
-    }
-
-    private void handleMove(ChessGame chessGame) {
-        MoveRequestDto moveRequestDto = inputView.readPositions();
-        Position from = createPosition(moveRequestDto.getFromColumn(), moveRequestDto.getFromRow());
-        Position to = createPosition(moveRequestDto.getToColumn(), moveRequestDto.getToRow());
-        chessGame.movePiece(from, to);
-        outputView.printBoard(chessGame.getBoard());
-    }
-
-    private Position createPosition(String requestColumn, String requestRow) {
-        Column column = ColumnMapper.findByInputValue(requestColumn);
-        Row row = RowMapper.findByInputValue(requestRow);
-        return new Position(row, column);
     }
 }

@@ -35,4 +35,18 @@ class RowMapperTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
+    @Test
+    @DisplayName("Row로 문자열을 찾는다.")
+    void findByRowSuccessTest() {
+        assertAll(
+                () -> assertEquals("1", RowMapper.findByRow(Row.ONE)),
+                () -> assertEquals("2", RowMapper.findByRow(Row.TWO)),
+                () -> assertEquals("3", RowMapper.findByRow(Row.THREE)),
+                () -> assertEquals("4", RowMapper.findByRow(Row.FOUR)),
+                () -> assertEquals("5", RowMapper.findByRow(Row.FIVE)),
+                () -> assertEquals("6", RowMapper.findByRow(Row.SIX)),
+                () -> assertEquals("7", RowMapper.findByRow(Row.SEVEN)),
+                () -> assertEquals("8", RowMapper.findByRow(Row.EIGHT))
+        );
+    }
 }
