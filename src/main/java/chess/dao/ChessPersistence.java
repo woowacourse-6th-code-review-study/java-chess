@@ -55,12 +55,16 @@ public class ChessPersistence {
         Position to = positions.get(1);
         boolean deleteFromSuccess = piecesOnChessBoardDAO.delete(from);
         boolean deleteToSuccess = piecesOnChessBoardDAO.delete(to);
-        Piece movedPiece = chessGame.getPiecesOnBoard().stream()
-                .filter(piece -> piece.isOn(to))
-                .findFirst().orElseThrow();
+        Piece movedPiece = findMovedPiece(chessGame, to);
         boolean saveMovedPieceSuccess = piecesOnChessBoardDAO.save(movedPiece);
         Team team = turnDAO.select().orElseThrow();
         boolean updateTurnSuccess = turnDAO.update(team, team.otherTeam());
         return !deleteFromSuccess && deleteToSuccess && saveMovedPieceSuccess && updateTurnSuccess;
+    }
+
+    private Piece findMovedPiece(ChessGame chessGame, Position to) {
+        return chessGame.getPiecesOnBoard().stream()
+                .filter(piece -> piece.isOn(to))
+                .findFirst().orElseThrow();
     }
 }
