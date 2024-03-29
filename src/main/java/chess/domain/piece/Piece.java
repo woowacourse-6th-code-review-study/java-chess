@@ -39,8 +39,16 @@ public class Piece {
         return pieceType.isWhitePawn();
     }
 
+    public boolean isKing() {
+        return this.pieceType == PieceType.KING;
+    }
+
     public double getScore() {
         return pieceType.getScore();
+    }
+
+    public Color getColor() {
+        return color;
     }
 
     public boolean isPawnAttackPossible(Direction direction) {

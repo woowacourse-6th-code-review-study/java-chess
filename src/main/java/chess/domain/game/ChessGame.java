@@ -1,6 +1,7 @@
 package chess.domain.game;
 
 import chess.domain.board.Board;
+import chess.domain.board.BoardFactory;
 import chess.domain.board.position.Direction;
 import chess.domain.board.position.Position;
 import chess.domain.piece.Color;
@@ -16,12 +17,21 @@ public class ChessGame {
     private final Board board;
     private Color currentTurn;
 
-    public ChessGame(Board board) {
-        this.board = board;
+    public ChessGame() {
+        this.board = new Board(new BoardFactory().initialize());
         currentTurn = START_TURN;
     }
 
-    public Map<Color, Double> calculateTeamScore() {
+    public ChessGameResult generateGameResult(Position to) {
+        Map<Color, Score> teamScore = board.calculateScore();
+        if (board.isCheckmate(to)) {
+            Piece king = board.findPieceByPosition(to);
+            return new ChessGameResult(Winner.selectWinnerByCheckmate(king.getColor()), teamScore);
+        }
+        return new ChessGameResult(Winner.selectWinnerByScore(teamScore), teamScore);
+    }
+
+    public Map<Color, Score> calculateScore() {
         return board.calculateScore();
     }
 
@@ -34,6 +44,10 @@ public class ChessGame {
             return;
         }
         throw new IllegalArgumentException("기물을 해당 위치로 이동시킬 수 없습니다.");
+    }
+
+    public boolean isCheckmate(Position to) {
+        return board.isCheckmate(to);
     }
 
     private void validateUserTurn(Position from) {

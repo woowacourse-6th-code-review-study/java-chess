@@ -57,6 +57,14 @@ public class Board {
         board.remove(from);
     }
 
+    public boolean isCheckmate(Position to) {
+        if (existPiece(to)) {
+            Piece piece = board.get(to);
+            return piece.isKing();
+        }
+        return false;
+    }
+
     public Piece findPieceByPosition(Position position) {
         if (existPiece(position)) {
             return board.get(position);
@@ -74,9 +82,5 @@ public class Board {
 
     public Map<Position, Piece> getBoard() {
         return board;
-    }
-
-    void put(Position position, Piece piece) {
-        board.put(position, piece);
     }
 }
