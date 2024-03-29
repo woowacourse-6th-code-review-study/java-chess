@@ -2,10 +2,10 @@ package chess.domain.board;
 
 import chess.domain.board.position.Column;
 import chess.domain.board.position.Position;
+import chess.domain.game.Score;
 import chess.domain.piece.Color;
 import chess.domain.piece.Piece;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -13,27 +13,21 @@ public class Board {
 
     private final Map<Position, Piece> board;
 
-    public Board() {
-        this.board = new HashMap<>();
-        BoardFactory boardFactory = new BoardFactory();
-        boardFactory.initialize(this);
-    }
-
     public Board(Map<Position, Piece> board) {
         this.board = board;
     }
 
-    public Map<Color, Double> calculateScore() {
+    public Map<Color, Score> calculateScore() {
         return Arrays.stream(Color.values()).collect(Collectors.toMap(
                 color -> color,
                 this::calculateTotalScore
         ));
     }
 
-    private double calculateTotalScore(Color color) {
+    private Score calculateTotalScore(Color color) {
         double sum = sumTotalScore(color);
         double pawnMinus = calculatePawnScore(color);
-        return sum - pawnMinus;
+        return new Score(sum - pawnMinus);
     }
 
     private double sumTotalScore(Color color) {
@@ -58,8 +52,8 @@ public class Board {
     }
 
     public void movePiece(Position from, Position to) {
-        Piece piece = board.get(from);
-        board.put(to, piece);
+        Piece fromPiece = board.get(from);
+        board.put(to, fromPiece);
         board.remove(from);
     }
 
