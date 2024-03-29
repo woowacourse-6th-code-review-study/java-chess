@@ -4,7 +4,7 @@ import domain.piece.Color;
 
 import java.util.function.Function;
 
-public enum GameStatus {
+public enum State {
     NOT_STARTED(color -> false),
     WHITE_TURN(color -> Color.WHITE == color),
     BLACK_TURN(color -> Color.BLACK == color),
@@ -13,7 +13,7 @@ public enum GameStatus {
 
     private final Function<Color, Boolean> isSameTurn;
 
-    GameStatus(final Function<Color, Boolean> isSameTurn) {
+    State(final Function<Color, Boolean> isSameTurn) {
         this.isSameTurn = isSameTurn;
     }
 

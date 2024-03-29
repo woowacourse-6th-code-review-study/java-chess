@@ -1,8 +1,8 @@
 package repository;
 
+import domain.board.State;
 import dto.PieceDto;
-import dto.TurnDto;
-import domain.piece.Color;
+import dto.StateDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,10 +15,10 @@ class DaoServiceTest {
     private static final PieceDto A2WhitePawn = new PieceDto("A", "2", "WHITE", "PAWN");
     private static final PieceDto B2WhitePawn = new PieceDto("B", "2", "WHITE", "PAWN");
     private static final PieceDto C2WhitePawn = new PieceDto("C", "2", "WHITE", "PAWN");
-    private static final TurnDto whiteTurn = new TurnDto("WHITE");
+    private static final StateDto whiteTurn = StateDto.of(State.WHITE_TURN);
 
     private final PieceDao pieceDao = new PieceDao();
-    private final TurnDao turnDao = new TurnDao();
+    private final StateDao stateDao = new StateDao();
     private final DaoService daoService = new DaoService();
 
     @BeforeEach
@@ -26,13 +26,13 @@ class DaoServiceTest {
         pieceDao.add(A2WhitePawn);
         pieceDao.add(B2WhitePawn);
         pieceDao.add(C2WhitePawn);
-        turnDao.update(whiteTurn);
+        stateDao.update(whiteTurn);
     }
 
     @AfterEach
     void rollback() {
         pieceDao.deleteAll();
-        turnDao.deleteAll();
+        stateDao.deleteAll();
     }
 
     @Test
@@ -48,8 +48,8 @@ class DaoServiceTest {
 
     @Test
     void 이전_게임의_턴_데이터를_불러온다() {
-        assertThat(daoService.loadPreviousTurn().getTurn())
-                .isEqualTo(Color.WHITE);
+        assertThat(daoService.loadPreviousTurn().getState())
+                .isEqualTo(State.WHITE_TURN);
     }
 
     @Test
@@ -68,11 +68,12 @@ class DaoServiceTest {
 
     @Test
     void 턴_데이터를_갱신한다() {
-        TurnDto blackTurn = new TurnDto("BLACK");
+        StateDto blackTurn = StateDto.of(State.BLACK_TURN);
 
         daoService.updateTurn(blackTurn);
 
-        assertThat(daoService.loadPreviousTurn().getTurn()).isEqualTo(Color.BLACK);
+        assertThat(daoService.loadPreviousTurn().getState())
+                .isEqualTo(State.BLACK_TURN);
     }
 
     @Test

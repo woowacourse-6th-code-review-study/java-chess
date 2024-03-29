@@ -21,7 +21,7 @@ class ChessBoardTest {
     void 출발_위치에_기물_존재하지_않으면_예외가_발생한다() {
         Position source = new Position(File.F, Rank.FOUR);
         Position target = new Position(File.F, Rank.EIGHT);
-        ChessBoard board = new ChessBoard(Map.of());
+        ChessBoard board = new ChessBoard(Map.of(), State.WHITE_TURN);
 
         assertThatThrownBy(() -> board.move(source, target))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -35,8 +35,8 @@ class ChessBoardTest {
         Position between = new Position(File.F, Rank.FIVE);
         ChessBoard board = new ChessBoard(Map.of(
                 source, new Queen(Color.WHITE),
-                between, new BlackPawn()
-        ));
+                between, new BlackPawn()),
+                State.WHITE_TURN);
 
         assertThatThrownBy(() -> board.move(source, target))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -48,7 +48,7 @@ class ChessBoardTest {
         Piece piece = new Queen(Color.WHITE);
         Position source = new Position(File.F, Rank.FOUR);
         Position target = new Position(File.F, Rank.EIGHT);
-        ChessBoard board = new ChessBoard(Map.of(source, piece));
+        ChessBoard board = new ChessBoard(Map.of(source, piece), State.WHITE_TURN);
 
         board.move(source, target);
         assertThat(board.getBoard())
@@ -63,8 +63,8 @@ class ChessBoardTest {
         Position target = new Position(File.G, Rank.FIVE);
         ChessBoard board = new ChessBoard(Map.of(
                 source, piece,
-                target, new BlackPawn())
-        );
+                target, new BlackPawn()
+        ), State.WHITE_TURN);
 
         board.move(source, target);
         assertThat(board.getBoard())
@@ -76,7 +76,9 @@ class ChessBoardTest {
     void 게임을_시작하고_피스를_한_번_움직이면_다음은_BLACK_턴이다() {
         Position resource = new Position(File.F, Rank.FOUR);
         Position target = new Position(File.F, Rank.EIGHT);
-        ChessBoard board = new ChessBoard(Map.of(resource, new Queen(Color.WHITE)));
+        ChessBoard board = new ChessBoard(Map.of(resource, new Queen(Color.WHITE)), State.WHITE_TURN);
+
+        board.start();
         board.move(resource, target);
 
         assertThatThrownBy(() -> board.move(target, resource))
@@ -92,7 +94,7 @@ class ChessBoardTest {
         ChessBoard board = new ChessBoard(Map.of(
                 resource, new Queen(Color.WHITE),
                 between, new BlackPawn()
-        ));
+        ), State.WHITE_TURN);
 
         assertThatThrownBy(() -> board.move(resource, target))
                 .isInstanceOf(IllegalArgumentException.class);
@@ -109,7 +111,7 @@ class ChessBoardTest {
         ChessBoard board = new ChessBoard(Map.of(
                 whiteResource, new Queen(Color.WHITE),
                 blackResource, new Queen(Color.BLACK)
-        ));
+        ), State.WHITE_TURN);
 
         board.move(whiteResource, whiteTarget);
         board.move(blackResource, blackTarget);

@@ -1,17 +1,13 @@
 package controller.command;
 
 import domain.board.ChessBoard;
-import domain.board.GameStatus;
+import domain.board.State;
 import view.OutputView;
 
 import java.util.List;
 
 public class StartOnCommand implements Command {
     private static final int ARGUMENT_SIZE = 0;
-
-    public StartOnCommand() {
-        this(List.of());
-    }
 
     public StartOnCommand(final List<String> arguments) {
         validateArgumentSize(arguments);
@@ -31,7 +27,7 @@ public class StartOnCommand implements Command {
     }
 
     private void validateGameStatus(final ChessBoard board) {
-        if (board.getStatus() != GameStatus.NOT_STARTED) {
+        if (board.getState() != State.NOT_STARTED) {
             throw new IllegalStateException("게임이 이미 시작됐습니다.");
         }
     }

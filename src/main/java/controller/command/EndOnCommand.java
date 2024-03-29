@@ -8,10 +8,6 @@ import java.util.List;
 public class EndOnCommand implements Command {
     private static final int ARGUMENT_SIZE = 0;
 
-    public EndOnCommand() {
-        this(List.of());
-    }
-
     public EndOnCommand(final List<String> arguments) {
         validateArgumentSize(arguments);
     }

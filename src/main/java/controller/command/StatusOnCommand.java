@@ -1,7 +1,7 @@
 package controller.command;
 
 import domain.board.ChessBoard;
-import domain.board.GameStatus;
+import domain.board.State;
 import domain.board.Score;
 import view.OutputView;
 
@@ -28,10 +28,10 @@ public class StatusOnCommand implements Command {
     }
 
     private void validateGameStatus(final ChessBoard board) {
-        if (board.getStatus() == GameStatus.NOT_STARTED) {
+        if (board.getState() == State.NOT_STARTED) {
             throw new IllegalStateException("게임을 먼저 시작해 주세요.");
         }
-        if (board.getStatus() == GameStatus.ENDED || board.getStatus() == GameStatus.KING_IS_DEAD) {
+        if (board.getState() == State.ENDED || board.getState() == State.KING_IS_DEAD) {
             throw new IllegalStateException("게임이 종료됐습니다.");
         }
     }

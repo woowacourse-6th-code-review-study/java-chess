@@ -15,15 +15,15 @@ import java.util.Map;
 
 public class ChessBoard {
     private final Map<Position, Piece> board;
-    private GameStatus status;
-
-    public ChessBoard(Map<Position, Piece> board, GameStatus status) {
-        this.board = board;
-        this.status = status;
-    }
+    private State state;
 
     public ChessBoard(Map<Position, Piece> board) {
-        this(new HashMap<>(board), GameStatus.NOT_STARTED);
+        this(new HashMap<>(board), State.NOT_STARTED);
+    }
+
+    ChessBoard(Map<Position, Piece> board, State state) {
+        this.board = new HashMap<>(board);
+        this.state = state;
     }
 
     public void move(final Position source, final Position target) {
@@ -44,8 +44,8 @@ public class ChessBoard {
 
     private void validateTurn(final Position source) {
         final Piece piece = findPieceByPosition(source);
-        if (!this.status.isTurnOf(piece.color())) {
-            throw new IllegalArgumentException(piece.color() + "의 턴입니다.");
+        if (!this.state.isTurnOf(piece.color())) {
+            throw new IllegalArgumentException("상대 턴입니다.");
         }
     }
 
@@ -72,11 +72,11 @@ public class ChessBoard {
     }
 
     private void changeTurn() {
-        if (this.status.isTurnOf(Color.BLACK)) {
-            this.status = GameStatus.WHITE_TURN;
+        if (this.state.isTurnOf(Color.BLACK)) {
+            this.state = State.WHITE_TURN;
             return;
         }
-        this.status = GameStatus.BLACK_TURN;
+        this.state = State.BLACK_TURN;
     }
 
     public boolean isKingNotExist() {
@@ -86,15 +86,15 @@ public class ChessBoard {
     }
 
     public void start() {
-        this.status = GameStatus.WHITE_TURN;
+        this.state = State.WHITE_TURN;
     }
 
     public void end() {
-        this.status = GameStatus.ENDED;
+        this.state = State.ENDED;
     }
 
     public boolean isGameRunning() {
-        return this.status == GameStatus.ENDED;
+        return this.state == State.ENDED;
     }
 
     public Score calculateScore() {
@@ -111,8 +111,7 @@ public class ChessBoard {
                 .toList();
     }
 
-    // TODO: DTO 수정하기
-    public GameStatus getStatus() {
-        return this.status;
+    public State getState() {
+        return this.state;
     }
 }

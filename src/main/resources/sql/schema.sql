@@ -5,4 +5,10 @@ create table pieces
     color      varchar(5) not null,
     type       varchar(6) not null,
     primary key (board_file, board_rank)
+);
+
+create table states
+(
+    state varchar(15) not null,
+    primary key (state)
 )
