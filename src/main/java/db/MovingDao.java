@@ -134,4 +134,56 @@ public class MovingDao {
             throw new RuntimeException(e);
         }
     }
+
+    public void createMoving() {
+        final var query = """
+                create table moving
+                 (
+                     movement_id      INT primary key auto_increment,
+                     camp             varchar(5)  not null,
+                     start_rank       varchar(12) not null,
+                     start_file       varchar(12) not null,
+                     destination_rank varchar(12) not null,
+                     destination_file varchar(12) not null
+                 )""";
+        try (final var connection = getConnection();
+             final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        ) {
+            preparedStatement.executeUpdate();
+
+        } catch (final SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void createBoard() {
+        final var query = """
+                create table board
+                (
+                    position   varchar(2)  not null,
+                    piece_type varchar(6) not null,
+                    camp       varchar(5)  not null
+
+                )""";
+        try (final var connection = getConnection();
+             final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        ) {
+            preparedStatement.executeUpdate();
+
+        } catch (final SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void remove(String table) {
+        final var query = String.format("drop table %s", table);
+        try (final var connection = getConnection();
+             final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        ) {
+            preparedStatement.executeUpdate();
+
+        } catch (final SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

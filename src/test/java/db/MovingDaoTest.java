@@ -6,12 +6,26 @@ import db.dto.BoardDto;
 import db.dto.MovingDto;
 import java.sql.SQLException;
 import model.Board;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class MovingDaoTest {
 
     private final MovingDao movingDao = new MovingDao("chess_test");
+
+    @BeforeEach
+    void beforeEach() {
+        movingDao.createMoving();
+        movingDao.createBoard();
+    }
+
+    @AfterEach
+    void afterEach() {
+        movingDao.remove("moving");
+        movingDao.remove("board");
+    }
 
     @DisplayName("데이터베이스 접속 확인")
     @Test
