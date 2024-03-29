@@ -42,7 +42,7 @@ class BoardTest {
         Position notExistPosition = new Position(File.D, Rank.TWO);
         Board board = new Board(map);
 
-        assertThat(board.find(notExistPosition)).isEqualTo(Optional.empty());
+        assertThat(board.find(notExistPosition)).isEmpty();
     }
 
     /*
@@ -86,7 +86,7 @@ class BoardTest {
 
             assertAll(
                     () -> assertThat(board.find(possibleEnd)).isEqualTo(Optional.of(KING)),
-                    () -> assertThat(board.find(START_KING)).isEqualTo(Optional.empty())
+                    () -> assertThat(board.find(START_KING)).isEmpty()
             );
         }
 
@@ -135,7 +135,7 @@ class BoardTest {
             board.move(START_QUEEN, START_ENEMY_ROOK);
 
             assertAll(
-                    () -> assertThat(board.find(START_QUEEN)).isEqualTo(Optional.empty()),
+                    () -> assertThat(board.find(START_QUEEN)).isEmpty(),
                     () -> assertThat(board.find(START_ENEMY_ROOK)).isEqualTo(Optional.of(QUEEN))
             );
         }
