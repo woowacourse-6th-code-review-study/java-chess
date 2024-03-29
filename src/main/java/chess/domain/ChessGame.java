@@ -14,8 +14,12 @@ public class ChessGame {
     private Team turn;
 
     public ChessGame(ChessBoard chessBoard) {
+        this(chessBoard, INITIAL_TURN);
+    }
+
+    public ChessGame(ChessBoard chessBoard, Team turn) {
         this.chessBoard = chessBoard;
-        turn = INITIAL_TURN;
+        this.turn = turn;
     }
 
     public void move(Position start, Position destiantion) {
