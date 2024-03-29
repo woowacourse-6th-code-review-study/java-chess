@@ -103,4 +103,8 @@ public class ChessBoard {
         }
         return 0;
     }
+
+    public Map<Position, Piece> getBoard() {
+        return board;
+    }
 }
