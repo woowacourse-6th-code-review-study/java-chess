@@ -45,7 +45,7 @@ class BoardTest {
         //given
         final ChessGame chessGame = ChessGame.setupStartingPosition();
         final Score blackExpected = new Score(37.0F);
-        final Score whiteExpected = new Score(37.5F);
+        final Score whiteExpected = new Score(37.0F);
 
         //when
         chessGame.move(new Moving(A2, A4));
@@ -65,17 +65,15 @@ class BoardTest {
         //given
         final ChessGame chessGame = ChessGame.setupStartingPosition();
         final Score blackExpected = new Score(34.5F);
-        final Score whiteExpected = new Score(37.0F);
+        final Score whiteExpected = new Score(36.5F);
 
         //when
         chessGame.move(new Moving(A2, A4));
         chessGame.move(new Moving(B7, B5));
         chessGame.move(new Moving(A4, B5));
-
         chessGame.move(new Moving(B8, C6));
         chessGame.move(new Moving(C2, C3));
         chessGame.move(new Moving(C6, B4));
-
         chessGame.move(new Moving(C3, B4));
 
         /*

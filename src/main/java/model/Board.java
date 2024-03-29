@@ -39,7 +39,7 @@ public class Board {
 
     private final Map<Position, Piece> pieces;
 
-    private Board(final Map<Position, Piece> pieces) {
+    public Board(final Map<Position, Piece> pieces) {
         this.pieces = pieces;
     }
 
@@ -136,10 +136,14 @@ public class Board {
                 result = result.add(PieceScore.getScore(piece));
             }
         }
-        final Score score = new Score(0.5F);
-        for (Integer sameFilePawnCount : count.values()) {
-            for (int i = 1; i < sameFilePawnCount; i++) {
-                result = result.minus(score);
+        final Score score = new Score(1);
+        for (int sameFilePawnCount : count.values()) {
+            if (sameFilePawnCount == 1) {
+                result.add(score);
+            }
+            if (sameFilePawnCount > 1) {
+                float value = sameFilePawnCount * 0.5f;
+                result = result.minus(new Score(value));
             }
         }
         return result;
