@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 
 public class TurnRepository {
     private static final String TABLE_NAME = "turn";
@@ -31,7 +32,7 @@ public class TurnRepository {
         }
     }
 
-    public Team findCurrentTurn() {
+    public Optional<Team> findCurrentTurn() {
         String query = String.format("SELECT * FROM %s WHERE ID = 1", TABLE_NAME);
 
         try (Connection connection = connectionManager.getConnection();
@@ -40,13 +41,12 @@ public class TurnRepository {
 
             if (resultSet.next()) {
                 String value = resultSet.getString(1);
-                return DomainMapper.mapToTurn(value);
+                return Optional.of(DomainMapper.mapToTurn(value));
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        throw new RuntimeException("턴을 가져오는 과정에서 오류가 발생했습니다");
+        return Optional.empty();
     }
 
     public void deleteAll() {

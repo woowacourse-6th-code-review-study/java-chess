@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class PieceRepository {
     private static final String TABLE_NAME = "pieces";
@@ -34,7 +35,7 @@ public class PieceRepository {
         }
     }
 
-    public List<PiecePlacementDto> findPieces() {
+    public Optional<List<PiecePlacementDto>> findPieces() {
         String query = String.format("SELECT * FROM %s", TABLE_NAME);
 
         List<PiecePlacementDto> result = new ArrayList<>();
@@ -51,11 +52,13 @@ public class PieceRepository {
 
                 result.add(new PiecePlacementDto(position, team, type));
             }
-            return result;
+            if (!result.isEmpty()) {
+                return Optional.of(result);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        throw new RuntimeException("기물을 가져오는 과정에서 오류가 발생했습니다");
+        return Optional.empty();
     }
 
     public void deleteAll() {
