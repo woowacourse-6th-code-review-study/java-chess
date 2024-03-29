@@ -65,7 +65,7 @@ public class DomainMapper {
     }
 
     private static Position mapToPosition(String value) {
-        File file = File.from(value.charAt(FILE_INDEX) - 'A');
+        File file = File.from(value.charAt(FILE_INDEX) - 'a');
         Rank rank = Rank.from(8 - (value.charAt(RANK_INDEX) - '0'));
         return new Position(file, rank);
     }

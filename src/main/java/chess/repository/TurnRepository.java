@@ -19,7 +19,7 @@ public class TurnRepository {
     }
 
     public void saveTurn(Team turn) {
-        String query = String.format("INSERT INTO %s VALUES(?)", TABLE_NAME);
+        String query = String.format("INSERT INTO %s (turn) VALUES(?)", TABLE_NAME);
 
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -33,7 +33,7 @@ public class TurnRepository {
     }
 
     public Optional<Team> findCurrentTurn() {
-        String query = String.format("SELECT * FROM %s WHERE ID = 1", TABLE_NAME);
+        String query = String.format("SELECT * FROM %s", TABLE_NAME);
 
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(query);

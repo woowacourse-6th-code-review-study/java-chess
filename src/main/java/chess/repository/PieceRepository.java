@@ -20,7 +20,7 @@ public class PieceRepository {
     }
 
     public void savePiece(PiecePlacementDto piecePlacementDto) {
-        String query = String.format("INSERT INTO %s VALUES(?, ?, ?", TABLE_NAME);
+        String query = String.format("INSERT INTO %s (position, team, type) VALUES (?, ?, ?)", TABLE_NAME);
 
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {

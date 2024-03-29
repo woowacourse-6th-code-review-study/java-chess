@@ -19,7 +19,7 @@ public class ValueMapper {
     public static String mapPositionToString(Position position) {
         File file = position.getFile();
         Rank rank = position.getRank();
-        return file.name() + rank.name();
+        return file.name().toLowerCase() + rank.getRankNumber();
     }
 
     public static String mapTeamToString(Team team) {
