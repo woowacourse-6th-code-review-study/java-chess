@@ -187,7 +187,7 @@ class BoardTest {
                     new Position(File.A, Rank.ONE), new Rook(Team.WHITE),
                     new Position(File.D, Rank.ONE), new Queen(Team.WHITE)));
 
-            assertThat(board.calculateTotalPoints()).containsExactly(
+            assertThat(board.calculateTotalPoints()).containsOnly(
                     Map.entry(Team.WHITE, new Point(5.0 + 9.0)),
                     Map.entry(Team.BLACK, Point.ZERO));
         }
@@ -211,7 +211,7 @@ class BoardTest {
                     new Position(File.F, Rank.TWO), new Pawn(Team.WHITE),
                     new Position(File.E, Rank.SEVEN), new Pawn(Team.BLACK)));
 
-            assertThat(board.calculateTotalPoints()).containsExactly(
+            assertThat(board.calculateTotalPoints()).containsOnly(
                     Map.entry(Team.WHITE, new Point(1.0 + 1.0)),
                     Map.entry(Team.BLACK, new Point(1.0)));
         }
@@ -234,7 +234,7 @@ class BoardTest {
                     new Position(File.E, Rank.TWO), new Pawn(Team.WHITE),
                     new Position(File.E, Rank.THREE), new Pawn(Team.WHITE)));
 
-            assertThat(board.calculateTotalPoints()).containsExactly(
+            assertThat(board.calculateTotalPoints()).containsOnly(
                     Map.entry(Team.WHITE, new Point(0.5 + 0.5)),
                     Map.entry(Team.BLACK, Point.ZERO));
         }
