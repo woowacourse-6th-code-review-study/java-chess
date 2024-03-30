@@ -80,7 +80,7 @@ public class Board {
         }
         board.put(end, movingPiece);
         turn = turn.next();
-        return GameStatus.PLAY;
+        return GameStatus.PLAYING;
     }
 
     private boolean isOtherTeamKing(Position end) {

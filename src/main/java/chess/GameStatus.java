@@ -4,7 +4,7 @@ import chess.domain.piece.Team;
 
 public enum GameStatus {
 
-    PLAY,
+    PLAYING,
     END,
     BLACK_WIN,
     WHITE_WIN;

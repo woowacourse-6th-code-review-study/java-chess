@@ -43,8 +43,8 @@ public class ChessGame {
     }
 
     private void play(Board board) {
-        GameStatus gameEnd = GameStatus.PLAY;
-        while (gameEnd == GameStatus.PLAY) {
+        GameStatus gameEnd = GameStatus.PLAYING;
+        while (gameEnd == GameStatus.PLAYING) {
             gameEnd = tryProcessTurn(board);
         }
     }
@@ -57,7 +57,7 @@ public class ChessGame {
             outputView.printExceptionMessage(exception);
             tryProcessTurn(board);
         }
-        return GameStatus.PLAY;
+        return GameStatus.PLAYING;
     }
 
     private GameStatus processTurn(GameCommand command, Board board) {
@@ -77,7 +77,7 @@ public class ChessGame {
         double blackScore = board.calculateScoreOf(Team.BLACK);
         double whiteScore = board.calculateScoreOf(Team.WHITE);
         outputView.printStatus(blackScore, whiteScore);
-        return GameStatus.PLAY;
+        return GameStatus.PLAYING;
     }
 
     private GameStatus executeMove(Board board) {
@@ -85,7 +85,7 @@ public class ChessGame {
         Position end = inputView.readPosition();
         GameStatus gameStatus = board.tryMove(start, end);
         showBoard(board);
-        if (gameStatus != GameStatus.PLAY) {
+        if (gameStatus != GameStatus.PLAYING) {
             outputView.printWinner(gameStatus);
         }
         return gameStatus;
