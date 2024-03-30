@@ -43,9 +43,9 @@ public class ChessGame {
     }
 
     private void play(Board board) {
-        GameStatus gameEnd = GameStatus.PLAYING;
-        while (GameStatus.isPlaying(gameEnd)) {
-            gameEnd = tryProcessTurn(board);
+        GameStatus gameStatus = GameStatus.PLAYING;
+        while (GameStatus.isPlaying(gameStatus)) {
+            gameStatus = tryProcessTurn(board);
         }
     }
 
