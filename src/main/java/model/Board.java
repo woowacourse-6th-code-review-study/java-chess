@@ -8,6 +8,7 @@ import exception.PieceExistInRouteException;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -123,30 +124,50 @@ public class Board {
         pieces.remove(moving.getCurrentPosition());
     }
 
-    public Score calculateScore(final Camp camp) { //TODO 람다 스트림으로 빼보기
-        final Map<File, Integer> count = new EnumMap<>(File.class);
-        Score result = new Score(0);
-        for (final Entry<Position, Piece> entry : pieces.entrySet()) {
-            final Piece piece = entry.getValue();
-            if (piece.isSameCamp(camp)) {
-                if (piece.isPawn()) {
-                    final File file = entry.getKey().getFile();
-                    count.put(file, count.getOrDefault(file, 0) + 1);
-                }
-                result = result.add(PieceScore.getScore(piece));
-            }
+    public Score calculateScore(final Camp camp) {
+        final Map<File, Integer> pawnCount = countSameFilePawn(camp);
+        final List<Score> scores = collectScore(camp);
+
+        final Score result = scores.stream()
+                .reduce(Score::add)
+                .orElse(new Score(0));
+
+        return result.minus(duplicateFilePawns(pawnCount));
+    }
+
+    private List<Score> collectScore(final Camp camp) {
+        return pieces.values()
+                .stream()
+                .filter(piece -> piece.isSameCamp(camp))
+                .map(PieceScore::getScore)
+                .toList();
+    }
+
+    private Map<File, Integer> countSameFilePawn(final Camp camp) {
+        final Map<File, Integer> pawnCount = new EnumMap<>(File.class);
+        pieces.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().isSameCamp(camp))
+                .forEach(entry -> checkPawn(entry, pawnCount));
+        return pawnCount;
+    }
+
+    private Score duplicateFilePawns(final Map<File, Integer> count) {
+        return count.values()
+                .stream()
+                .filter(sameFilePawn -> sameFilePawn > 1)
+                .map(sameFilePawn -> new Score(sameFilePawn * 0.5F)) // TODO 0.5 상수화
+                .reduce(Score::add)
+                .orElse(new Score(0));
+    }
+
+    private void checkPawn(final Entry<Position, Piece> entry, final Map<File, Integer> count) {
+        final Piece piece = entry.getValue();
+        if (piece.isPawn()) {
+            final Position position = entry.getKey();
+            final File file = position.getFile();
+            count.put(file, count.getOrDefault(file, 0) + 1);
         }
-        final Score score = new Score(1);
-        for (int sameFilePawnCount : count.values()) {
-            if (sameFilePawnCount == 1) {
-                result.add(score);
-            }
-            if (sameFilePawnCount > 1) {
-                float value = sameFilePawnCount * 0.5f;
-                result = result.minus(new Score(value));
-            }
-        }
-        return result;
     }
 
     public Map<Position, Piece> getPieces() {
