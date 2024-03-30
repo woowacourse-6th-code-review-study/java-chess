@@ -1,12 +1,12 @@
 package chess.dao;
 
-import chess.domain.Team;
+import chess.dto.TurnType;
 
 public interface ChessGameRepository {
 
     boolean isExistGame();
 
-    void update(Team turn);
+    void update(TurnType turn);
 
     void deleteAll();
 }

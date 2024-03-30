@@ -1,7 +1,7 @@
 package chess.dao;
 
-import chess.domain.Team;
 import chess.domain.position.Position;
+import chess.dto.TurnType;
 import java.util.List;
 
 public class ChessDao {
@@ -22,12 +22,12 @@ public class ChessDao {
         return pieceRepository.findAll();
     }
 
-    public void saveBoard(List<PieceEntity> pieces, Team currentTurn) {
+    public void saveBoard(List<PieceEntity> pieces, TurnType currentTurn) {
         pieceRepository.saveAll(pieces);
         chessGameRepository.update(currentTurn);
     }
 
-    public void saveMoving(PieceEntity piece, Position previous, Team currentTurn) {
+    public void saveMoving(PieceEntity piece, Position previous, TurnType currentTurn) {
         PieceEntity emptyPiece = PieceEntity.createEmptyPiece(previous);
 
         pieceRepository.update(piece);
