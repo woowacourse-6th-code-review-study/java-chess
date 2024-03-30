@@ -1,5 +1,7 @@
 use chess_test;
 
+drop table if exists moving;
+
 create table moving
 (
     movement_id      INT primary key auto_increment,

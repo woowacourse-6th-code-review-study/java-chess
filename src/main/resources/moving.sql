@@ -1,6 +1,6 @@
 use chess;
-#
-drop table moving;
+
+drop table if exists moving;
 
 create table moving
 (

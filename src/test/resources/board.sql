@@ -1,6 +1,6 @@
 use chess_test;
 
-# drop table board;
+drop table if exists board;
 
 create table board
 (

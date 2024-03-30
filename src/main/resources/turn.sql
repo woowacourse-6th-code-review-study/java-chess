@@ -1,6 +1,6 @@
 use chess;
 
-drop table turn;
+drop table if exists turn;
 
 create table turn
 (
