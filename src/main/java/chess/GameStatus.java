@@ -15,4 +15,8 @@ public enum GameStatus {
         }
         return WHITE_WIN;
     }
+
+    public static boolean isPlaying(GameStatus gameStatus) {
+        return gameStatus == GameStatus.PLAYING;
+    }
 }
