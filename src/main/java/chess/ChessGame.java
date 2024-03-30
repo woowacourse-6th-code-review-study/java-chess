@@ -37,7 +37,7 @@ public class ChessGame {
             play(board);
             return;
         }
-        if (command == GameCommand.MOVE || command == GameCommand.STATUS) {
+        if (GameCommand.isImpossibleBeforeStartGame(command)) {
             throw new IllegalArgumentException("아직 게임을 시작하지 않았습니다.");
         }
     }

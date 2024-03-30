@@ -21,4 +21,8 @@ public enum GameCommand {
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 커멘드입니다."));
     }
+
+    public static boolean isImpossibleBeforeStartGame(GameCommand command) {
+        return command == MOVE || command == STATUS;
+    }
 }
