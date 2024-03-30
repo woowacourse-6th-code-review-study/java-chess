@@ -1,8 +1,8 @@
 package repository;
 
-import domain.board.State;
+import domain.piece.Color;
 import dto.PieceDto;
-import dto.StateDto;
+import dto.TurnDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,10 +15,11 @@ class DaoServiceTest {
     private static final PieceDto A2WhitePawn = new PieceDto("A", "2", "WHITE", "PAWN");
     private static final PieceDto B2WhitePawn = new PieceDto("B", "2", "WHITE", "PAWN");
     private static final PieceDto C2WhitePawn = new PieceDto("C", "2", "WHITE", "PAWN");
-    private static final StateDto whiteTurn = StateDto.of(State.WHITE_TURN);
+    private static final TurnDto whiteTurn = TurnDto.of(Color.WHITE);
+    private static final TurnDto blackTurn = TurnDto.of(Color.BLACK);
 
     private final PieceDao pieceDao = new PieceDao();
-    private final StateDao stateDao = new StateDao();
+    private final TurnDao turnDao = new TurnDao();
     private final DaoService daoService = new DaoService();
 
     @BeforeEach
@@ -26,13 +27,13 @@ class DaoServiceTest {
         pieceDao.add(A2WhitePawn);
         pieceDao.add(B2WhitePawn);
         pieceDao.add(C2WhitePawn);
-        stateDao.update(whiteTurn);
+        turnDao.update(whiteTurn);
     }
 
     @AfterEach
     void rollback() {
         pieceDao.deleteAll();
-        stateDao.deleteAll();
+        turnDao.deleteAll();
     }
 
     @Test
@@ -48,8 +49,8 @@ class DaoServiceTest {
 
     @Test
     void 이전_게임의_턴_데이터를_불러온다() {
-        assertThat(daoService.loadPreviousTurn().getState())
-                .isEqualTo(State.WHITE_TURN);
+        assertThat(daoService.loadPreviousTurn().getTurn())
+                .isEqualTo(Color.WHITE);
     }
 
     @Test
@@ -68,12 +69,10 @@ class DaoServiceTest {
 
     @Test
     void 턴_데이터를_갱신한다() {
-        StateDto blackTurn = StateDto.of(State.BLACK_TURN);
-
         daoService.updateTurn(blackTurn);
 
-        assertThat(daoService.loadPreviousTurn().getState())
-                .isEqualTo(State.BLACK_TURN);
+        assertThat(daoService.loadPreviousTurn().getTurn())
+                .isEqualTo(Color.BLACK);
     }
 
     @Test

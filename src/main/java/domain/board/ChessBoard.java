@@ -15,15 +15,15 @@ import java.util.Map;
 
 public class ChessBoard {
     private final Map<Position, Piece> board;
-    private State state;
+    private Color turn;
 
     public ChessBoard(Map<Position, Piece> board) {
-        this(new HashMap<>(board), State.NOT_STARTED);
+        this(new HashMap<>(board), Color.WHITE);
     }
 
-    ChessBoard(Map<Position, Piece> board, State state) {
+    ChessBoard(Map<Position, Piece> board, Color turn) {
         this.board = new HashMap<>(board);
-        this.state = state;
+        this.turn = turn;
     }
 
     public void move(final Position source, final Position target) {
@@ -44,7 +44,7 @@ public class ChessBoard {
 
     private void validateTurn(final Position source) {
         final Piece piece = findPieceByPosition(source);
-        if (!this.state.isTurnOf(piece.color())) {
+        if (this.turn != piece.color()) {
             throw new IllegalArgumentException("상대 턴입니다.");
         }
     }
@@ -72,29 +72,17 @@ public class ChessBoard {
     }
 
     private void changeTurn() {
-        if (this.state.isTurnOf(Color.BLACK)) {
-            this.state = State.WHITE_TURN;
+        if (this.turn == Color.BLACK) {
+            this.turn = Color.WHITE;
             return;
         }
-        this.state = State.BLACK_TURN;
+        this.turn = Color.BLACK;
     }
 
     public boolean isKingNotExist() {
         return board.values().stream()
                 .filter(piece -> piece.type() == Type.KING)
                 .count() != 2;
-    }
-
-    public void start() {
-        this.state = State.WHITE_TURN;
-    }
-
-    public void end() {
-        this.state = State.ENDED;
-    }
-
-    public boolean isGameRunning() {
-        return this.state == State.ENDED;
     }
 
     public Score calculateScore() {
@@ -111,7 +99,7 @@ public class ChessBoard {
                 .toList();
     }
 
-    public State getState() {
-        return this.state;
+    public Color getTurn() {
+        return this.turn;
     }
 }

@@ -2,18 +2,18 @@ package repository;
 
 import db.JdbcTemplate;
 import dto.PieceDto;
-import dto.StateDto;
+import dto.TurnDto;
 
 import java.util.List;
 
 public class DaoService {
     private final PieceDao pieceDao;
-    private final StateDao stateDao;
+    private final TurnDao turnDao;
 
     public DaoService() {
         final JdbcTemplate jdbcTemplate = new JdbcTemplate();
         this.pieceDao = new PieceDao(jdbcTemplate);
-        this.stateDao = new StateDao(jdbcTemplate);
+        this.turnDao = new TurnDao(jdbcTemplate);
     }
 
     public boolean isPreviousDataExist() {
@@ -24,8 +24,8 @@ public class DaoService {
         return pieceDao.findAll();
     }
 
-    public StateDto loadPreviousTurn() {
-        return stateDao.find();
+    public TurnDto loadPreviousTurn() {
+        return turnDao.find();
     }
 
     public void updatePiece(final List<PieceDto> pieceDtos) {
@@ -35,13 +35,13 @@ public class DaoService {
         }
     }
 
-    public void updateTurn(final StateDto stateDto) {
-        stateDao.deleteAll();
-        stateDao.update(stateDto);
+    public void updateTurn(final TurnDto turnDto) {
+        turnDao.deleteAll();
+        turnDao.update(turnDto);
     }
 
     public void deletePreviousData() {
         pieceDao.deleteAll();
-        stateDao.deleteAll();
+        turnDao.deleteAll();
     }
 }

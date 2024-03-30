@@ -2,28 +2,28 @@ package repository;
 
 import db.JdbcTemplate;
 import db.RowMapper;
-import dto.StateDto;
+import dto.TurnDto;
 
 import java.util.List;
 
-public class StateDao {
-    private static final String TABLE_NAME = "states";
+public class TurnDao {
+    private static final String TABLE_NAME = "turns";
 
     private final JdbcTemplate jdbcTemplate;
-    private final RowMapper<StateDto> rowMapper = (resultSet) ->
-            new StateDto(resultSet.getString("state"));
+    private final RowMapper<TurnDto> rowMapper = (resultSet) ->
+            new TurnDto(resultSet.getString("turn"));
 
-    StateDao() {
+    TurnDao() {
         this(new JdbcTemplate());
     }
 
-    StateDao(final JdbcTemplate jdbcTemplate) {
+    TurnDao(final JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    StateDto find() {
+    TurnDto find() {
         final var query = "SELECT * FROM " + TABLE_NAME + " LIMIT 1";
-        final List<StateDto> turns = jdbcTemplate.find(query, rowMapper);
+        final List<TurnDto> turns = jdbcTemplate.find(query, rowMapper);
         if (turns.isEmpty()) {
             throw new IllegalArgumentException("데이터가 없습니다.");
         }
@@ -31,11 +31,11 @@ public class StateDao {
     }
 
 
-    void update(final StateDto stateDto) {
+    void update(final TurnDto turnDto) {
         final String deleteQuery = "DELETE FROM " + TABLE_NAME;
         final String insertQuery = "INSERT INTO " + TABLE_NAME + " VALUES (?)";
         jdbcTemplate.delete(deleteQuery);
-        jdbcTemplate.add(insertQuery, stateDto.state());
+        jdbcTemplate.add(insertQuery, turnDto.turn());
     }
 
     void deleteAll() {

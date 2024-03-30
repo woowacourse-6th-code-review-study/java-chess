@@ -1,7 +1,6 @@
 package controller.command;
 
-import domain.board.ChessBoard;
-import domain.board.State;
+import domain.ChessGame;
 import view.OutputView;
 
 import java.util.List;
@@ -20,15 +19,8 @@ public class StartOnCommand implements Command {
     }
 
     @Override
-    public void execute(final ChessBoard board, final OutputView outputView) {
-        validateGameStatus(board);
-        board.start();
-        outputView.printBoard(board);
-    }
-
-    private void validateGameStatus(final ChessBoard board) {
-        if (board.getState() != State.NOT_STARTED) {
-            throw new IllegalStateException("게임이 이미 시작됐습니다.");
-        }
+    public void execute(final ChessGame game, final OutputView outputView) {
+        game.start();
+        outputView.printBoard(game.getBoard());
     }
 }

@@ -44,11 +44,11 @@ public class ChessBoardFactory {
         return new ChessBoard(pieceMap);
     }
 
-    public static ChessBoard loadPreviousChessBoard(List<PieceDto> pieceDtos, final State status) {
+    public static ChessBoard loadPreviousChessBoard(List<PieceDto> pieceDtos, final Color turn) {
         return pieceDtos.stream()
                 .collect(Collectors.collectingAndThen(Collectors.toMap(
                         PieceDto::getPosition,
                         PieceDto::getPiece
-                ), board -> new ChessBoard(board, status)));
+                ), board -> new ChessBoard(board, turn)));
     }
 }
