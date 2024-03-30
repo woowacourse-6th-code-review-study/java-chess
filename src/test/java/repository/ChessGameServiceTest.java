@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
-class DaoServiceTest {
+class ChessGameServiceTest {
     private static final PieceDto A2WhitePawn = new PieceDto("A", "2", "WHITE", "PAWN");
     private static final PieceDto B2WhitePawn = new PieceDto("B", "2", "WHITE", "PAWN");
     private static final PieceDto C2WhitePawn = new PieceDto("C", "2", "WHITE", "PAWN");
@@ -24,7 +24,7 @@ class DaoServiceTest {
 
     private final PieceDao pieceDao = new PieceDao();
     private final TurnDao turnDao = new TurnDao();
-    private final DaoService daoService = new DaoService();
+    private final ChessGameService chessGameService = new ChessGameService();
 
     @BeforeEach
     void setData() {
@@ -42,18 +42,18 @@ class DaoServiceTest {
 
     @Test
     void 이전_게임_데이터가_존재한다() {
-        assertThat(daoService.isPreviousDataExist()).isTrue();
+        assertThat(chessGameService.isPreviousDataExist()).isTrue();
     }
 
     @Test
     void 이전_게임_데이터를_불러온다() {
-        assertThat(daoService.loadPreviousData())
+        assertThat(chessGameService.loadPreviousData())
                 .containsExactlyInAnyOrder(A2WhitePawn, B2WhitePawn, C2WhitePawn);
     }
 
     @Test
     void 이전_게임의_턴_데이터를_불러온다() {
-        assertThat(daoService.loadPreviousTurn().getTurn())
+        assertThat(chessGameService.loadPreviousTurn().getTurn())
                 .isEqualTo(Color.WHITE);
     }
 
@@ -65,24 +65,24 @@ class DaoServiceTest {
 
         List<PieceDto> pieceDtos = List.of(A3WhitePawn, B3WhitePawn, C3WhitePawn);
 
-        daoService.updatePiece(pieceDtos);
+        chessGameService.updatePiece(pieceDtos);
 
-        assertThat(daoService.loadPreviousData())
+        assertThat(chessGameService.loadPreviousData())
                 .containsExactlyInAnyOrder(A3WhitePawn, B3WhitePawn, C3WhitePawn);
     }
 
     @Test
     void 턴_데이터를_갱신한다() {
-        daoService.updateTurn(blackTurn);
+        chessGameService.updateTurn(blackTurn);
 
-        assertThat(daoService.loadPreviousTurn().getTurn())
+        assertThat(chessGameService.loadPreviousTurn().getTurn())
                 .isEqualTo(Color.BLACK);
     }
 
     @Test
     void 모든_데이터를_삭제한다() {
-        daoService.deletePreviousData();
+        chessGameService.deletePreviousData();
 
-        assertThat(daoService.isPreviousDataExist()).isFalse();
+        assertThat(chessGameService.isPreviousDataExist()).isFalse();
     }
 }

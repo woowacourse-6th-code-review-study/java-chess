@@ -18,6 +18,6 @@ class TurnDaoTest {
 
         turnDao.update(whiteTurn);
 
-        assertThat(turnDao.find().getTurn()).isEqualTo(Color.WHITE);
+        assertThat(turnDao.findOne().getTurn()).isEqualTo(Color.WHITE);
     }
 }

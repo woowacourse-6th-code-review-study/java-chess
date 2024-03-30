@@ -6,11 +6,11 @@ import dto.TurnDto;
 
 import java.util.List;
 
-public class DaoService {
+public class ChessGameService {
     private final PieceDao pieceDao;
     private final TurnDao turnDao;
 
-    public DaoService() {
+    public ChessGameService() {
         final JdbcTemplate jdbcTemplate = new JdbcTemplate();
         this.pieceDao = new PieceDao(jdbcTemplate);
         this.turnDao = new TurnDao(jdbcTemplate);
@@ -25,7 +25,7 @@ public class DaoService {
     }
 
     public TurnDto loadPreviousTurn() {
-        return turnDao.find();
+        return turnDao.findOne();
     }
 
     public void updatePiece(final List<PieceDto> pieceDtos) {

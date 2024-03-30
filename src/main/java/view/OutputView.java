@@ -4,27 +4,23 @@ import domain.board.ChessBoard;
 import domain.board.Score;
 
 public class OutputView {
-    private final MessageResolver messageResolver;
+    private static final MessageResolver messageResolver = new MessageResolver();
 
-    public OutputView(final MessageResolver messageResolver) {
-        this.messageResolver = messageResolver;
-    }
-
-    public void printGameGuideMessage() {
+    public static void printGameGuideMessage() {
         System.out.println(messageResolver.resolveGameStartMessage());
     }
 
-    public void printBoard(ChessBoard board) {
-        String boardRankMessage = messageResolver.resolveBoard(board);
-        System.out.println(boardRankMessage);
+    public static void printBoard(ChessBoard board) {
+        String boardMessage = messageResolver.resolveBoard(board);
+        System.out.println(boardMessage);
     }
 
-    public void printErrorMessage(String errorMessage) {
-        System.out.println(errorMessage);
-    }
-
-    public void printScore(Score score) {
+    public static void printScore(Score score) {
         String scoreMessage = messageResolver.resolveScore(score);
         System.out.println(scoreMessage);
+    }
+
+    public static void printErrorMessage(Exception e) {
+        System.out.println(e.getMessage());
     }
 }

@@ -21,8 +21,8 @@ public class TurnDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    TurnDto find() {
-        final var query = "SELECT * FROM " + TABLE_NAME + " LIMIT 1";
+    TurnDto findOne() {
+        final String query = "SELECT * FROM " + TABLE_NAME + " LIMIT 1";
         final List<TurnDto> turns = jdbcTemplate.find(query, rowMapper);
         if (turns.isEmpty()) {
             throw new IllegalArgumentException("데이터가 없습니다.");

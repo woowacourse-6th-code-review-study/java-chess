@@ -25,8 +25,8 @@ public class MoveOnCommand implements Command {
     }
 
     @Override
-    public void execute(final ChessGame game, final OutputView outputView) {
+    public void execute(final ChessGame game) {
         game.move(source, target);
-        outputView.printBoard(game.getBoard());
+        OutputView.printBoard(game.getBoard());
     }
 }

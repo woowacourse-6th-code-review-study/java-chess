@@ -44,15 +44,15 @@ public class ChessGame {
         return board.isKingNotExist();
     }
 
-    public Score getScore() {
-        return board.calculateScore();
-    }
-
     public ChessBoard getBoard() {
         return board;
     }
 
     public Color getTurn() {
         return board.getTurn();
+    }
+
+    public Score getScore() {
+        return board.calculateScore();
     }
 }

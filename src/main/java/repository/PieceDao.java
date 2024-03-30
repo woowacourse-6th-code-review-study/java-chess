@@ -33,7 +33,7 @@ public class PieceDao {
     PieceDto findOne(final String file, final String rank) {
         final String query = "SELECT * FROM " + TABLE_NAME + " WHERE board_file = ? and board_rank = ? limit 1";
         final List<PieceDto> pieces = jdbcTemplate.find(query, rowMapper, file, rank);
-        if (pieces.size() == 0) {
+        if (pieces.isEmpty()) {
             throw new IllegalArgumentException("데이터가 없습니다.");
         }
         return pieces.get(0);
@@ -52,6 +52,6 @@ public class PieceDao {
     boolean hasRecords() {
         final String query = "SELECT * FROM " + TABLE_NAME + " LIMIT 1";
         final List<PieceDto> pieces = jdbcTemplate.find(query, rowMapper);
-        return pieces.size() != 0;
+        return !pieces.isEmpty();
     }
 }

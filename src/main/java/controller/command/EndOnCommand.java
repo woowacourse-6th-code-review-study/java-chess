@@ -19,8 +19,8 @@ public class EndOnCommand implements Command {
     }
 
     @Override
-    public void execute(final ChessGame game, final OutputView outputView) {
+    public void execute(final ChessGame game) {
         game.end();
-        outputView.printScore(game.getScore());
+        OutputView.printScore(game.getScore());
     }
 }

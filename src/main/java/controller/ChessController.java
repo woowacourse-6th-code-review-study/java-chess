@@ -4,69 +4,51 @@ import domain.ChessGame;
 import domain.board.ChessBoard;
 import domain.board.ChessBoardFactory;
 import dto.TurnDto;
-import repository.DaoService;
+import repository.ChessGameService;
 import view.InputView;
 import view.OutputView;
 
 public class ChessController {
-    private final InputView inputView;
-    private final OutputView outputView;
+    private final ChessGameService chessGameService;
+    private ChessGame chessGame;
 
-    public ChessController(InputView inputView, OutputView outputView) {
-        this.inputView = inputView;
-        this.outputView = outputView;
+    public ChessController(final ChessGameService chessGameService) {
+        this.chessGameService = chessGameService;
     }
 
     public void start() {
-        DaoService daoService = new DaoService();
-
-        outputView.printGameGuideMessage();
-        ChessGame chessGame = new ChessGame(initializeChessGame(daoService));
-
+        chessGame = new ChessGame(initializeChessGame());
+        OutputView.printGameGuideMessage();
         while (chessGame.isPlaying()) {
-            readCommandUntilValid(chessGame);
+            readCommandUntilValid();
         }
-
-        updateGameStatus(daoService, chessGame);
+        updateGameStatus();
     }
 
-    private ChessBoard initializeChessGame(DaoService daoService) {
+    private ChessBoard initializeChessGame() {
         try {
-            TurnDto turnDto = daoService.loadPreviousTurn();
-            return ChessBoardFactory.loadPreviousChessBoard(daoService.loadPreviousData(), turnDto.getTurn());
+            TurnDto turnDto = chessGameService.loadPreviousTurn();
+            return ChessBoardFactory.loadPreviousChessBoard(chessGameService.loadPreviousData(), turnDto.getTurn());
         } catch (IllegalArgumentException e) {
             return ChessBoardFactory.createInitialChessBoard();
         }
     }
 
-    private void readCommandUntilValid(ChessGame game) {
+    private void readCommandUntilValid() {
         try {
-            inputView.readCommand().execute(game, outputView);
+            InputView.readCommand().execute(chessGame);
         } catch (Exception e) {
-            outputView.printErrorMessage(e.getMessage());
-            readCommandUntilValid(game);
+            OutputView.printErrorMessage(e);
+            readCommandUntilValid();
         }
     }
 
-    private void updateGameStatus(DaoService daoService, ChessGame game) {
-        if (game.isGameOver()) {
-            daoService.deletePreviousData();
+    private void updateGameStatus() {
+        if (chessGame.isGameOver()) {
+            chessGameService.deletePreviousData();
             return;
         }
-        daoService.updatePiece(game.getBoard().getPieces());
-        daoService.updateTurn(TurnDto.of(game.getTurn()));
+        chessGameService.updatePiece(chessGame.getBoard().getPieces());
+        chessGameService.updateTurn(TurnDto.of(chessGame.getTurn()));
     }
 }
-
-
-/*
-커넥션을 DAO에 넣어주기
-트랜잭셔널 구현 가능
-테스트도 가능할듯
-
-DAO를 테스트하는 이유
-- JDBC를 제대로 썼냐
-- 쿼리를 제대로 썼냐
-
-
- */

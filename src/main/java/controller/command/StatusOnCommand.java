@@ -20,8 +20,8 @@ public class StatusOnCommand implements Command {
     }
 
     @Override
-    public void execute(final ChessGame game, final OutputView outputView) {
+    public void execute(final ChessGame game) {
         final Score score = game.getScore();
-        outputView.printScore(score);
+        OutputView.printScore(score);
     }
 }
