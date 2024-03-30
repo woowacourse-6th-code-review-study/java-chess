@@ -19,8 +19,8 @@ import static view.command.CommandType.MOVE;
 import static view.command.CommandType.START;
 
 public class MessageResolver {
-    public static final int BOARD_LENGTH = 8;
     private static final String LINE_SEPARATOR = System.lineSeparator();
+    private static final int BOARD_LENGTH = 8;
     private static final Map<Type, String> PIECE_DISPLAY = Map.of(
             Type.PAWN, "p",
             Type.KNIGHT, "n",
