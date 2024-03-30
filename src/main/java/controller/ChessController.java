@@ -1,6 +1,8 @@
 package controller;
 
+import db.BoardDao;
 import db.MovingDao;
+import db.TurnDao;
 import db.dto.BoardDto;
 import db.dto.MovingDto;
 import db.dto.PieceDto;
@@ -25,7 +27,10 @@ public class ChessController {
 
     private final InputView inputView;
     private final OutputView outputView;
-    private final MovingDao movingDao = new MovingDao("chess");
+    private final MovingDao movingDao = new MovingDao("chess"); // TODO 중구난방쓰. dao 모으기
+    private final TurnDao turnDao = new TurnDao("chess");
+    private final BoardDao boardDao = new BoardDao("chess");
+
 
     public ChessController(final InputView inputView, final OutputView outputView) {
         this.inputView = inputView;
@@ -43,20 +48,21 @@ public class ChessController {
             gameStatus = play(gameStatus, chessGame);
         }
 
-        movingDao.remove("board");
+        boardDao.remove();
+        turnDao.remove();
         movingDao.remove("turn");
 
         if (gameStatus instanceof Quit) { // TODO instanceof 괜춘?
             return;
         }
         final BoardDto boardDto = BoardDto.from(new Board(chessGame.getBoard())); // TODO 형태 너무 이상 변경 필요
-        movingDao.addBoard(boardDto);
-        movingDao.addTurn(chessGame.getCamp());
+        boardDao.saveBoard(boardDto);
+        turnDao.addTurn(chessGame.getCamp());
     }
 
     private ChessGame create() {
-        final BoardDto board = movingDao.findBoard();
-        final TurnDto turn = movingDao.findTurn();
+        final BoardDto board = boardDao.find();
+        final TurnDto turn = turnDao.findTurn();
         final Map<PositionDto, PieceDto> pieces = board.pieces();
 
         if (pieces.isEmpty() || turn == null) {
