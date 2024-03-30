@@ -2,6 +2,7 @@ package chess.view;
 
 import chess.GameStatus;
 import chess.domain.piece.PieceType;
+import chess.domain.piece.Team;
 import chess.domain.position.File;
 import chess.domain.position.Position;
 import chess.domain.position.Rank;
@@ -20,6 +21,8 @@ public class OutputView {
     private static final Map<PieceType, String> PIECE_DISPLAY = Map.of(
             PieceType.KING, "K", PieceType.QUEEN, "Q", PieceType.KNIGHT, "N",
             PieceType.BISHOP, "B", PieceType.ROOK, "R", PieceType.PAWN, "P");
+    private static final Map<Team, String> WINNER_DISPLAY = Map.of(
+            Team.BLACK, "검은색 승리", Team.WHITE, "흰색 승리");
     private static final String EMPTY_SPACE = ".";
     private static final String ERROR_PREFIX = "[ERROR] ";
 
@@ -68,17 +71,9 @@ public class OutputView {
         System.out.print(EMPTY_SPACE);
     }
 
-    public void printStatus(double blackScore, double whiteScore) {
-        System.out.print("검은색: " + blackScore + ", 흰색: " + whiteScore);
-        if (blackScore > whiteScore) {
-            System.out.println(", 검은색 승리");
-            return;
-        }
-        if (whiteScore > blackScore) {
-            System.out.println(", 흰색 승리");
-            return;
-        }
-        System.out.println(", 무승부");
+    public void printStatus(double blackScore, double whiteScore, Team winner) {
+        System.out.println("검은색: " + blackScore + ", 흰색: " + whiteScore);
+        System.out.println(getWinnerDisplay(winner));
     }
 
     public void printExceptionMessage(Exception exception) {
@@ -87,9 +82,16 @@ public class OutputView {
 
     public void printWinner(GameStatus gameStatus) {
         if (gameStatus == GameStatus.BLACK_WIN) {
-            System.out.println("검은색 승리");
+            System.out.println(getWinnerDisplay(Team.BLACK));
             return;
         }
-        System.out.println("흰색 승리");
+        System.out.println(getWinnerDisplay(Team.WHITE));
+    }
+
+    private static String getWinnerDisplay(Team winner) {
+        if (winner == null) {
+            return "무승부";
+        }
+        return WINNER_DISPLAY.get(winner);
     }
 }

@@ -2,6 +2,7 @@ package chess;
 
 import chess.domain.Board;
 import chess.domain.BoardFactory;
+import chess.domain.ScoreCalculator;
 import chess.domain.piece.Team;
 import chess.domain.position.Position;
 import chess.dto.BoardDto;
@@ -74,9 +75,13 @@ public class ChessGame {
     }
 
     private GameStatus showStatus(Board board) {
-        double blackScore = board.calculateScoreOf(Team.BLACK);
-        double whiteScore = board.calculateScoreOf(Team.WHITE);
-        outputView.printStatus(blackScore, whiteScore);
+        ScoreCalculator scoreCalculator = new ScoreCalculator(board);
+
+        double blackScore = scoreCalculator.getBlackScore();
+        double whiteScore = scoreCalculator.getWhiteScore();
+        Team winner = scoreCalculator.chooseWinner();
+
+        outputView.printStatus(blackScore, whiteScore, winner);
         return GameStatus.PLAYING;
     }
 

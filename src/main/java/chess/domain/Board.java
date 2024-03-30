@@ -2,7 +2,6 @@ package chess.domain;
 
 import chess.GameStatus;
 import chess.domain.piece.Piece;
-import chess.domain.piece.PieceType;
 import chess.domain.piece.Team;
 import chess.domain.position.Position;
 import java.util.HashMap;
@@ -91,31 +90,12 @@ public class Board {
         return !piece.isSameTeam(turn) && piece.isKing();
     }
 
-    public double calculateScoreOf(Team team) {
-        double basicScore = calculateBasicScoreOf(team);
-        double minusScore = calculateMinusScoreOf(team);
-
-        return basicScore - minusScore;
-    }
-
-    private double calculateBasicScoreOf(Team team) {
+    public Stream<Piece> getPiecesOf(Team team) {
         return board.values().stream()
-                .filter(piece -> piece.isSameTeam(team))
-                .mapToDouble(PieceType::scoreOf)
-                .sum();
+                .filter(piece -> piece.isSameTeam(team));
     }
 
-    private double calculateMinusScoreOf(Team team) {
-        int count = (int) getPawnPositionOf(team)
-                .filter(position -> getPawnPositionOf(team)
-                        .anyMatch(other -> !other.equals(position)
-                                && other.isOnSameFile(position)))
-                .count();
-
-        return count * 0.5;
-    }
-
-    private Stream<Position> getPawnPositionOf(Team team) {
+    public Stream<Position> getPawnPositionsOf(Team team) {
         return board.entrySet().stream()
                 .filter(entry -> entry.getValue().isSameTeam(team))
                 .filter(entry -> entry.getValue().isPawn())
