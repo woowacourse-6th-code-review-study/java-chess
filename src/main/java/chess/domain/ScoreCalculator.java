@@ -24,7 +24,6 @@ public class ScoreCalculator {
 
     private double calculateBasicScoreOf(Board board, Team team) {
         return board.getPiecesOf(team)
-                .filter(piece -> piece.isSameTeam(team))
                 .mapToDouble(PieceType::scoreOf)
                 .sum();
     }
