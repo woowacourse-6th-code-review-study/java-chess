@@ -31,7 +31,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import exception.InvalidMovingException;
 import java.util.Set;
 import java.util.stream.Stream;
-import model.Camp;
 import model.ChessGame;
 import model.position.Moving;
 import model.position.Position;
@@ -46,9 +45,7 @@ class PawnTest {
     @DisplayName("이동할 수 없는 경로면 예외가 발생한다.")
     @ParameterizedTest
     @MethodSource("invalidMovingParameterProvider")
-    void invalidMoving(final Camp camp, final Moving moving) {
-        final Pawn pawn = Pawn.create(camp);
-
+    void invalidMoving(final Pawn pawn, final Moving moving) {
         assertAll(
                 () -> assertThat(pawn.canMovable(moving)).isFalse(),
                 () -> assertThatThrownBy(() -> pawn.getMoveRoute(moving))
@@ -58,18 +55,16 @@ class PawnTest {
 
     static Stream<Arguments> invalidMovingParameterProvider() {
         return Stream.of(
-                Arguments.of(Camp.BLACK, new Moving(A6, A4)),
-                Arguments.of(Camp.BLACK, new Moving(A7, A4)),
-                Arguments.of(Camp.WHITE, new Moving(A8, A7))
+                Arguments.of(new BlackPawn(), new Moving(A6, A4)),
+                Arguments.of(new BlackPawn(), new Moving(A7, A4)),
+                Arguments.of(new WhitePawn(), new Moving(A8, A7))
         );
     }
 
     @DisplayName("이동 경로를 반환한다. 출발지와 도착지는 포함하지 않는다.")
     @ParameterizedTest
     @MethodSource("checkRouteParameterProvider")
-    void checkRoute(final Camp camp, final Moving moving, final Set<Position> expected) {
-        final Pawn pawn = Pawn.create(camp);
-
+    void checkRoute(final Pawn pawn, final Moving moving, final Set<Position> expected) {
         assertAll(
                 () -> assertThat(pawn.canMovable(moving)).isTrue(),
                 () -> assertThat(pawn.getMoveRoute(moving)).isEqualTo(expected)
@@ -79,10 +74,10 @@ class PawnTest {
 
     static Stream<Arguments> checkRouteParameterProvider() {
         return Stream.of(
-                Arguments.of(Camp.BLACK, new Moving(A7, A5), Set.of(A6)),
-                Arguments.of(Camp.BLACK, new Moving(A6, A5), Set.of()),
-                Arguments.of(Camp.WHITE, new Moving(B2, B4), Set.of(B3)),
-                Arguments.of(Camp.WHITE, new Moving(C2, C3), Set.of())
+                Arguments.of(new BlackPawn(), new Moving(A7, A5), Set.of(A6)),
+                Arguments.of(new BlackPawn(), new Moving(A6, A5), Set.of()),
+                Arguments.of(new WhitePawn(), new Moving(B2, B4), Set.of(B3)),
+                Arguments.of(new WhitePawn(), new Moving(C2, C3), Set.of())
         );
     }
 

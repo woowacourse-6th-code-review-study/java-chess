@@ -14,12 +14,14 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Function;
 import model.piece.Bishop;
+import model.piece.BlackPawn;
 import model.piece.King;
 import model.piece.Knight;
 import model.piece.Pawn;
 import model.piece.Piece;
 import model.piece.Queen;
 import model.piece.Rook;
+import model.piece.WhitePawn;
 import model.position.File;
 import model.position.Moving;
 import model.position.Position;
@@ -47,8 +49,8 @@ public class Board {
     public static Board create() {
         final Map<Position, Piece> result = new HashMap<>();
         settingExceptPawn(result, Camp.BLACK, Rank.EIGHT);
-        settingPawn(result, Camp.BLACK, Rank.SEVEN);
-        settingPawn(result, Camp.WHITE, Rank.TWO);
+        settingPawn(result, Rank.SEVEN, new BlackPawn());
+        settingPawn(result, Rank.TWO, new WhitePawn());
         settingExceptPawn(result, Camp.WHITE, Rank.ONE);
         return new Board(result);
     }
@@ -60,10 +62,9 @@ public class Board {
         }
     }
 
-    private static void settingPawn(final Map<Position, Piece> board, final Camp camp, final Rank rank) {
+    private static void settingPawn(final Map<Position, Piece> board, final Rank rank, final Pawn pawn) {
         for (File file : File.values()) {
-            final Piece piece = Pawn.create(camp);
-            board.put(new Position(file, rank), piece);
+            board.put(new Position(file, rank), pawn);
         }
     }
 

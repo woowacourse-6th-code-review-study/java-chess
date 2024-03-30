@@ -13,13 +13,6 @@ public abstract class Pawn extends Piece {
         super(camp);
     }
 
-    public static Pawn create(Camp camp) {
-        if (camp == Camp.BLACK) {
-            return new BlackPawn();
-        }
-        return new WhitePawn();
-    }
-
     protected abstract boolean isDiagonal(final int differenceRank, final int differenceFile);
 
     protected abstract boolean isStraight(final Position currentPosition,
