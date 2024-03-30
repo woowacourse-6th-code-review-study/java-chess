@@ -11,6 +11,6 @@ CREATE TABLE piece (
     board_rank VARCHAR(2) CHECK (board_rank IN ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H')),
     board_file VARCHAR(2) CHECK (board_file IN ('1', '2', '3', '4', '5', '6', '7', '8')),
     type VARCHAR(10) CHECK (type IN ('KING', 'QUEEN', 'ROOK', 'BISHOP', 'KNIGHT', 'PAWN', 'EMPTY')),
-    team VARCHAR(10) CHECK (team IN ('BLACK', 'WHITE')),
+    team VARCHAR(10) CHECK (team IN ('BLACK', 'WHITE', 'EMPTY')),
     PRIMARY KEY (board_rank, board_file)
 );

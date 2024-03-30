@@ -16,7 +16,9 @@ public enum PieceType {
     ROOK(Rook.class),
     BISHOP(Bishop.class),
     KNIGHT(Knight.class),
-    PAWN(Pawn.class);
+    PAWN(Pawn.class),
+    EMPTY(null),
+    ;
 
     private final Class<? extends Piece> category;
 
@@ -29,5 +31,9 @@ public enum PieceType {
                 .filter(pieceType -> pieceType.category == piece.getClass())
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("해당 기물이 존재하지 않습니다."));
+    }
+
+    public static PieceType getEmptyType() {
+        return EMPTY;
     }
 }
