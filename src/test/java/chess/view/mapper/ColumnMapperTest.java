@@ -13,7 +13,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 class ColumnMapperTest {
 
     @Test
-    @DisplayName("이름으로 Column를 찾는다.")
+    @DisplayName("문자열로 Column를 찾는다.")
     void findByInputValueSuccessTest() {
         assertAll(
                 () -> assertEquals(Column.A, ColumnMapper.findByInputValue("a")),

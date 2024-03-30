@@ -27,7 +27,7 @@ public class OutputView {
 
     public static void printBoard(Board board) {
         List<StringBuilder> result = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
+        for (int i = 1; i <= 8; i++) {
             result.add(new StringBuilder(EMPTY_BOARD + " | " + RowMapper.findByRow(Row.findByIndex(i))));
         }
         result.add(new StringBuilder("ㅡㅡㅡㅡㅡㅡㅡㅡㅡ"));
@@ -36,7 +36,8 @@ public class OutputView {
         board.getBoard().keySet()
                 .forEach(position -> {
                     Piece piece = board.getBoard().get(position);
-                    int rowIndex = position.getRowIndex();
+//                    int rowIndex = position.getRowIndex();
+                    int rowIndex = RowMapper.findByIndex(position.getRow());
                     int columnIndex = position.getColumnIndex();
                     result.get(rowIndex).replace(columnIndex * 2, columnIndex * 2 + 1, PieceMapper.findByPieceType(piece));
                 });
@@ -50,10 +51,10 @@ public class OutputView {
         Winner winner = chessGameResult.getWinner();
         Map<Color, Score> teamScore = chessGameResult.getTeamScore();
         if (winner == Winner.WHITE_WIN) {
-            stringBuilder.append("흰색 팀 승리!");
+            stringBuilder.append("흰색 승리!");
         }
         if (winner == Winner.BLACK_WIN) {
-            stringBuilder.append("검정 팀 승리!");
+            stringBuilder.append("검정 승리!");
         }
         if (winner == Winner.DRAW) {
             stringBuilder.append("무승부!");
@@ -64,9 +65,9 @@ public class OutputView {
     }
 
     public static void printTeamScore(Score whiteTeamScore, Score blackTeamScore) {
-        System.out.println("--- 점수 ---");
-        System.out.println("흰색 팀: " + whiteTeamScore.score());
-        System.out.println("검정 팀: " + blackTeamScore.score());
+        System.out.println("--- 기물 점수 ---");
+        System.out.println("흰색: " + whiteTeamScore.score());
+        System.out.println("검정: " + blackTeamScore.score());
     }
 
     public static void printError(Exception exception) {

@@ -3,23 +3,19 @@ package chess.domain.board.position;
 import java.util.Arrays;
 
 public enum Row {
-    ONE(7),
-    TWO(6),
-    THREE(5),
+    EIGHT(8),
+    SEVEN(7),
+    SIX(6),
+    FIVE(5),
     FOUR(4),
-    FIVE(3),
-    SIX(2),
-    SEVEN(1),
-    EIGHT(0);
+    THREE(3),
+    TWO(2),
+    ONE(1);
 
     private final int index;
 
     Row(int index) {
         this.index = index;
-    }
-
-    public int getIndex() {
-        return index;
     }
 
     public Row calculateNextRow(int distance) {
@@ -38,6 +34,6 @@ public enum Row {
 
     public boolean isNextInRange(int distance) {
         int nextIndex = index + distance;
-        return EIGHT.index <= nextIndex && nextIndex <= ONE.index;
+        return EIGHT.index >= nextIndex && nextIndex >= ONE.index;
     }
 }
