@@ -10,6 +10,11 @@ public class ChessGameService {
     private final PieceDao pieceDao;
     private final TurnDao turnDao;
 
+    ChessGameService(final PieceDao pieceDao, final TurnDao turnDao) {
+        this.pieceDao = pieceDao;
+        this.turnDao = turnDao;
+    }
+
     public ChessGameService() {
         final JdbcTemplate jdbcTemplate = new JdbcTemplate();
         this.pieceDao = new PieceDao(jdbcTemplate);

@@ -1,6 +1,7 @@
 package repository;
 
 import domain.piece.Color;
+import domain.position.Position;
 import dto.PieceDto;
 import dto.TurnDto;
 import org.junit.jupiter.api.AfterEach;
@@ -9,7 +10,9 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,9 +25,9 @@ class ChessGameServiceTest {
     private static final TurnDto whiteTurn = TurnDto.of(Color.WHITE);
     private static final TurnDto blackTurn = TurnDto.of(Color.BLACK);
 
-    private final PieceDao pieceDao = new PieceDao();
-    private final TurnDao turnDao = new TurnDao();
-    private final ChessGameService chessGameService = new ChessGameService();
+    private final PieceDao pieceDao = new PieceMockDao();
+    private final TurnDao turnDao = new TurnMockDao();
+    private final ChessGameService chessGameService = new ChessGameService(pieceDao, turnDao);
 
     @BeforeEach
     void setData() {
@@ -84,5 +87,53 @@ class ChessGameServiceTest {
         chessGameService.deletePreviousData();
 
         assertThat(chessGameService.isPreviousDataExist()).isFalse();
+    }
+
+    static class PieceMockDao extends PieceDao {
+        private Map<Position, PieceDto> repository = new HashMap<>();
+
+        void add(final PieceDto piece) {
+            Position position = new Position(piece.boardFile() + piece.boardRank());
+            repository.put(position, piece);
+        }
+
+        PieceDto findOne(final String file, final String rank) {
+            Position position = new Position(file + rank);
+            if (!repository.containsKey(position)) {
+                throw new IllegalArgumentException("데이터가 없습니다.");
+            }
+            return repository.get(position);
+        }
+
+        List<PieceDto> findAll() {
+            return repository.values().stream().toList();
+        }
+
+        void deleteAll() {
+            repository = new HashMap<>();
+        }
+
+        boolean hasRecords() {
+            return repository.keySet().size() != 0;
+        }
+    }
+
+    static class TurnMockDao extends TurnDao {
+        private Color repository;
+
+        TurnDto findOne() {
+            if (repository == null) {
+                throw new IllegalArgumentException("데이터가 없습니다.");
+            }
+            return TurnDto.of(repository);
+        }
+
+        void update(final TurnDto turnDto) {
+            repository = turnDto.getTurn();
+        }
+
+        void deleteAll() {
+            repository = null;
+        }
     }
 }
