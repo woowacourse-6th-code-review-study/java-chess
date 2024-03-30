@@ -43,7 +43,7 @@ public class OutputView {
         for (File file : FILE_ORDER) {
             PieceDto piece = board.get(new Position(file, rank));
             Optional<PieceDto> optional = Optional.ofNullable(piece);
-            optional.ifPresentOrElse(this::printPiece, () -> System.out.print(EMPTY_SPACE));
+            optional.ifPresentOrElse(this::printPiece, this::printEmptySpace);
         }
         System.out.println();
     }
@@ -54,6 +54,10 @@ public class OutputView {
             return;
         }
         printWhitePiece(piece.type());
+    }
+
+    private void printEmptySpace() {
+        System.out.print(EMPTY_SPACE);
     }
 
     private void printBlackPiece(PieceType type) {
