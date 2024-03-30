@@ -5,6 +5,8 @@ import chess.domain.piece.Team;
 
 public class ScoreCalculator {
 
+    private static final double PAWN_PENALTY_SCORE = 0.5;
+
     private final double blackScore;
     private final double whiteScore;
 
@@ -34,7 +36,7 @@ public class ScoreCalculator {
                                 && other.isOnSameFile(position)))
                 .count();
 
-        return count * 0.5;
+        return count * PAWN_PENALTY_SCORE;
     }
 
     public Team chooseWinner() {
