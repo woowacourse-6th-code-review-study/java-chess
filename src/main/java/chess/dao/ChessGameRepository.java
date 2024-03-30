@@ -6,6 +6,8 @@ public interface ChessGameRepository {
 
     boolean isExistGame();
 
+    TurnType find();
+
     void update(TurnType turn);
 
     void deleteAll();
