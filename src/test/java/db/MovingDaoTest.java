@@ -7,7 +7,6 @@ import db.dto.MovingDto;
 import java.sql.SQLException;
 import model.Board;
 import model.Camp;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,13 +17,8 @@ class MovingDaoTest {
 
     @BeforeEach
     void beforeEach() {
-        movingDao.createMoving();
-        movingDao.createBoard();
-    }
-
-    @AfterEach
-    void afterEach() {
         movingDao.remove("moving");
+        movingDao.remove("turn");
         movingDao.remove("board");
     }
 

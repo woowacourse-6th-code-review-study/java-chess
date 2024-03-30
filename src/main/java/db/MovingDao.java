@@ -16,12 +16,12 @@ import model.Camp;
 
 public class MovingDao { // TODO 이름 수정
 
-    private static final String SERVER = "localhost:13306"; // MySQL 서버 주소
+    private static final String SERVER = "localhost:13306";
     private static final String OPTION = "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-    private static final String USERNAME = "root"; //  MySQL 서버 아이디
-    private static final String PASSWORD = "root"; // MySQL 서버 비밀번호
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "root";
 
-    private final String database; // MySQL DATABASE 이름
+    private final String database;
 
     public MovingDao(final String database) {
         this.database = database;
@@ -49,7 +49,7 @@ public class MovingDao { // TODO 이름 수정
     private void addPosition(final PositionDto position, final PieceDto piece) {
         final var query = "INSERT INTO board VALUES(?, ?, ?)";
         try (final var connection = getConnection();
-             final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+             final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)
         ) {
             preparedStatement.setString(1, position.value());
             preparedStatement.setString(2, piece.type());
@@ -66,7 +66,7 @@ public class MovingDao { // TODO 이름 수정
     public long addMoving(final MovingDto moving) {
         final var query = "INSERT INTO moving VALUES(?, ?, ?, ?, ?, ?)";
         try (final var connection = getConnection();
-             final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+             final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)
         ) {
             long autoIncrement = 0;
             preparedStatement.setNull(1, 0);
@@ -137,51 +137,10 @@ public class MovingDao { // TODO 이름 수정
         }
     }
 
-    //TODO 접근제한자 변경
-    public void createMoving() {
-        final var query = """
-                create table moving
-                 (
-                     movement_id      INT primary key auto_increment,
-                     camp             varchar(5)  not null,
-                     start_rank       varchar(12) not null,
-                     start_file       varchar(12) not null,
-                     destination_rank varchar(12) not null,
-                     destination_file varchar(12) not null
-                 )""";
-        try (final var connection = getConnection();
-             final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-        ) {
-            preparedStatement.executeUpdate();
-
-        } catch (final SQLException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
-
-    public void createBoard() {
-        final var query = """
-                create table board
-                (
-                    position   varchar(2)  not null,
-                    piece_type varchar(6) not null,
-                    camp       varchar(5)  not null
-
-                )""";
-        try (final var connection = getConnection();
-             final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-        ) {
-            preparedStatement.executeUpdate();
-
-        } catch (final SQLException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
-
     public void remove(String table) {
-        final var query = String.format("drop table %s", table);
+        final String query = String.format("truncate table %s", table);
         try (final var connection = getConnection();
-             final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+             final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)
         ) {
             preparedStatement.executeUpdate();
 
@@ -191,7 +150,7 @@ public class MovingDao { // TODO 이름 수정
     }
 
     public TurnDto findTurn() {
-        final var query = "SELECT * FROM turn";
+        final String query = "SELECT * FROM turn";
 
         try (final var connection = getConnection();
              final var preparedStatement = connection.prepareStatement(query)) {
@@ -208,27 +167,11 @@ public class MovingDao { // TODO 이름 수정
     }
 
     public void addTurn(final Camp camp) {
-        final var query = "INSERT INTO turn values(?)";
+        final String query = "INSERT INTO turn values(?)";
         try (final var connection = getConnection();
-             final var preparedStatement = connection.prepareStatement(query);
+             final var preparedStatement = connection.prepareStatement(query)
         ) {
             preparedStatement.setString(1, camp.toString());
-            preparedStatement.executeUpdate();
-
-        } catch (final SQLException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
-
-    public void createTurn() {
-        final var query = """
-                create table turn
-                (
-                    camp varchar(5) not null
-                )""";
-        try (final var connection = getConnection();
-             final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-        ) {
             preparedStatement.executeUpdate();
 
         } catch (final SQLException exception) {

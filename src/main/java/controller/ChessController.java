@@ -45,8 +45,6 @@ public class ChessController {
         final BoardDto boardDto = BoardDto.from(new Board(chessGame.getBoard())); // TODO 형태 너무 이상 변경 필요
         movingDao.remove("board");
         movingDao.remove("turn");
-        movingDao.createBoard();
-        movingDao.createTurn();
 
         if (gameStatus instanceof Quit) { // TODO instanceof 괜춘?
             return;
