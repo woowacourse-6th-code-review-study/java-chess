@@ -1,5 +1,6 @@
 package chess.dao;
 
+import chess.dao.exception.DBException;
 import chess.domain.Position;
 import chess.domain.game.ChessGame;
 import chess.domain.game.command.MoveCommand;
@@ -44,7 +45,7 @@ public class ChessPersistence {
         try {
             connection.setAutoCommit(false);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DBException("DB 접근에 오류가 발생했습니다.", e);
         }
     }
 
@@ -60,8 +61,9 @@ public class ChessPersistence {
     private void commitTransaction(Connection connection) {
         try {
             connection.commit();
+            connection.setAutoCommit(true);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DBException("DB 접근에 오류가 발생했습니다.", e);
         }
     }
 
@@ -98,6 +100,7 @@ public class ChessPersistence {
     private Piece findMovedPiece(ChessGame chessGame, Position to) {
         return chessGame.getPiecesOnBoard().stream()
                 .filter(piece -> piece.isOn(to))
-                .findFirst().orElseThrow();
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("움직인 말이 없습니다.", null));
     }
 }
