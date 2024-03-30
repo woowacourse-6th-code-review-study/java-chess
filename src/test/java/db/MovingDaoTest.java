@@ -15,7 +15,7 @@ class MovingDaoTest {
 
     @BeforeEach
     void beforeEach() {
-        movingDao.remove("moving");
+        movingDao.remove();
     }
 
     @DisplayName("데이터베이스 접속 확인")

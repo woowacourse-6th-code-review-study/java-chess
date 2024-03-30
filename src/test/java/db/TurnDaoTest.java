@@ -21,7 +21,7 @@ class TurnDaoTest {
     @Test
     void saveTurn() {
         //given
-        turnDao.addTurn(Camp.WHITE);
+        turnDao.saveTurn(Camp.WHITE);
         final TurnDto expected = new TurnDto("WHITE");
 
         //when

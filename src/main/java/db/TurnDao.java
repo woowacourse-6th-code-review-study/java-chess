@@ -14,7 +14,7 @@ public class TurnDao {
         this.database = database;
     }
 
-    public void addTurn(final Camp camp) {
+    public void saveTurn(final Camp camp) {
         final String query = "INSERT INTO turn values(?)";
         try (final var connection = DBConnectionUtil.getConnection(database);
              final var preparedStatement = connection.prepareStatement(query)

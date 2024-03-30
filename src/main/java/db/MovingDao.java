@@ -61,8 +61,8 @@ public class MovingDao {
         return null;
     }
 
-    public void remove(String table) {
-        final String query = String.format("truncate table %s", table);
+    public void remove() {
+        final String query = "truncate table moving";
         try (final var connection = DBConnectionUtil.getConnection(database);
              final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)
         ) {
