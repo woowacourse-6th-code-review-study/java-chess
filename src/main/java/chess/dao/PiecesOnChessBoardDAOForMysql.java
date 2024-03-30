@@ -20,23 +20,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PiecesOnChessBoardDAOForMysql implements PiecesOnChessBoardDAO {
-    private static final String DB_URL = "jdbc:mysql://localhost:13306/chess?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-    private static final String DB_USER_NAME = "user";
-    private static final String DB_USER_PASSWORD = "password";
-    private final DBConnectionCache dbConnectionCache;
-
-    public PiecesOnChessBoardDAOForMysql() {
-        this(DB_URL, DB_USER_NAME, DB_USER_PASSWORD);
-    }
-
-    public PiecesOnChessBoardDAOForMysql(String dbUrl, String userName, String password) {
-        this.dbConnectionCache = new DBConnectionCache(dbUrl, userName, password);
-    }
 
     @Override
-    public boolean save(Piece piece) {
+    public boolean save(Piece piece, Connection connection) {
         try {
-            Connection connection = dbConnectionCache.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "insert into pieces_on_board (piece_type, team_name, position_name) values ( ?, ? ,? )");
             setPieceToPreparedStatement(List.of(piece), preparedStatement);
@@ -47,12 +34,11 @@ public class PiecesOnChessBoardDAOForMysql implements PiecesOnChessBoardDAO {
     }
 
     @Override
-    public boolean saveAll(List<Piece> pieces) {
+    public boolean saveAll(List<Piece> pieces, Connection connection) {
         String sql = pieces.stream().map(piece -> "( ?, ? ,? )")
                 .collect(Collectors.joining(","));
         sql = "insert into pieces_on_board (piece_type, team_name, position_name) values " + sql;
         try {
-            Connection connection = dbConnectionCache.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             setPieceToPreparedStatement(pieces, preparedStatement);
             return preparedStatement.executeUpdate() == pieces.size();
@@ -62,8 +48,7 @@ public class PiecesOnChessBoardDAOForMysql implements PiecesOnChessBoardDAO {
     }
 
     @Override
-    public List<Piece> selectAll() {
-        Connection connection = dbConnectionCache.getConnection();
+    public List<Piece> selectAll(Connection connection) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "select piece_type, team_name, position_name from pieces_on_board");
@@ -101,9 +86,8 @@ public class PiecesOnChessBoardDAOForMysql implements PiecesOnChessBoardDAO {
     }
 
     @Override
-    public boolean delete(Position targetPosition) {
+    public boolean delete(Position targetPosition, Connection connection) {
         try {
-            Connection connection = dbConnectionCache.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "delete from pieces_on_board where position_name = ?");
             preparedStatement.setString(1, targetPosition.name());
@@ -114,9 +98,8 @@ public class PiecesOnChessBoardDAOForMysql implements PiecesOnChessBoardDAO {
     }
 
     @Override
-    public void deleteAll() {
+    public void deleteAll(Connection connection) {
         try {
-            Connection connection = dbConnectionCache.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("delete from pieces_on_board");
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

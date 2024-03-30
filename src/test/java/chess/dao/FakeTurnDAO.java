@@ -1,18 +1,19 @@
 package chess.dao;
 
 import chess.domain.piece.Team;
+import java.sql.Connection;
 import java.util.Optional;
 
 public class FakeTurnDAO implements TurnDAO {
     private Team team;
 
     @Override
-    public Optional<Team> select() {
+    public Optional<Team> select(Connection connection) {
         return Optional.ofNullable(team);
     }
 
     @Override
-    public boolean save(Team team) {
+    public boolean save(Team team, Connection connection) {
         if (this.team == null) {
             this.team = team;
             return true;
@@ -21,7 +22,7 @@ public class FakeTurnDAO implements TurnDAO {
     }
 
     @Override
-    public boolean update(Team targetTeam, Team updatedTeam) {
+    public boolean update(Team targetTeam, Team updatedTeam, Connection connection) {
         if (targetTeam.equals(team)) {
             team = updatedTeam;
             return true;
@@ -30,7 +31,7 @@ public class FakeTurnDAO implements TurnDAO {
     }
 
     @Override
-    public void delete() {
+    public void delete(Connection connection) {
         team = null;
     }
 }

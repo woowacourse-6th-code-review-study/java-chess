@@ -140,7 +140,7 @@ CREATE TABLE `pieces_on_board` (
 
 ### DB 관련
 
-- [ ] 트랜잭션 적용
+- [x] 트랜잭션 적용
 - [ ] TurnDAO에서 비즈니스 로직 상위로 이동
 - [ ] DAO에 boolean을 반환하는 메서드 추가
 - [ ] 구체적인 예외를 던지도록 수정

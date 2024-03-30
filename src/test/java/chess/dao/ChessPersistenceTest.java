@@ -16,19 +16,20 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class ChessPersistenceTest {
+    private final FakeDBConnectionCache dbConnectionCache = new FakeDBConnectionCache();
 
     @Test
     @DisplayName("저장된 게임이 있는 경우, 잘 불러오는지 확인")
     void loadChessGame() {
         FakePiecesOnChessBoardDAO piecesOnChessBoardDAO = new FakePiecesOnChessBoardDAO();
         FakeTurnDAO turnDAO = new FakeTurnDAO();
-        ChessPersistence chessPersistenceService = new ChessPersistence(piecesOnChessBoardDAO, turnDAO);
+        ChessPersistence persistenceService = new ChessPersistence(piecesOnChessBoardDAO, turnDAO, dbConnectionCache);
         List<Piece> pieces = List.of(new Pawn(A1, WHITE));
         Team currentTeam = BLACK;
         ChessGame chessGame = new ChessGame(pieces, currentTeam);
-        chessPersistenceService.saveChessGame(chessGame);
+        persistenceService.saveChessGame(chessGame);
 
-        ChessGame loadedChessGame = chessPersistenceService.loadChessGame();
+        ChessGame loadedChessGame = persistenceService.loadChessGame();
         List<Piece> loadedPieces = loadedChessGame.getPiecesOnBoard();
         Team loadedCurrentTeam = loadedChessGame.currentTeam();
 
@@ -36,7 +37,6 @@ class ChessPersistenceTest {
                 () -> Assertions.assertThat(loadedPieces).containsExactlyInAnyOrderElementsOf(pieces),
                 () -> Assertions.assertThat(loadedCurrentTeam).isEqualTo(currentTeam)
         );
-
     }
 
     @Test
@@ -44,11 +44,11 @@ class ChessPersistenceTest {
     void isSaveDataExistWhenExist() {
         FakePiecesOnChessBoardDAO piecesOnChessBoardDAO = new FakePiecesOnChessBoardDAO();
         FakeTurnDAO turnDAO = new FakeTurnDAO();
-        ChessPersistence chessPersistenceService = new ChessPersistence(piecesOnChessBoardDAO, turnDAO);
+        ChessPersistence persistenceService = new ChessPersistence(piecesOnChessBoardDAO, turnDAO, dbConnectionCache);
         ChessGame chessGame = new ChessGame();
-        chessPersistenceService.saveChessGame(chessGame);
+        persistenceService.saveChessGame(chessGame);
 
-        boolean saveDataExist = chessPersistenceService.isSaveDataExist();
+        boolean saveDataExist = persistenceService.isSaveDataExist();
 
         Assertions.assertThat(saveDataExist)
                 .isTrue();
@@ -59,9 +59,9 @@ class ChessPersistenceTest {
     void isSaveDataExistWhenNotExist() {
         FakePiecesOnChessBoardDAO piecesOnChessBoardDAO = new FakePiecesOnChessBoardDAO();
         FakeTurnDAO turnDAO = new FakeTurnDAO();
-        ChessPersistence chessPersistenceService = new ChessPersistence(piecesOnChessBoardDAO, turnDAO);
+        ChessPersistence persistenceService = new ChessPersistence(piecesOnChessBoardDAO, turnDAO, dbConnectionCache);
 
-        boolean saveDataExist = chessPersistenceService.isSaveDataExist();
+        boolean saveDataExist = persistenceService.isSaveDataExist();
 
         Assertions.assertThat(saveDataExist)
                 .isFalse();
@@ -72,8 +72,8 @@ class ChessPersistenceTest {
     void saveChessGame() {
         FakePiecesOnChessBoardDAO piecesOnChessBoardDAO = new FakePiecesOnChessBoardDAO();
         FakeTurnDAO turnDAO = new FakeTurnDAO();
-        ChessPersistence chessPersistenceService = new ChessPersistence(piecesOnChessBoardDAO, turnDAO);
-        boolean saveChessGameSuccess = chessPersistenceService.saveChessGame(new ChessGame());
+        ChessPersistence persistenceService = new ChessPersistence(piecesOnChessBoardDAO, turnDAO, dbConnectionCache);
+        boolean saveChessGameSuccess = persistenceService.saveChessGame(new ChessGame());
         Assertions.assertThat(saveChessGameSuccess)
                 .isTrue();
     }
@@ -83,10 +83,10 @@ class ChessPersistenceTest {
     void saveChessGameFail() {
         FakePiecesOnChessBoardDAO piecesOnChessBoardDAO = new FakePiecesOnChessBoardDAO();
         FakeTurnDAO turnDAO = new FakeTurnDAO();
-        ChessPersistence chessPersistenceService = new ChessPersistence(piecesOnChessBoardDAO, turnDAO);
-        chessPersistenceService.saveChessGame(new ChessGame());
+        ChessPersistence persistenceService = new ChessPersistence(piecesOnChessBoardDAO, turnDAO, dbConnectionCache);
+        persistenceService.saveChessGame(new ChessGame());
 
-        boolean saveChessGameSuccess = chessPersistenceService.saveChessGame(new ChessGame());
+        boolean saveChessGameSuccess = persistenceService.saveChessGame(new ChessGame());
         Assertions.assertThat(saveChessGameSuccess)
                 .isFalse();
     }
@@ -96,12 +96,12 @@ class ChessPersistenceTest {
     void updateChessGame() {
         FakePiecesOnChessBoardDAO piecesOnChessBoardDAO = new FakePiecesOnChessBoardDAO();
         FakeTurnDAO turnDAO = new FakeTurnDAO();
-        ChessPersistence chessPersistenceService = new ChessPersistence(piecesOnChessBoardDAO, turnDAO);
+        ChessPersistence persistenceService = new ChessPersistence(piecesOnChessBoardDAO, turnDAO, dbConnectionCache);
         ChessGame chessGame = new ChessGame();
-        chessPersistenceService.saveChessGame(chessGame);
+        persistenceService.saveChessGame(chessGame);
         MoveCommand moveCommand = new MoveCommand("a2", "a4");
         chessGame.move(moveCommand);
-        boolean updateChessGameSuccess = chessPersistenceService.updateChessGame(chessGame, moveCommand);
+        boolean updateChessGameSuccess = persistenceService.updateChessGame(chessGame, moveCommand);
         Assertions.assertThat(updateChessGameSuccess)
                 .isTrue();
     }

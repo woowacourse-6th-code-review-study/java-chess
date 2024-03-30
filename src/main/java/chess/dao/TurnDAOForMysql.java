@@ -8,22 +8,9 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class TurnDAOForMysql implements TurnDAO {
-    private static final String DB_URL = "jdbc:mysql://localhost:13306/chess?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-    private static final String DB_USER_NAME = "user";
-    private static final String DB_USER_PASSWORD = "password";
-    private final DBConnectionCache dbConnectionCache;
-
-    public TurnDAOForMysql() {
-        this(DB_URL, DB_USER_NAME, DB_USER_PASSWORD);
-    }
-
-    private TurnDAOForMysql(String dbUrl, String userName, String password) {
-        this.dbConnectionCache = new DBConnectionCache(dbUrl, userName, password);
-    }
 
     @Override
-    public Optional<Team> select() {
-        Connection connection = dbConnectionCache.getConnection();
+    public Optional<Team> select(Connection connection) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("select current_team_name from game");
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -39,9 +26,8 @@ public class TurnDAOForMysql implements TurnDAO {
     }
 
     @Override
-    public boolean save(Team team) {
+    public boolean save(Team team, Connection connection) {
         try {
-            Connection connection = dbConnectionCache.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO game (current_team_name) "
                             + "SELECT ? "
@@ -55,9 +41,8 @@ public class TurnDAOForMysql implements TurnDAO {
     }
 
     @Override
-    public boolean update(Team targetTeam, Team updatedTeam) {
+    public boolean update(Team targetTeam, Team updatedTeam, Connection connection) {
         try {
-            Connection connection = dbConnectionCache.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "update game set current_team_name = ? where current_team_name = ?");
             preparedStatement.setString(1, updatedTeam.name());
@@ -69,9 +54,8 @@ public class TurnDAOForMysql implements TurnDAO {
     }
 
     @Override
-    public void delete() {
+    public void delete(Connection connection) {
         try {
-            Connection connection = dbConnectionCache.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("delete from game");
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
