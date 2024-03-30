@@ -29,10 +29,7 @@ public class TurnDAOForMysql implements TurnDAO {
     public boolean save(Team team, Connection connection) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO game (current_team_name) "
-                            + "SELECT ? "
-                            + "FROM dual "
-                            + "WHERE NOT EXISTS (SELECT * FROM game)");
+                    "INSERT INTO game (current_team_name) values ( ? )");
             preparedStatement.setString(1, team.name());
             return preparedStatement.executeUpdate() == 1;
         } catch (SQLException e) {
