@@ -42,8 +42,8 @@ class PositionTest {
         Rank differentRank = Rank.SIX;
 
         assertAll(
-                () -> assertThat(sample.isSameRank(sameRank)).isTrue(),
-                () -> assertThat(sample.isSameRank(differentRank)).isFalse()
+                () -> assertThat(sample.isOnSameRank(sameRank)).isTrue(),
+                () -> assertThat(sample.isOnSameRank(differentRank)).isFalse()
         );
     }
 
@@ -55,8 +55,8 @@ class PositionTest {
         Position differentFile = new Position(File.A, Rank.FOUR);
 
         assertAll(
-                () -> assertThat(sample.isSameFile(sameFile)).isTrue(),
-                () -> assertThat(sample.isSameFile(differentFile)).isFalse()
+                () -> assertThat(sample.isOnSameFile(sameFile)).isTrue(),
+                () -> assertThat(sample.isOnSameFile(differentFile)).isFalse()
         );
     }
 }

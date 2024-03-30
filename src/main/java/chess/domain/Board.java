@@ -109,7 +109,7 @@ public class Board {
         int count = (int) findPawnEntryOf(team)
                 .filter(entry -> findPawnEntryOf(team)
                         .anyMatch(otherEntry -> !otherEntry.getKey().equals(entry.getKey())
-                                && otherEntry.getKey().isSameFile(entry.getKey())))
+                                && otherEntry.getKey().isOnSameFile(entry.getKey())))
                 .count();
 
         return count * 0.5;

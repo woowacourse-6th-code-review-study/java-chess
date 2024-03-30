@@ -19,11 +19,11 @@ public class Position {
         this.rank = Objects.requireNonNull(rank);
     }
 
-    public boolean isSameRank(Rank rank) {
+    public boolean isOnSameRank(Rank rank) {
         return this.rank == rank;
     }
 
-    public boolean isSameFile(Position other) {
+    public boolean isOnSameFile(Position other) {
         return this.file == other.file;
     }
 

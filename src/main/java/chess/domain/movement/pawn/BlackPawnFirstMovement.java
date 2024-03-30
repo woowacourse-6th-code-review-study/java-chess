@@ -11,7 +11,7 @@ public final class BlackPawnFirstMovement implements MovementRule {
         int rankDifference = start.calculateRankDifference(end);
         int fileDifference = start.calculateFileDifference(end);
 
-        return !hasEnemy && start.isSameRank(Rank.SEVEN) && rankDifference == -2 && fileDifference == 0;
+        return !hasEnemy && start.isOnSameRank(Rank.SEVEN) && rankDifference == -2 && fileDifference == 0;
     }
 
     public List<Position> findPath(Position start, Position end, boolean hasEnemy) {
