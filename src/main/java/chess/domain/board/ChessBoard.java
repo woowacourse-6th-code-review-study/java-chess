@@ -41,8 +41,8 @@ public class ChessBoard {
         }
         Piece piece = findPiece(from);
         PieceMoveResult moveResult = piece.move(to, this);
-        moveResult = fixMoveResultWhenGameEnd(to, moveResult);
         removePieceIfCaught(to, moveResult);
+        moveResult = fixMoveResultWhenGameEnd(to, moveResult);
         changeCurrentTeamIfNotFail(moveResult);
         return moveResult;
     }
@@ -67,10 +67,6 @@ public class ChessBoard {
 
     private boolean isKing(Piece piece) {
         return piece.getPieceType().equals(PieceType.KING);
-    }
-
-    private boolean isOtherTeam(Piece piece) {
-        return piece.isTeamWith(currentTeam.otherTeam());
     }
 
     private boolean isEmptyPosition(Position from) {
@@ -105,6 +101,10 @@ public class ChessBoard {
                 .filter(this::isOtherTeam)
                 .findFirst().orElseThrow();
         piecesOnBoard.remove(needToRemovePiece);
+    }
+
+    private boolean isOtherTeam(Piece piece) {
+        return piece.isTeamWith(currentTeam.otherTeam());
     }
 
     private void changeCurrentTeamIfNotFail(PieceMoveResult moveResult) {
