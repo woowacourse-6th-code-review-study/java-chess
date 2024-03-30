@@ -13,19 +13,7 @@ public class JdbcTemplate {
         this.connectionManager = new ConnectionManager();
     }
 
-    public void add(final String query, final String... parameters) {
-        execute(query, parameters);
-    }
-
-    public <T> List<T> find(final String query, final RowMapper<T> mapper, final String... parameters) {
-        return executeAndGet(query, mapper, parameters);
-    }
-
-    public void delete(final String query, final String... parameters) {
-        execute(query, parameters);
-    }
-
-    private void execute(final String query, final String[] parameters) {
+    public void execute(final String query, final String... parameters) {
         try (final var connection = connectionManager.getConnection();
              final var preparedStatement = connection.prepareStatement(query)) {
             setParameters(preparedStatement, parameters);
@@ -35,7 +23,7 @@ public class JdbcTemplate {
         }
     }
 
-    private <T> List<T> executeAndGet(final String query, final RowMapper<T> mapper, final String[] parameters) {
+    public <T> List<T> executeAndGet(final String query, final RowMapper<T> mapper, final String... parameters) {
         try (final var connection = connectionManager.getConnection();
              final var preparedStatement = connection.prepareStatement(query)) {
             setParameters(preparedStatement, parameters);

@@ -27,12 +27,12 @@ public class PieceDao {
 
     void add(final PieceDto piece) {
         final String query = "INSERT INTO " + TABLE_NAME + " VALUES(?, ?, ?, ?)";
-        jdbcTemplate.add(query, piece.boardFile(), piece.boardRank(), piece.color(), piece.type());
+        jdbcTemplate.execute(query, piece.boardFile(), piece.boardRank(), piece.color(), piece.type());
     }
 
     PieceDto findOne(final String file, final String rank) {
         final String query = "SELECT * FROM " + TABLE_NAME + " WHERE board_file = ? and board_rank = ? limit 1";
-        final List<PieceDto> pieces = jdbcTemplate.find(query, rowMapper, file, rank);
+        final List<PieceDto> pieces = jdbcTemplate.executeAndGet(query, rowMapper, file, rank);
         if (pieces.isEmpty()) {
             throw new IllegalArgumentException("데이터가 없습니다.");
         }
@@ -41,17 +41,17 @@ public class PieceDao {
 
     List<PieceDto> findAll() {
         final String query = "SELECT * FROM " + TABLE_NAME;
-        return jdbcTemplate.find(query, rowMapper);
+        return jdbcTemplate.executeAndGet(query, rowMapper);
     }
 
     void deleteAll() {
         final String query = "DELETE FROM " + TABLE_NAME;
-        jdbcTemplate.delete(query);
+        jdbcTemplate.execute(query);
     }
 
     boolean hasRecords() {
         final String query = "SELECT * FROM " + TABLE_NAME + " LIMIT 1";
-        final List<PieceDto> pieces = jdbcTemplate.find(query, rowMapper);
+        final List<PieceDto> pieces = jdbcTemplate.executeAndGet(query, rowMapper);
         return !pieces.isEmpty();
     }
 }

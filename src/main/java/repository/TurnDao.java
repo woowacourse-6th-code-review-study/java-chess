@@ -23,7 +23,7 @@ public class TurnDao {
 
     TurnDto findOne() {
         final String query = "SELECT * FROM " + TABLE_NAME + " LIMIT 1";
-        final List<TurnDto> turns = jdbcTemplate.find(query, rowMapper);
+        final List<TurnDto> turns = jdbcTemplate.executeAndGet(query, rowMapper);
         if (turns.isEmpty()) {
             throw new IllegalArgumentException("데이터가 없습니다.");
         }
@@ -34,12 +34,12 @@ public class TurnDao {
     void update(final TurnDto turnDto) {
         final String deleteQuery = "DELETE FROM " + TABLE_NAME;
         final String insertQuery = "INSERT INTO " + TABLE_NAME + " VALUES (?)";
-        jdbcTemplate.delete(deleteQuery);
-        jdbcTemplate.add(insertQuery, turnDto.turn());
+        jdbcTemplate.execute(deleteQuery);
+        jdbcTemplate.execute(insertQuery, turnDto.turn());
     }
 
     void deleteAll() {
         final String query = "DELETE FROM " + TABLE_NAME;
-        jdbcTemplate.delete(query);
+        jdbcTemplate.execute(query);
     }
 }
