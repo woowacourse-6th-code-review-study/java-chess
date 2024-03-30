@@ -76,7 +76,7 @@ public class Board {
     private GameStatus move(Position start, Position end, Piece movingPiece) {
         board.remove(start);
         if (isOtherTeamKing(end)) {
-            return GameStatus.whenWin(turn);
+            return GameStatus.winBy(turn);
         }
         board.put(end, movingPiece);
         turn = turn.next();

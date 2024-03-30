@@ -9,7 +9,7 @@ public enum GameStatus {
     BLACK_WIN,
     WHITE_WIN;
 
-    public static GameStatus whenWin(Team team) {
+    public static GameStatus winBy(Team team) {
         if (team.isBlack()) {
             return BLACK_WIN;
         }
