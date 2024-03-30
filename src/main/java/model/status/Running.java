@@ -22,6 +22,9 @@ public class Running implements GameStatus {
         if (commandLine.isStatus()) {
             return new Running();
         }
+        if (commandLine.isQuit()) {
+            return new Quit();
+        }
         throw new InvalidStatusException(ErrorCode.INVALID_STATUS);
     }
 

@@ -59,6 +59,10 @@ public class CommandLine {
         return head == Command.STATUS;
     }
 
+    public boolean isQuit() {
+        return head == Command.QUIT;
+    }
+
     public List<String> getBody() {
         return Collections.unmodifiableList(body);
     }

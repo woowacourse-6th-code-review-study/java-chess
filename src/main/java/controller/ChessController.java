@@ -15,6 +15,7 @@ import model.Board;
 import model.ChessGame;
 import model.command.CommandLine;
 import model.status.GameStatus;
+import model.status.Quit;
 import model.status.StatusFactory;
 import view.InputView;
 import view.OutputView;
@@ -47,6 +48,9 @@ public class ChessController {
         movingDao.createBoard();
         movingDao.createTurn();
 
+        if (gameStatus instanceof Quit) { // TODO instanceof 괜춘?
+            return;
+        }
         movingDao.addBoard(boardDto);
         movingDao.addTurn(chessGame.getCamp());
     }

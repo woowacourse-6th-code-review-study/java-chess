@@ -45,6 +45,18 @@ class RunningTest {
                 .isInstanceOf(End.class);
     }
 
+    @DisplayName("러닝 상태에서 quit 후 상태를 학인한다.")
+    @Test
+    void checkRunningAfterQuit() {
+        final CommandLine startCommand = CommandLine.from(List.of("start"));
+        final GameStatus gameStatus = StatusFactory.create(startCommand);
+        final ChessGame chessGame = ChessGame.setupStartingPosition();
+
+        final CommandLine quitCommand = CommandLine.from(List.of("quit"));
+        assertThat(gameStatus.play(quitCommand, chessGame))
+                .isInstanceOf(Quit.class);
+    }
+
     @DisplayName("러닝 상태에서 start 하면 예외가 발생한다.")
     @Test
     void failToStartIfAlreadyRunning() {
