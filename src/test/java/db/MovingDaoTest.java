@@ -2,6 +2,7 @@ package db;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import db.connection.DBConnectionUtil;
 import db.dto.BoardDto;
 import db.dto.MovingDto;
 import java.sql.SQLException;
@@ -25,7 +26,7 @@ class MovingDaoTest {
     @DisplayName("데이터베이스 접속 확인")
     @Test
     void connection() throws SQLException {
-        try (final var connection = movingDao.getConnection()) {
+        try (final var connection = DBConnectionUtil.getConnection("chess_test")) {
             assertThat(connection).isNotNull();
         }
     }

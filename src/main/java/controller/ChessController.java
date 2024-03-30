@@ -12,6 +12,7 @@ import exception.CustomException;
 import java.util.List;
 import java.util.Map;
 import model.Board;
+import model.Camp;
 import model.ChessGame;
 import model.command.CommandLine;
 import model.status.GameStatus;
@@ -42,13 +43,13 @@ public class ChessController {
             gameStatus = play(gameStatus, chessGame);
         }
 
-        final BoardDto boardDto = BoardDto.from(new Board(chessGame.getBoard())); // TODO 형태 너무 이상 변경 필요
         movingDao.remove("board");
         movingDao.remove("turn");
 
         if (gameStatus instanceof Quit) { // TODO instanceof 괜춘?
             return;
         }
+        final BoardDto boardDto = BoardDto.from(new Board(chessGame.getBoard())); // TODO 형태 너무 이상 변경 필요
         movingDao.addBoard(boardDto);
         movingDao.addTurn(chessGame.getCamp());
     }
@@ -88,19 +89,11 @@ public class ChessController {
 
     private void saveMoving(final ChessGame chessGame, final CommandLine commandLine) {
         if (commandLine.isMove()) {
-            final MovingDto movingDto = getMovingDto(chessGame, commandLine);
+            final List<String> body = commandLine.getBody();
+            final Camp camp = chessGame.getCamp();
+            final MovingDto movingDto = MovingDto.from(body, camp);
             movingDao.addMoving(movingDto);
         }
-    }
-
-    private MovingDto getMovingDto(final ChessGame chessGame, final CommandLine commandLine) {
-        final String camp = chessGame.getCamp().toString();
-        final List<String> body = commandLine.getBody();
-
-        final List<String> current = List.of(body.get(0).split(""));
-        final List<String> next = List.of(body.get(1).split(""));
-
-        return new MovingDto(camp, current.get(0), current.get(1), next.get(0), next.get(1));
     }
 
     //TODO 뭔가 이녀석도 옮겨주기

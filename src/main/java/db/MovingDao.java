@@ -1,12 +1,11 @@
 package db;
 
+import db.connection.DBConnectionUtil;
 import db.dto.BoardDto;
 import db.dto.MovingDto;
 import db.dto.PieceDto;
 import db.dto.PositionDto;
 import db.dto.TurnDto;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
@@ -16,26 +15,10 @@ import model.Camp;
 
 public class MovingDao { // TODO 이름 수정
 
-    private static final String SERVER = "localhost:13306";
-    private static final String OPTION = "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "root";
-
     private final String database;
 
     public MovingDao(final String database) {
         this.database = database;
-    }
-
-    public Connection getConnection() {
-        // 드라이버 연결
-        try {
-            return DriverManager.getConnection("jdbc:mysql://" + SERVER + "/" + database + OPTION, USERNAME, PASSWORD);
-        } catch (final SQLException exception) {
-            System.err.println("DB 연결 오류:" + exception.getMessage());
-            exception.printStackTrace();
-            return null;
-        }
     }
 
     public void addBoard(final BoardDto board) {
@@ -48,7 +31,7 @@ public class MovingDao { // TODO 이름 수정
 
     private void addPosition(final PositionDto position, final PieceDto piece) {
         final var query = "INSERT INTO board VALUES(?, ?, ?)";
-        try (final var connection = getConnection();
+        try (final var connection = DBConnectionUtil.getConnection(database);
              final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)
         ) {
             preparedStatement.setString(1, position.value());
@@ -65,7 +48,7 @@ public class MovingDao { // TODO 이름 수정
 
     public long addMoving(final MovingDto moving) {
         final var query = "INSERT INTO moving VALUES(?, ?, ?, ?, ?, ?)";
-        try (final var connection = getConnection();
+        try (final var connection = DBConnectionUtil.getConnection(database);
              final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)
         ) {
             long autoIncrement = 0;
@@ -90,7 +73,7 @@ public class MovingDao { // TODO 이름 수정
 
     public MovingDto findByMovementId(final long movementId) {
         final var query = "SELECT * FROM moving WHERE movement_id = ?";
-        try (final var connection = getConnection();
+        try (final var connection = DBConnectionUtil.getConnection(database);
              final var preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, movementId);
 
@@ -115,7 +98,7 @@ public class MovingDao { // TODO 이름 수정
     public BoardDto findBoard() {
         final var query = "SELECT * FROM board";
 
-        try (final var connection = getConnection();
+        try (final var connection = DBConnectionUtil.getConnection(database);
              final var preparedStatement = connection.prepareStatement(query)) {
 
             final var resultSet = preparedStatement.executeQuery();
@@ -139,7 +122,7 @@ public class MovingDao { // TODO 이름 수정
 
     public void remove(String table) {
         final String query = String.format("truncate table %s", table);
-        try (final var connection = getConnection();
+        try (final var connection = DBConnectionUtil.getConnection(database);
              final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)
         ) {
             preparedStatement.executeUpdate();
@@ -152,7 +135,7 @@ public class MovingDao { // TODO 이름 수정
     public TurnDto findTurn() {
         final String query = "SELECT * FROM turn";
 
-        try (final var connection = getConnection();
+        try (final var connection = DBConnectionUtil.getConnection(database);
              final var preparedStatement = connection.prepareStatement(query)) {
             final var resultSet = preparedStatement.executeQuery();
 
@@ -168,7 +151,7 @@ public class MovingDao { // TODO 이름 수정
 
     public void addTurn(final Camp camp) {
         final String query = "INSERT INTO turn values(?)";
-        try (final var connection = getConnection();
+        try (final var connection = DBConnectionUtil.getConnection(database);
              final var preparedStatement = connection.prepareStatement(query)
         ) {
             preparedStatement.setString(1, camp.toString());
