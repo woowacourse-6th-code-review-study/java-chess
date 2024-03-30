@@ -5,12 +5,16 @@ import dto.PieceDto;
 import dto.TurnDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@SuppressWarnings("NonAsciiCharacters")
 class DaoServiceTest {
     private static final PieceDto A2WhitePawn = new PieceDto("A", "2", "WHITE", "PAWN");
     private static final PieceDto B2WhitePawn = new PieceDto("B", "2", "WHITE", "PAWN");

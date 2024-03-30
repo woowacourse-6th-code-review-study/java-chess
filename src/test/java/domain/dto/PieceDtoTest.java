@@ -13,11 +13,15 @@ import domain.position.File;
 import domain.position.Position;
 import domain.position.Rank;
 import dto.PieceDto;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@SuppressWarnings("NonAsciiCharacters")
 class PieceDtoTest {
     @Test
     void 도메인에서_DTO로_변환한다() {

@@ -2,10 +2,14 @@ package repository;
 
 import dto.PieceDto;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@SuppressWarnings("NonAsciiCharacters")
 public class PieceDaoTest {
     private final PieceDao pieceDao = new PieceDao();
 

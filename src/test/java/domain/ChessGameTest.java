@@ -4,6 +4,8 @@ import domain.board.ChessBoard;
 import domain.piece.Color;
 import domain.piece.nonpawn.King;
 import domain.position.Position;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -11,6 +13,8 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@SuppressWarnings("NonAsciiCharacters")
 class ChessGameTest {
     @Test
     void 게임을_시작하기_전에_말을_움직일_수_없다() {

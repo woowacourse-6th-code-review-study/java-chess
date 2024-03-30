@@ -9,6 +9,8 @@ import domain.piece.nonpawn.Rook;
 import domain.piece.pawn.BlackPawn;
 import domain.piece.pawn.WhitePawn;
 import domain.position.Position;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -24,6 +26,8 @@ import static domain.piece.Type.QUEEN;
 import static domain.piece.Type.ROOK;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@SuppressWarnings("NonAsciiCharacters")
 class ScoreTest {
     @Test
     void 모든_피스가_존재하면_점수는_38점이다() {
