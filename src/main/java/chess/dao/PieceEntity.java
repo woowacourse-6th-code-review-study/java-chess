@@ -18,7 +18,7 @@ public class PieceEntity {
         this(position, PieceType.from(piece), TeamType.from(team));
     }
 
-    private PieceEntity(Position position, PieceType pieceType, TeamType teamType) {
+    public PieceEntity(Position position, PieceType pieceType, TeamType teamType) {
         this.position = position;
         this.pieceType = pieceType;
         this.teamType = teamType;
