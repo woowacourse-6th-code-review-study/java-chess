@@ -106,18 +106,19 @@ public class Board {
     }
 
     private double calculateMinusScoreOf(Team team) {
-        int count = (int) findPawnEntryOf(team)
-                .filter(entry -> findPawnEntryOf(team)
-                        .anyMatch(otherEntry -> !otherEntry.getKey().equals(entry.getKey())
-                                && otherEntry.getKey().isOnSameFile(entry.getKey())))
+        int count = (int) getPawnPositionOf(team)
+                .filter(position -> getPawnPositionOf(team)
+                        .anyMatch(other -> !other.equals(position)
+                                && other.isOnSameFile(position)))
                 .count();
 
         return count * 0.5;
     }
 
-    private Stream<Entry<Position, Piece>> findPawnEntryOf(Team team) {
+    private Stream<Position> getPawnPositionOf(Team team) {
         return board.entrySet().stream()
                 .filter(entry -> entry.getValue().isSameTeam(team))
-                .filter(entry -> entry.getValue().isPawn());
+                .filter(entry -> entry.getValue().isPawn())
+                .map(Entry::getKey);
     }
 }
