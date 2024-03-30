@@ -30,7 +30,6 @@ public class TurnDao {
         return turns.get(0);
     }
 
-
     void update(final TurnDto turnDto) {
         final String deleteQuery = "DELETE FROM " + TABLE_NAME;
         final String insertQuery = "INSERT INTO " + TABLE_NAME + " VALUES (?)";
