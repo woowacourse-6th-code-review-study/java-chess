@@ -1,7 +1,6 @@
 package controller.command;
 
 import domain.ChessGame;
-import view.OutputView;
 
 import java.util.List;
 
@@ -21,6 +20,5 @@ public class EndOnCommand implements Command {
     @Override
     public void execute(final ChessGame game) {
         game.end();
-        OutputView.printScore(game.getScore());
     }
 }

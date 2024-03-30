@@ -35,7 +35,7 @@ class BlackPawnTest {
 
         assertThatThrownBy(() -> blackPawn.validateMovement(source, target, other))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("잘못된 방향으로 이동하고 있습니다.");
+                .hasMessage("잘못된 위치로 이동하고 있습니다.");
     }
 
     @Test
@@ -56,7 +56,7 @@ class BlackPawnTest {
 
         assertThatThrownBy(() -> blackPawn.validateMovement(source, target, other))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("잘못된 방향으로 이동하고 있습니다.");
+                .hasMessage("잘못된 위치로 이동하고 있습니다.");
     }
 
     @Test
@@ -77,7 +77,7 @@ class BlackPawnTest {
 
         assertThatThrownBy(() -> blackPawn.validateMovement(source, target, other))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("잘못된 방향으로 이동하고 있습니다.");
+                .hasMessage("잘못된 위치로 이동하고 있습니다.");
     }
 
     @Test
@@ -88,7 +88,7 @@ class BlackPawnTest {
 
         assertThatThrownBy(() -> blackPawn.validateMovement(source, target, other))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("잘못된 방향으로 이동하고 있습니다.");
+                .hasMessage("잘못된 위치로 이동하고 있습니다.");
     }
 
     @Test
@@ -110,7 +110,7 @@ class BlackPawnTest {
 
         assertThatThrownBy(() -> blackPawn.validateMovement(source, target, other))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("잘못된 방향으로 이동하고 있습니다.");
+                .hasMessageContaining("잘못된 위치로 이동하고 있습니다.");
     }
 
     @Test
@@ -121,7 +121,7 @@ class BlackPawnTest {
 
         assertThatThrownBy(() -> blackPawn.validateMovement(source, target, other))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("잘못된 방향으로 이동하고 있습니다.");
+                .hasMessageContaining("잘못된 위치로 이동하고 있습니다.");
     }
 
     @Test

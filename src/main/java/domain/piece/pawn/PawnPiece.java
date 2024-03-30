@@ -31,7 +31,7 @@ public abstract class PawnPiece implements Piece {
 
     private void validateFawnMovement(final Position source, final Position target, final Piece other) {
         if (!isPawnMovement(source, target, other)) {
-            throw new IllegalArgumentException("잘못된 방향으로 이동하고 있습니다.");
+            throw new IllegalArgumentException("잘못된 위치로 이동하고 있습니다.");
         }
     }
 

@@ -20,6 +20,10 @@ public class OutputView {
         System.out.println(scoreMessage);
     }
 
+    public static void printWinner(final Score score) {
+        System.out.println(messageResolver.resolveWinner(score));
+    }
+
     public static void printErrorMessage(Exception e) {
         System.out.println(e.getMessage());
     }

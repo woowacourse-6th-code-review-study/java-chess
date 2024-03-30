@@ -84,4 +84,11 @@ public class MessageResolver {
         String blackScoreMessage = String.format("BLACK 점수: %.1f", score.getBlackScore());
         return String.join(LINE_SEPARATOR, whiteScoreMessage, blackScoreMessage);
     }
+
+    public String resolveWinner(final Score score) {
+        if (score.getWhiteScore() > score.getBlackScore()) {
+            return "우승자는 WHITE입니다!";
+        }
+        return "우승자는 BLACK입니다!";
+    }
 }

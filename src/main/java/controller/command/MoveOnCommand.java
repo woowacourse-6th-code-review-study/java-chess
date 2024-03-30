@@ -1,6 +1,7 @@
 package controller.command;
 
 import domain.ChessGame;
+import domain.board.Score;
 import domain.position.Position;
 import view.OutputView;
 
@@ -28,5 +29,11 @@ public class MoveOnCommand implements Command {
     public void execute(final ChessGame game) {
         game.move(source, target);
         OutputView.printBoard(game.getBoard());
+
+        if (game.isGameOver()) {
+            final Score score = game.getScore();
+            OutputView.printScore(score);
+            OutputView.printWinner(score);
+        }
     }
 }
