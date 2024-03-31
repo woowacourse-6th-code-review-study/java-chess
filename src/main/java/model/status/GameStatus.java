@@ -10,4 +10,8 @@ public interface GameStatus {
     boolean isRunning();
 
     boolean isCheck();
+
+    default boolean isQuit() {
+        return false;
+    }
 }

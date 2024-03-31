@@ -21,4 +21,9 @@ public class Quit implements GameStatus {
     public boolean isCheck() {
         return false;
     }
+
+    @Override
+    public boolean isQuit() {
+        return true;
+    }
 }

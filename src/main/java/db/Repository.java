@@ -25,12 +25,9 @@ public class Repository {
         this.boardDao = new BoardDao(database);
     }
 
-    public void remove() {
+    public void removeAll() {
         turnDao.remove();
         boardDao.remove();
-    }
-
-    public void removeMoving() {
         movingDao.remove();
     }
 
@@ -39,8 +36,9 @@ public class Repository {
     }
 
     public void save(final BoardDto board, final Camp camp, final Turn turn) {
-        remove();
+        boardDao.remove();
         boardDao.saveBoard(board);
+        turnDao.remove();
         turnDao.saveTurn(camp, turn);
     }
 

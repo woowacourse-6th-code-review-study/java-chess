@@ -12,7 +12,6 @@ import model.Camp;
 import model.ChessGame;
 import model.command.CommandLine;
 import model.status.GameStatus;
-import model.status.Quit;
 import model.status.StatusFactory;
 import view.InputView;
 import view.OutputView;
@@ -29,27 +28,23 @@ public class ChessController {
     }
 
     public void run() {
-
         outputView.printStartMessage();
         final ChessGame chessGame = create();
         GameStatus gameStatus = initGame();
         outputView.printChessBoard(ChessBoardDto.from(chessGame));
-
         while (gameStatus.isRunning()) {
             gameStatus = play(gameStatus, chessGame);
         }
+        save(gameStatus, chessGame);
+    }
 
-        repository.remove();
-
-        if (gameStatus instanceof Quit) { // TODO instanceof 괜춘?
-            repository.removeMoving();
+    private void save(final GameStatus gameStatus, final ChessGame chessGame) {
+        if (gameStatus.isCheck() || gameStatus.isQuit()) {
+            repository.removeAll();
             return;
         }
-        if (gameStatus.isCheck()) {
-            repository.removeMoving();
-            return; // TODO 체크로 게임이 끝났을때 어떻게 처리할까
-        }
-        final BoardDto boardDto = BoardDto.from(new Board(chessGame.getBoard())); // TODO 형태 너무 이상 변경 필요
+        final Board board = new Board(chessGame.getBoard());
+        final BoardDto boardDto = BoardDto.from(board);
         repository.save(boardDto, chessGame.getCamp(), chessGame.getTurn());
     }
 
@@ -58,7 +53,6 @@ public class ChessController {
             return repository.findGame();
         }
         return ChessGame.setupStartingPosition();
-
     }
 
     private GameStatus initGame() {
@@ -92,7 +86,6 @@ public class ChessController {
         }
     }
 
-    //TODO 뭔가 이녀석도 옮겨주기
     private void print(final GameStatus gameStatus, final CommandLine commandLine, final ChessGame chessGame) {
         if (gameStatus.isCheck()) {
             outputView.printWinner(chessGame.getCamp().toString());
