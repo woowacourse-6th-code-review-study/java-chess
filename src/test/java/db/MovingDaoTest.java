@@ -49,4 +49,10 @@ class MovingDaoTest {
         assertThatThrownBy(() -> movingDao.findByMovementId(3))
                 .isInstanceOf(DaoException.class);
     }
+
+    @Test
+    @DisplayName("행의 개수를 파악한다.")
+    void count() {
+        assertThat(movingDao.countMoving()).isZero();
+    }
 }

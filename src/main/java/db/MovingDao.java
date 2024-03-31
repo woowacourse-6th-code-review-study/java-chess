@@ -59,6 +59,20 @@ public class MovingDao {
         }
     }
 
+    public int countMoving() {
+        final String query = "SELECT count(*) AS count FROM moving";
+        try (final var connection = DBConnectionUtil.getConnection(database);
+             final var preparedStatement = connection.prepareStatement(query)) {
+            final var resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("count");
+            }
+            throw new DaoException(ErrorCode.FAIL_FIND);
+        } catch (final SQLException exception) {
+            throw new DaoException(ErrorCode.FAIL_FIND);
+        }
+    }
+
     public MovingDto findByMovementId(final long movementId) {
         final String query = "SELECT * FROM moving WHERE movement_id = ?";
         try (final var connection = DBConnectionUtil.getConnection(database);

@@ -35,7 +35,7 @@ public class Repository {
     }
 
     public boolean hasGame() {
-        return movingDao.findByMovementId(1) != null;
+        return movingDao.countMoving() > 0;
     }
 
     public void save(final BoardDto board, final Camp camp, final Turn turn) {
