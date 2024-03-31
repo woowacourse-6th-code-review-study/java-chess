@@ -10,7 +10,7 @@ public record PositionDto(String value) {
         return new PositionDto(position.toString());
     }
 
-    public Position convert() {
+    public Position toPosition() {
         return new Position(File.from(value.charAt(0)), Rank.from(value.charAt(1)));
     }
 }
