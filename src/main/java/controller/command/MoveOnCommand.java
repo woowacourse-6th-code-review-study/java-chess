@@ -6,8 +6,10 @@ import domain.position.Position;
 import view.OutputView;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class MoveOnCommand implements Command {
+    private static final Pattern POSITION_INPUT_PATTERN = Pattern.compile("^[A-H][1-8]$");
     private static final int ARGUMENT_SIZE = 2;
 
     private final Position source;
@@ -21,6 +23,17 @@ public class MoveOnCommand implements Command {
 
     private void validateArgumentSize(final List<String> arguments) {
         if (arguments.size() != ARGUMENT_SIZE) {
+            throw new IllegalArgumentException();
+        }
+        validatePositions(arguments);
+    }
+
+    private void validatePositions(final List<String> inputs) {
+        inputs.forEach(this::validatePositionFormat);
+    }
+
+    private void validatePositionFormat(final String positionInput) {
+        if (!POSITION_INPUT_PATTERN.matcher(positionInput).matches()) {
             throw new IllegalArgumentException();
         }
     }
