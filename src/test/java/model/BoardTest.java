@@ -24,7 +24,6 @@ import org.junit.jupiter.api.Test;
 
 class BoardTest {
 
-    //TODO 다른 테스트도 추가하기
     @DisplayName("초기 상태의 기물 점수를 계산한다.")
     @Test
     void calculateInitBoard() {
@@ -97,7 +96,7 @@ class BoardTest {
     }
 
     @Test
-    @DisplayName("getter로 가져온 값을 수정하려고 하면 예외가 발생한다..")
+    @DisplayName("getter로 가져온 값을 수정하려고 하면 예외가 발생한다.")
     void doNotUpdate() {
         //given
         final Board board = Board.create();

@@ -14,7 +14,6 @@ import model.position.Position;
 
 public class Repository {
 
-    // TODO 인터페이스로 변경하기
     private final MovingDao movingDao;
     private final TurnDao turnDao;
     private final BoardDao boardDao;
