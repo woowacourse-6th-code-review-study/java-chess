@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,16 +18,21 @@ public class PieceRepository {
         this.connectionManager = connectionManager;
     }
 
-    public void savePiece(PiecePlacementDto piecePlacementDto) {
+    public void savePieces(List<PiecePlacementDto> pieces) {
+        try (Connection connection = connectionManager.getConnection()) {
+            pieces.forEach(piece -> savePiece(piece, connection));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void savePiece(PiecePlacementDto piecePlacementDto, Connection connection) {
         String query = String.format("INSERT INTO %s (position, team, type) VALUES (?, ?, ?)", TABLE_NAME);
 
-        try (Connection connection = connectionManager.getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, piecePlacementDto.getPosition());
             pstmt.setString(2, piecePlacementDto.getTeam());
             pstmt.setString(3, piecePlacementDto.getType());
-
             pstmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();

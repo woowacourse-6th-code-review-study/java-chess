@@ -69,11 +69,10 @@ public class ChessGameService {
         deleteSavedChessGame();
         ChessBoard chessBoard = chessGame.getChessBoard();
         Map<Position, Piece> board = chessBoard.getBoard();
-
-        for (Position position : board.keySet()) {
-            Piece piece = board.get(position);
-            pieceRepository.savePiece(PiecePlacementDto.of(piece, position));
-        }
+        List<PiecePlacementDto> pieces = board.keySet().stream()
+                .map(position -> PiecePlacementDto.of(board.get(position), position))
+                .toList();
+        pieceRepository.savePieces(pieces);
         turnRepository.saveTurn(chessGame.getTurn());
     }
 
