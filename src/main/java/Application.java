@@ -1,5 +1,5 @@
 import controller.GameController;
-import dao.MysqlCurrentPlayerColorDao;
+import dao.ProductionPieceColorDao;
 import dao.MysqlPieceDao;
 import database.JdbcConnectionPool;
 import domain.board.Board;
@@ -19,8 +19,8 @@ public class Application {
         MysqlPieceDao mysqlPieceDao = new MysqlPieceDao(connectionPool);
         Board board = new Board(mysqlPieceDao, initialPiecePositions);
 
-        MysqlCurrentPlayerColorDao mysqlCurrentPlayerColorDao = new MysqlCurrentPlayerColorDao(connectionPool);
-        ChessGame chessGame = new ChessGame(mysqlCurrentPlayerColorDao, board);
+        ProductionPieceColorDao productionPieceColorDao = new ProductionPieceColorDao(connectionPool);
+        ChessGame chessGame = new ChessGame(productionPieceColorDao, board);
 
         GameController gameController = new GameController(new InputView(), new OutputView(), chessGame);
         gameController.run();

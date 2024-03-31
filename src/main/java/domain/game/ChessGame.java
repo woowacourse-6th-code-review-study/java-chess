@@ -1,6 +1,6 @@
 package domain.game;
 
-import dao.CurrentPlayerColorDao;
+import dao.PieceColorDao;
 import domain.board.Board;
 import domain.board.Position;
 import domain.piece.Piece;
@@ -12,14 +12,14 @@ import static domain.piece.PieceColor.BLACK;
 import static domain.piece.PieceColor.WHITE;
 
 public class ChessGame {
-    private final CurrentPlayerColorDao currentPlayerColorDao;
+    private final PieceColorDao pieceColorDao;
     private final Board board;
 
     private PieceColor currentColor = WHITE;
     private GameStatus gameStatus = GameStatus.WAITING;
 
-    public ChessGame(final CurrentPlayerColorDao currentPlayerColorDao, final Board board) {
-        this.currentPlayerColorDao = currentPlayerColorDao;
+    public ChessGame(final PieceColorDao pieceColorDao, final Board board) {
+        this.pieceColorDao = pieceColorDao;
         this.board = board;
     }
 
@@ -29,13 +29,13 @@ public class ChessGame {
 
     public void createChessGame() {
         board.createNewPiecePositions();
-        currentPlayerColorDao.deletePlayerColor();
-        currentPlayerColorDao.savePlayerColor(currentColor);
+        pieceColorDao.delete();
+        pieceColorDao.save(currentColor);
     }
 
     public void roadPrevGame() {
         board.roadPrevPiecePositions();
-        currentColor = currentPlayerColorDao.findPlayerColor();
+        currentColor = pieceColorDao.find();
     }
 
     public void gameStart() {
@@ -58,13 +58,13 @@ public class ChessGame {
         }
 
         currentColor = currentColor.toggle();
-        currentPlayerColorDao.updatePlayerColor(currentColor);
+        pieceColorDao.update(currentColor);
     }
 
     public void gameEnd() {
         if (!board.isKingAlive(currentColor) || !board.isKingAlive(currentColor.toggle())) {
             board.clear();
-            currentPlayerColorDao.deletePlayerColor();
+            pieceColorDao.delete();
         }
 
         gameStatus = GameStatus.END;
