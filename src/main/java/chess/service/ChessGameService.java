@@ -80,10 +80,7 @@ public class ChessGameService {
     }
 
     private boolean isChessGameInProgress() {
-        if (pieceRepository.findPieces().isEmpty()) {
-            return false;
-        }
-        return true;
+        return pieceRepository.findPieces().isPresent();
     }
 
     private Team judgeWinnerTeam(Score whiteTeamScore, Score blackTeamScore) {
