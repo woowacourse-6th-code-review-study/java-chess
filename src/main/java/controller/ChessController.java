@@ -22,6 +22,7 @@ public class ChessController {
 
     private final InputView inputView;
     private final OutputView outputView;
+    // TODO repository 분리
     private final Repository repository = new Repository("chess");
 
     public ChessController(final InputView inputView, final OutputView outputView) {
@@ -31,9 +32,11 @@ public class ChessController {
 
     public void run() {
         outputView.printStartMessage();
-        final ChessGame chessGame = create();
         GameStatus gameStatus = initGame();
-        outputView.printChessBoard(ChessBoardDto.from(chessGame));
+        final ChessGame chessGame = create();
+        if (gameStatus.isRunning()) {
+            outputView.printChessBoard(ChessBoardDto.from(chessGame));
+        }
         while (gameStatus.isRunning()) {
             gameStatus = play(gameStatus, chessGame);
         }
