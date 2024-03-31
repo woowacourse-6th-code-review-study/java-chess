@@ -27,7 +27,7 @@ public class ChessGame {
         return board.existPrevPiecePositionsData();
     }
 
-    public void createNewGame() {
+    public void createChessGame() {
         board.createNewPiecePositions();
         currentPlayerColorDao.deletePlayerColor();
         currentPlayerColorDao.savePlayerColor(currentColor);

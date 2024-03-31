@@ -52,12 +52,12 @@ public class GameController {
             gameCommand.execute(this);
             return;
         }
-        createNewGame();
+        createChessGame();
         start();
     }
 
-    public void createNewGame() {
-        chessGame.createNewGame();
+    public void createChessGame() {
+        chessGame.createChessGame();
     }
 
     public void roadPrevGame() {
