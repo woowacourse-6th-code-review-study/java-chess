@@ -23,7 +23,7 @@ public class OutputView {
         System.out.println(scoreMessage);
     }
 
-    public static void printWinner(final Score score) {
+    public static void printWinner(Score score) {
         System.out.println(messageResolver.resolveWinner(score));
     }
 
@@ -31,9 +31,11 @@ public class OutputView {
         System.out.println(e.getMessage());
     }
 
-    public static void printActiveRoomAll(final List<RoomDto> rooms) {
-        for (RoomDto room : rooms) {
-            System.out.println("Room " + room.room_id());
-        }
+    public static void printGameRoomGuideMessage(List<RoomDto> rooms) {
+        System.out.println(messageResolver.resolveRoomList(rooms));
+    }
+
+    public static void printEnteringRoomMessage(RoomDto roomDto) {
+        System.out.println(messageResolver.resolveEnteringRoomMessage(roomDto));
     }
 }

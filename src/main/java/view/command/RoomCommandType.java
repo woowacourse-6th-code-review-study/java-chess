@@ -28,4 +28,8 @@ public enum RoomCommandType {
 
         return commandType.mapper.apply(input.getArguments());
     }
+
+    public String message() {
+        return this.command;
+    }
 }

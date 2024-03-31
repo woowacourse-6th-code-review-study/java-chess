@@ -16,14 +16,10 @@ public class GameRoomController {
 
     public RoomDto run() {
         List<RoomDto> rooms = roomService.loadActiveRoomAll();
-        if (rooms.isEmpty()) {
-            System.out.println("방이 존재하지 않습니다. 새로운 방을 생성해 주세요.");
-        } else {
-            System.out.println("입장할 방을 선택해 주세요.");
-            OutputView.printActiveRoomAll(rooms);
-        }
+        OutputView.printGameRoomGuideMessage(rooms);
+
         RoomDto roomDto = readCommandUntilValid();
-        System.out.println(roomDto.room_id() + "번 방에 입장합니다.");
+        OutputView.printEnteringRoomMessage(roomDto);
         return roomDto;
     }
 

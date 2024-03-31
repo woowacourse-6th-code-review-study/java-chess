@@ -7,6 +7,7 @@ import domain.piece.Type;
 import domain.position.File;
 import domain.position.Position;
 import domain.position.Rank;
+import dto.RoomDto;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.stream.IntStream;
 import static view.command.GameCommandType.END;
 import static view.command.GameCommandType.MOVE;
 import static view.command.GameCommandType.START;
+import static view.command.RoomCommandType.NEW_ROOM;
+import static view.command.RoomCommandType.ROOM_SELECTION;
 
 public class MessageResolver {
     private static final String LINE_SEPARATOR = System.lineSeparator();
@@ -90,5 +93,22 @@ public class MessageResolver {
             return "우승자는 WHITE입니다!";
         }
         return "우승자는 BLACK입니다!";
+    }
+
+    public String resolveRoomList(final List<RoomDto> rooms) {
+        String newRoomMessage = String.format("> 새로운 방 생성 : %s", NEW_ROOM.message());
+        if (rooms.isEmpty()) {
+            return newRoomMessage;
+        }
+
+        String roomGuideHeaderMessage = String.format("> 입장할 방 선택 : %s 방번호 - 예 %s 1", ROOM_SELECTION.message(), ROOM_SELECTION.message());
+        String roomListMessage = "> 방 목록 : " + rooms.stream()
+                .map(room -> String.valueOf(room.room_id()))
+                .collect(Collectors.joining(", "));
+        return String.join(LINE_SEPARATOR, newRoomMessage, roomGuideHeaderMessage, roomListMessage);
+    }
+
+    public String resolveEnteringRoomMessage(final RoomDto roomDto) {
+        return roomDto.room_id() + "번 방에 입장합니다.";
     }
 }
