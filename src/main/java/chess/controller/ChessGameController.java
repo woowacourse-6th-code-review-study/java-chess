@@ -3,8 +3,6 @@ package chess.controller;
 import chess.controller.command.Command;
 import chess.controller.command.ExecuteResult;
 import chess.domain.ChessGame;
-import chess.domain.board.ChessBoard;
-import chess.domain.board.ChessBoardCreator;
 import chess.service.ChessGameService;
 import chess.view.InputView;
 import chess.view.OutputView;
@@ -30,11 +28,5 @@ public class ChessGameController {
             result = command.execute(chessGameService, chessGame, outputView);
         }
         while (result.isSuccess() && result.isNeedNextCommand() && chessGame.isNotEnd());
-    }
-
-    private ChessGame initializeChessGame() {
-        ChessBoardCreator chessBoardCreator = new ChessBoardCreator();
-        ChessBoard chessBoard = chessBoardCreator.create();
-        return new ChessGame(chessBoard);
     }
 }
