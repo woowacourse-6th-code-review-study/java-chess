@@ -16,10 +16,6 @@ public class GameStateDaoImpl implements GameStateDao {
             resultSet.getInt("game_id")
     );
 
-    GameStateDaoImpl() {
-        this(new JdbcTemplate());
-    }
-
     public GameStateDaoImpl(final JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -32,6 +28,9 @@ public class GameStateDaoImpl implements GameStateDao {
     public Optional<StateDto> findByGameId(final int gameId) {
         final String query = "SELECT * FROM " + TABLE_NAME + " WHERE game_id = ? LIMIT 1";
         final List<StateDto> turns = jdbcTemplate.executeAndGet(query, rowMapper, String.valueOf(gameId));
+        if (turns.isEmpty()) {
+            return Optional.empty();
+        }
         return Optional.ofNullable(turns.get(0));
     }
 

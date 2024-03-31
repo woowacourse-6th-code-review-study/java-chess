@@ -31,6 +31,6 @@ public class GameRoomService {
 
     public RoomDto findRoomById(final String roomId) {
         Optional<RoomDto> room = roomDao.find(roomId);
-        return room.orElseThrow(IllegalArgumentException::new);
+        return room.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 방입니다."));
     }
 }

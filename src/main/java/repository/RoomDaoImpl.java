@@ -16,10 +16,6 @@ public class RoomDaoImpl implements RoomDao {
             resultSet.getInt("room_id")
     );
 
-    RoomDaoImpl() {
-        this(new JdbcTemplate());
-    }
-
     public RoomDaoImpl(final JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -47,6 +43,9 @@ public class RoomDaoImpl implements RoomDao {
     public Optional<RoomDto> find(final String roomId) {
         final String query = "SELECT * FROM " + TABLE_NAME + " WHERE room_id = ?";
         final List<RoomDto> roomDtos = jdbcTemplate.executeAndGet(query, rowMapper, roomId);
+        if (roomDtos.isEmpty()) {
+            return Optional.empty();
+        }
         return Optional.of(roomDtos.get(0));
     }
 
