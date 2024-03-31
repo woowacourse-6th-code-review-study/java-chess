@@ -1,0 +1,14 @@
+[BLACK 승리]
+move f2 f3
+move e7 e5
+move g2 g4
+move d8 h4
+move h2 h3
+move h4 e1
+
+[WHITE 승리]
+move e2 e3
+move f7 f6
+move d1 h5
+move g8 h6
+move h5 e8
