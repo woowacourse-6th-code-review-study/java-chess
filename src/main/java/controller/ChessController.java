@@ -49,6 +49,7 @@ public class ChessController {
     }
 
     private ChessGame create() {
+        //TODO 여기서 hasGame 체크할까 아니면 그냥 리포지토리 안으로 책임 넘길까
         if (repository.hasGame()) {
             return repository.findGame();
         }

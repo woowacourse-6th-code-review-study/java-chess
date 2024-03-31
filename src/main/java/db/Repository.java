@@ -12,7 +12,7 @@ import model.Turn;
 import model.position.Moving;
 import model.position.Position;
 
-public class Repository {
+public class Repository { //TODO 이름 변경
 
     private final MovingDao movingDao;
     private final TurnDao turnDao;
@@ -45,14 +45,6 @@ public class Repository {
         movingDao.addMoving(moving);
     }
 
-    public BoardDto findBoard() {
-        return boardDao.find();
-    }
-
-    public TurnDto findTurn() {
-        return turnDao.findTurn();
-    }
-
     public ChessGame findGame() {
         final BoardDto findBoard = findBoard();
         final TurnDto findTurn = findTurn();
@@ -65,6 +57,14 @@ public class Repository {
         final Camp camp = findLastTurnCamp(findMoving);
         final GameTurn gameTurn = new GameTurn(camp, new Turn(findMoving.size()));
         return new ChessGame(board, gameTurn);
+    }
+
+    private BoardDto findBoard() {
+        return boardDao.find();
+    }
+
+    private TurnDto findTurn() {
+        return turnDao.findTurn();
     }
 
     private boolean unsaved(final TurnDto findTurn, final List<MovingDto> findMoving) {

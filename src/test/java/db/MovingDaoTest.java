@@ -8,6 +8,7 @@ import db.dto.MovingDto;
 import db.exception.DaoException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,5 +55,25 @@ class MovingDaoTest {
     @DisplayName("행의 개수를 파악한다.")
     void count() {
         assertThat(movingDao.countMoving()).isZero();
+    }
+
+    @Test
+    @DisplayName("저장된 기보를 확인한다.")
+    void findAll() {
+        //given
+        final List<MovingDto> movingDtos = List.of(
+                new MovingDto("WHITE", "a2", "a3"),
+                new MovingDto("BLACK", "h7", "h6"),
+                new MovingDto("WHITE", "a3", "a4"),
+                new MovingDto("BLACK", "g7", "g6")
+        );
+
+        //when
+        for (MovingDto movingDto : movingDtos) {
+            movingDao.addMoving(movingDto);
+        }
+
+        //then
+        assertThat(movingDao.findAll()).isEqualTo(movingDtos);
     }
 }

@@ -21,7 +21,7 @@ class BoardDaoTest {
     @DisplayName("보드 저장 확인")
     void addBoard() {
         //given
-        final var board = BoardDto.from(Board.create());
+        final BoardDto board = BoardDto.from(Board.create());
 
         //when
         boardDao.saveBoard(board);
@@ -29,5 +29,19 @@ class BoardDaoTest {
 
         //then
         assertThat(board).isEqualTo(findBoard);
+    }
+
+    @DisplayName("테이블이 비어있다면 새로운 보드를 만든다.")
+    @Test
+    void findBoard() {
+        //given
+        boardDao.remove();
+        final BoardDto expected = BoardDto.from(Board.create());
+
+        //when
+        final BoardDto boardDto = boardDao.find();
+
+        //then
+        assertThat(boardDto).isEqualTo(expected);
     }
 }
