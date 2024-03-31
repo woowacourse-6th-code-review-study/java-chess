@@ -5,6 +5,7 @@ public enum ProgressStatus {
     WHITE_WIN(false),
     BLACK_WIN(false),
     PROGRESS(true),
+    END_GAME(false),
     ;
 
     private final boolean isContinue;
@@ -15,5 +16,9 @@ public enum ProgressStatus {
 
     public boolean isContinue() {
         return isContinue;
+    }
+
+    public boolean isInputEndCommand() {
+        return this == END_GAME;
     }
 }

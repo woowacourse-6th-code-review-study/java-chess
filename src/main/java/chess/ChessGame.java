@@ -1,114 +1,91 @@
 package chess;
 
-import chess.domain.Board;
-import chess.domain.BoardFactory;
-import chess.domain.Point;
 import chess.domain.Team;
-import chess.domain.piece.Piece;
 import chess.domain.position.Position;
 import chess.dto.PieceDto;
 import chess.dto.ProgressStatus;
 import chess.view.GameCommand;
 import chess.view.InputView;
 import chess.view.OutputView;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class ChessGame {
 
     private final InputView inputView;
     private final OutputView outputView;
+    private final ChessService chessService;
 
-    public ChessGame(InputView inputView, OutputView outputView) {
+    public ChessGame(InputView inputView, OutputView outputView, ChessService chessService) {
         this.inputView = inputView;
         this.outputView = outputView;
+        this.chessService = chessService;
     }
 
     public void run() {
-        Board board = startGame();
-        play(board);
+        startGame();
+        play();
     }
 
-    private Board startGame() {
+    private void startGame() {
         outputView.printStartGame();
         GameCommand command = inputView.readCommand();
         if (command.isStart()) {
-            Board board = BoardFactory.createInitBoard();
-            showBoard(board);
-            return board;
+            initBoard();
+            showBoard();
+            return;
         }
         throw new IllegalArgumentException("아직 게임을 시작하지 않았습니다.");
     }
 
-    private void play(Board board) {
+    private void initBoard() {
+        chessService.init();
+    }
+
+    private void play() {
         ProgressStatus status;
         do {
-            status = processTurn(board);
+            status = processTurn();
         } while (status.isContinue());
-
         showResult(status);
     }
 
-    private ProgressStatus processTurn(Board board) {
+    private ProgressStatus processTurn() {
         GameCommand command = inputView.readCommand();
         if (command.isStart()) {
             throw new IllegalArgumentException("이미 게임을 시작했습니다.");
         }
-        if (command.isEnd()) {
-            System.exit(0);
+        if (command.isMove()) {
+            return executeMove();
         }
         if (command.isStatus()) {
-            return executeStatus(board);
+            return executeStatus();
         }
-        return executeMove(board);
+        return ProgressStatus.END_GAME;
     }
 
-    private ProgressStatus executeStatus(Board board) {
-        Map<Team, Point> status = board.calculateTotalPoints();
-        Map<Team, Double> statusDto = toDto(status);
+    private ProgressStatus executeStatus() {
+        Map<Team, Double> statusDto = chessService.calculatePiecePoints();
         outputView.printStatus(statusDto);
         return ProgressStatus.PROGRESS;
     }
 
-    private Map<Team, Double> toDto(Map<Team, Point> status) {
-        return status.entrySet().stream()
-                .collect(Collectors.toMap(
-                        Entry::getKey,
-                        entry -> entry.getValue().toDouble()
-                ));
-    }
-
-    private ProgressStatus executeMove(Board board) {
+    private ProgressStatus executeMove() {
         Position start = inputView.readPosition();
         Position end = inputView.readPosition();
-        ProgressStatus status = board.move(start, end);
-        showBoard(board);
+        ProgressStatus status = chessService.moveTo(start, end);
+        showBoard();
         return status;
     }
 
     private void showResult(ProgressStatus status) {
+        if (status.isInputEndCommand()) {
+            return;
+        }
         outputView.printWinnerMessage(status);
     }
 
-    private void showBoard(Board board) {
-        List<Position> positions = Position.ALL_POSITIONS;
-        Map<Position, PieceDto> boardDto = new HashMap<>();
-        positions.forEach(position -> addPiece(board, position, boardDto));
+    private void showBoard() {
+        Map<Position, PieceDto> boardDto = chessService.findTotalBoard();
         outputView.printBoard(boardDto);
-    }
-
-    private void addPiece(Board board, Position position, Map<Position, PieceDto> boardDto) {
-        Optional<Piece> optionalPiece = board.find(position);
-        if (optionalPiece.isEmpty()) {
-            return;
-        }
-
-        Piece piece = optionalPiece.get();
-        PieceDto pieceDto = PieceDto.from(piece);
-        boardDto.put(position, pieceDto);
     }
 }
