@@ -78,10 +78,10 @@ public class OutputView {
 
     private void printStatus(Team team, double score) {
         if (team.isBlack()) {
-            System.out.println("검정 팀 : %.1f".formatted(score));
+            System.out.printf("검정 팀 : %.1f%n", score);
             return;
         }
-        System.out.println("하양 팀 : %.1f".formatted(score));
+        System.out.printf("하양 팀 : %.1f%n", score);
     }
 
     public void printWinnerMessage(ProgressStatus status) {
