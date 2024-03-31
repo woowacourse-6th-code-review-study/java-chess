@@ -19,13 +19,13 @@ import java.util.Queue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class RookTest {
+class PawnTest {
 
     @Test
-    @DisplayName("해당 포지션이 비어있을 시 이동 가능한 포지션에 모두 포함되어야 한다.")
+    @DisplayName("시작 위치 앞 2칸이 비어있을 시 이동 가능한 포지션에 모두 포함되어야 한다.")
     void startPositionPawnWithOnlyAttackPossiblePositions() {
-        Piece piece = new Piece(PieceType.ROOK, Color.WHITE);
-        Position position = new Position(Row.FIVE, Column.D);
+        Piece piece = new Piece(PieceType.WHITE_PAWN, Color.WHITE);
+        Position position = new Position(Row.TWO, Column.D);
         Map<Direction, Queue<Position>> candidateAllPositions = piece.generateAllDirectionPositions(position);
         PositionsFilter positionsFilter = new PositionsFilter(new NotExistsPieceRepository(),
                 candidateAllPositions);
@@ -33,31 +33,16 @@ class RookTest {
         List<Position> movablePositions = positionsFilter.generateValidPositions(piece);
 
         assertThat(movablePositions).containsExactlyInAnyOrder(
-                new Position(Row.SIX, Column.D),
-                new Position(Row.SEVEN, Column.D),
-                new Position(Row.EIGHT, Column.D),
-
-                new Position(Row.FIVE, Column.E),
-                new Position(Row.FIVE, Column.F),
-                new Position(Row.FIVE, Column.G),
-                new Position(Row.FIVE, Column.H),
-
-                new Position(Row.FOUR, Column.D),
                 new Position(Row.THREE, Column.D),
-                new Position(Row.TWO, Column.D),
-                new Position(Row.ONE, Column.D),
-
-                new Position(Row.FIVE, Column.C),
-                new Position(Row.FIVE, Column.B),
-                new Position(Row.FIVE, Column.A)
+                new Position(Row.FOUR, Column.D)
         );
     }
 
     @Test
-    @DisplayName("해당 포지션에 상대 기물이 존재하면 이동할 수 있는 위치에 포함되어야 한다.")
+    @DisplayName("대각선에 상대 기물이 존재하면 이동할 수 있는 위치에 포함되어야 한다.")
     void startPositionPawnWithFreePositions() {
-        Piece piece = new Piece(PieceType.ROOK, Color.WHITE);
-        Position position = new Position(Row.FIVE, Column.D);
+        Piece piece = new Piece(PieceType.WHITE_PAWN, Color.WHITE);
+        Position position = new Position(Row.TWO, Column.D);
         Map<Direction, Queue<Position>> candidateAllPositions = piece.generateAllDirectionPositions(position);
         PositionsFilter positionsFilter = new PositionsFilter(new BlackPieceRepository(),
                 candidateAllPositions);
@@ -65,18 +50,16 @@ class RookTest {
         List<Position> movablePositions = positionsFilter.generateValidPositions(piece);
 
         assertThat(movablePositions).containsExactlyInAnyOrder(
-                new Position(Row.SIX, Column.D),
-                new Position(Row.FIVE, Column.E),
-                new Position(Row.FOUR, Column.D),
-                new Position(Row.FIVE, Column.C)
+                new Position(Row.THREE, Column.C),
+                new Position(Row.THREE, Column.E)
         );
     }
 
     @Test
-    @DisplayName("해당 포지션이 우리팀 기물일 시 이동가능한 위치에 포함되어서는 안된다.")
+    @DisplayName("앞에 기물이 존재하고 우리팀 기물일 시 이동가능한 위치에 포함되어서는 안된다.")
     void startPositionPawnWithCantMovePositions() {
-        Piece piece = new Piece(PieceType.ROOK, Color.WHITE);
-        Position position = new Position(Row.FIVE, Column.D);
+        Piece piece = new Piece(PieceType.WHITE_PAWN, Color.WHITE);
+        Position position = new Position(Row.TWO, Column.D);
         Map<Direction, Queue<Position>> candidateAllPositions = piece.generateAllDirectionPositions(position);
         PositionsFilter positionsFilter = new PositionsFilter(new WhitePieceRepository(),
                 candidateAllPositions);
