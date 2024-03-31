@@ -1,6 +1,7 @@
 package chess.domain;
 
 import chess.domain.board.ChessBoard;
+import chess.domain.board.ChessBoardCreator;
 import chess.domain.piece.Piece;
 import chess.domain.piece.Score;
 import chess.domain.piece.Team;
@@ -20,6 +21,12 @@ public class ChessGame {
     public ChessGame(ChessBoard chessBoard, Team turn) {
         this.chessBoard = chessBoard;
         this.turn = turn;
+    }
+
+    public static ChessGame createNewChessGame() {
+        ChessBoardCreator chessBoardCreator = new ChessBoardCreator();
+        ChessBoard chessBoard = chessBoardCreator.create();
+        return new ChessGame(chessBoard);
     }
 
     public void move(Position start, Position destiantion) {
