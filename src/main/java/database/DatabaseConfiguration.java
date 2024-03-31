@@ -1,5 +1,8 @@
 package database;
 
+import static config.DBCredential.DB_ID;
+import static config.DBCredential.DB_PASSWORD;
+
 public class DatabaseConfiguration {
     private static final DatabaseConfiguration INSTANCE = new DatabaseConfiguration();
     private final String MYSQL_CONNECT_URL_FORMAT = "jdbc:mysql://%s:%s/%s";
@@ -7,8 +10,8 @@ public class DatabaseConfiguration {
     private final String post = "3306";
     private final String database = "chess";
     private final String option = "?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
-    private final String username = "kelly";
-    private final String password = "kellyPw1234!";
+    private final String username = DB_ID;
+    private final String password = DB_PASSWORD;
 
     private DatabaseConfiguration() {
     }
