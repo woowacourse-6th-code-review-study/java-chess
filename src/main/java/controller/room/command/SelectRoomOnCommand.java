@@ -10,9 +10,10 @@ public class SelectRoomOnCommand implements Command {
 
     private final String roomId;
 
-    public SelectRoomOnCommand(final List<String> arguments) {
+    public SelectRoomOnCommand(final List<String> arguments, final List<RoomDto> validRooms) {
         validateArgumentSize(arguments);
-        validateRoomId(arguments.get(0));
+        validateRoomIdFormat(arguments.get(0));
+        validateRoomIdRunning(validRooms, arguments.get(0));
         this.roomId = arguments.get(0);
     }
 
@@ -22,10 +23,18 @@ public class SelectRoomOnCommand implements Command {
         }
     }
 
-    private void validateRoomId(final String input) {
+    private void validateRoomIdFormat(final String input) {
         try {
             Integer.parseInt(input);
         } catch (NumberFormatException e) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private void validateRoomIdRunning(final List<RoomDto> validRooms, final String input) {
+        boolean isRunningRoomNotFound = validRooms.stream()
+                .noneMatch(room -> room.room_id() == Integer.parseInt(input));
+        if (isRunningRoomNotFound) {
             throw new IllegalArgumentException();
         }
     }

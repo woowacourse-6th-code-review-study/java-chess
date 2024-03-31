@@ -10,7 +10,7 @@ import java.util.List;
 public class GameRoomController {
     private final GameRoomService roomService;
 
-    public GameRoomController(final GameRoomService roomService) {
+    public GameRoomController(GameRoomService roomService) {
         this.roomService = roomService;
     }
 
@@ -18,17 +18,17 @@ public class GameRoomController {
         List<RoomDto> rooms = roomService.loadActiveRoomAll();
         OutputView.printGameRoomGuideMessage(rooms);
 
-        RoomDto roomDto = readCommandUntilValid();
+        RoomDto roomDto = readCommandUntilValid(rooms);
         OutputView.printEnteringRoomMessage(roomDto);
         return roomDto;
     }
 
-    private RoomDto readCommandUntilValid() {
+    private RoomDto readCommandUntilValid(List<RoomDto> rooms) {
         try {
-            return InputView.readRoomCommand().execute(roomService);
+            return InputView.readRoomCommand(rooms).execute(roomService);
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            return readCommandUntilValid();
+            OutputView.printErrorMessage(e);
+            return readCommandUntilValid(rooms);
         }
     }
 }

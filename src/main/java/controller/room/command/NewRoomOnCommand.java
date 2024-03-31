@@ -8,7 +8,7 @@ import java.util.List;
 public class NewRoomOnCommand implements Command {
     private static final int ARGUMENT_SIZE = 0;
 
-    public NewRoomOnCommand(final List<String> arguments) {
+    public NewRoomOnCommand(final List<String> arguments, final List<RoomDto> rooms) {
         validateArgumentSize(arguments);
     }
 
