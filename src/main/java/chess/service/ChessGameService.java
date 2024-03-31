@@ -70,6 +70,11 @@ public class ChessGameService {
         return new ChessGame(chessBoard, currentTurn);
     }
 
+    public boolean isChessGameNotEnd() {
+        ChessGame chessGame = loadChessGame();
+        return chessGame.isNotEnd();
+    }
+
     private boolean isChessGameInProgress() {
         if (pieceRepository.findPieces().isEmpty()) {
             return false;
