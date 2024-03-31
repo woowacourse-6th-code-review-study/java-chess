@@ -5,15 +5,9 @@ import static chess.view.CommandParser.MOVE;
 import static chess.view.CommandParser.START;
 import static chess.view.CommandParser.STATUS;
 
-import chess.domain.board.ChessBoard;
-import chess.domain.piece.Piece;
-import chess.domain.position.File;
-import chess.domain.position.Position;
-import chess.domain.position.Rank;
 import chess.dto.BoardSnapShotDto;
 import chess.dto.RankSnapShotDto;
 import chess.dto.ScoreStatusDto;
-import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
@@ -26,24 +20,8 @@ public class OutputView {
         System.out.println(resolveStartMessage());
     }
 
-    public void printChessBoardMessage(ChessBoard chessBoard) {
-        System.out.println(resolveChessBoardMessage(chessBoard));
-    }
-
     public void printChessBoardMessage(BoardSnapShotDto boardSnapshotDto) {
         System.out.println(resolveBoardSnapshotMessage(boardSnapshotDto));
-    }
-
-    private String resolveBoardSnapshotMessage(BoardSnapShotDto boardSnapshot) {
-        List<RankSnapShotDto> boardSnapShot = boardSnapshot.getBoardSnapShot();
-        return boardSnapShot.stream()
-                .map(this::resolveRankSnapshotMessage)
-                .collect(Collectors.joining(LINE_SEPARATOR));
-    }
-
-    private String resolveRankSnapshotMessage(RankSnapShotDto rankSnapShotDto) {
-        List<String> rank = rankSnapShotDto.getRank();
-        return String.join("", rank);
     }
 
     public void printStatusMessage(ScoreStatusDto scoreStatusDto) {
@@ -60,25 +38,16 @@ public class OutputView {
                 .toString();
     }
 
-    private String resolveChessBoardMessage(ChessBoard chessBoard) {
-        return Arrays.stream(Rank.values())
-                .map(rank -> resolveRankMessage(chessBoard, rank))
+    private String resolveBoardSnapshotMessage(BoardSnapShotDto boardSnapshot) {
+        List<RankSnapShotDto> boardSnapShot = boardSnapshot.getBoardSnapShot();
+        return boardSnapShot.stream()
+                .map(this::resolveRankSnapshotMessage)
                 .collect(Collectors.joining(LINE_SEPARATOR));
     }
 
-    private String resolveRankMessage(ChessBoard chessBoard, Rank rank) {
-        return Arrays.stream(File.values())
-                .map(file -> new Position(file, rank))
-                .map(position -> resolveSquareMessage(chessBoard, position))
-                .collect(Collectors.joining());
-    }
-
-    private String resolveSquareMessage(ChessBoard chessBoard, Position position) {
-        if (chessBoard.positionIsEmpty(position)) {
-            return POSITION_EMPTY_MESSAGE;
-        }
-        Piece foundPiece = chessBoard.findPieceByPosition(position);
-        return PieceMessage.messageOf(foundPiece);
+    private String resolveRankSnapshotMessage(RankSnapShotDto rankSnapShotDto) {
+        List<String> rank = rankSnapShotDto.getRank();
+        return String.join("", rank);
     }
 
     private String resolveStatusMessage(ScoreStatusDto scoreStatusDto) {
