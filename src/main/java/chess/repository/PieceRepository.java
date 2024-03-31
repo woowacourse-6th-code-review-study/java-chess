@@ -50,7 +50,6 @@ public class PieceRepository {
              ResultSet resultSet = pstmt.executeQuery()) {
 
             while (resultSet.next()) {
-                long id = resultSet.getLong("id");
                 String position = resultSet.getString("position");
                 String team = resultSet.getString("team");
                 String type = resultSet.getString("type");
