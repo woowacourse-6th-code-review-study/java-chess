@@ -14,8 +14,8 @@ public class PieceEntity {
     private final PieceType pieceType;
     private final TeamType teamType;
 
-    public PieceEntity(Position position, Piece piece, Team team) {
-        this(position, PieceType.from(piece), TeamType.from(team));
+    public PieceEntity(Position position, Piece piece) {
+        this(position, PieceType.from(piece), TeamType.from(piece.getTeam()));
     }
 
     public PieceEntity(Position position, PieceType pieceType, TeamType teamType) {
@@ -31,12 +31,21 @@ public class PieceEntity {
         return new PieceEntity(position, pieceType, teamType);
     }
 
+    public Piece toPiece() {
+        Team team = teamType.getTeam();
+        return pieceType.createPiece(team);
+    }
+
     public Rank getRank() {
         return position.getRank();
     }
 
     public File getFile() {
         return position.getFile();
+    }
+
+    public Position getPosition() {
+        return position;
     }
 
     public PieceType getPieceType() {

@@ -44,5 +44,9 @@ public abstract sealed class Piece permits King, Queen, Rook, Bishop, Knight, Pa
         return this.getClass() == Pawn.class;
     }
 
+    public Team getTeam() {
+        return team;
+    }
+
     public abstract Point getPoint(boolean isOverlapped);
 }

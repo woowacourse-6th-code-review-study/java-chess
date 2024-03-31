@@ -18,6 +18,10 @@ public class ChessDao {
         return chessGameRepository.isExistGame();
     }
 
+    public TurnType findCurrentTurn() {
+        return chessGameRepository.find();
+    }
+
     public List<PieceEntity> findAllPieces() {
         return pieceRepository.findAll();
     }

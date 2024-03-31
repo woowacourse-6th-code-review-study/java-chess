@@ -26,4 +26,8 @@ public enum TeamType {
     public static TeamType getEmptyType() {
         return EMPTY;
     }
+
+    public Team getTeam() {
+        return team;
+    }
 }

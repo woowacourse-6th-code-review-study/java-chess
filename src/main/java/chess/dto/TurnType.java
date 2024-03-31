@@ -21,4 +21,8 @@ public enum TurnType {
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("해당 턴 타입이 없습니다."));
     }
+
+    public Team getTeam() {
+        return team;
+    }
 }
