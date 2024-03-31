@@ -27,8 +27,7 @@ public class ChessGameService {
         if (isChessGameInProgress()) {
             return BoardDto.from(loadChessGame().getChessBoard());
         }
-        createNewChessGame();
-        return BoardDto.from(loadChessGame().getChessBoard());
+        return createNewChessGame();
     }
 
     public BoardDto movePiece(Position start, Position destination) {
@@ -50,18 +49,17 @@ public class ChessGameService {
         List<PieceDto> pieces = pieceRepository.findPieces().get();
         Team currentTurn = turnRepository.findCurrentTurn().get();
         ChessBoard chessBoard = DomainMapper.mapToBoard(pieces);
-
         return new ChessGame(chessBoard, currentTurn);
     }
 
     public boolean isChessGameNotEnd() {
-        ChessGame chessGame = loadChessGame();
-        return chessGame.isNotEnd();
+        return loadChessGame().isNotEnd();
     }
 
-    private void createNewChessGame() {
+    private BoardDto createNewChessGame() {
         ChessGame newChessGame = ChessGame.createNewChessGame();
         saveChessGame(newChessGame);
+        return BoardDto.from(newChessGame.getChessBoard());
     }
 
     private void saveChessGame(ChessGame chessGame) {
