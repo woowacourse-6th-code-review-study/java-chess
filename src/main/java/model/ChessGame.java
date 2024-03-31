@@ -25,7 +25,11 @@ public class ChessGame {
         gameTurn.progress();
     }
 
-    public Map<Position, Piece> getBoard() {
+    public Score calculateScore(final Camp camp) {
+        return board.calculateScore(camp);
+    }
+
+    public Map<Position, Piece> getPieces() {
         return board.getPieces();
     }
 
@@ -37,7 +41,7 @@ public class ChessGame {
         return gameTurn.getTurn();
     }
 
-    public Score calculateScore(final Camp camp) {
-        return board.calculateScore(camp);
+    public Board getBoard() {
+        return board;
     }
 }

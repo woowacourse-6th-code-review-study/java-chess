@@ -3,8 +3,6 @@ package db;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import db.dto.TurnDto;
-import model.Camp;
-import model.Turn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +20,8 @@ class TurnDaoTest {
     @Test
     void saveTurn() {
         //given
-        turnDao.saveTurn(Camp.WHITE, new Turn(1));
+        final TurnDto turnDto = new TurnDto("WHITE", 1);
+        turnDao.saveTurn(turnDto);
         final TurnDto expected = new TurnDto("WHITE", 1);
 
         //when

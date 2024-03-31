@@ -9,8 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import model.Camp;
-import model.Turn;
 
 public class TurnDao {
 
@@ -20,13 +18,13 @@ public class TurnDao {
         this.database = database;
     }
 
-    public void saveTurn(final Camp camp, final Turn turn) {
+    public void saveTurn(final TurnDto turnDto) {
         final String query = "INSERT INTO turn values(?, ?)";
         try (final Connection connection = DBConnectionUtil.getConnection(database);
              final PreparedStatement preparedStatement = connection.prepareStatement(query)
         ) {
-            preparedStatement.setString(1, camp.toString());
-            preparedStatement.setInt(2, turn.count());
+            preparedStatement.setString(1, turnDto.currentCamp());
+            preparedStatement.setInt(2, turnDto.count());
             preparedStatement.executeUpdate();
         } catch (final SQLException exception) {
             throw new DaoException(ErrorCode.FAIL_SAVE);

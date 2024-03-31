@@ -24,7 +24,7 @@ public class ChessBoardDto {
     }
 
     public static ChessBoardDto from(final ChessGame chessGame) {
-        final Map<Position, Piece> pieceOfPosition = chessGame.getBoard();
+        final Map<Position, Piece> pieceOfPosition = chessGame.getPieces();
 
         final StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < BOARD_SIZE; i++) {

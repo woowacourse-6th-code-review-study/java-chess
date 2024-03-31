@@ -79,7 +79,7 @@ class ChessGameTest {
         final ChessGame chessGame = ChessGame.setupStartingPosition();
 
         //then
-        final Map<Position, Piece> board = chessGame.getBoard();
+        final Map<Position, Piece> board = chessGame.getPieces();
         assertThat(board.keySet()).hasSize(32);
     }
 
@@ -89,7 +89,7 @@ class ChessGameTest {
         //given && when
         final ChessGame chessGame = ChessGame.setupStartingPosition();
 
-        final Map<Position, Piece> board = chessGame.getBoard();
+        final Map<Position, Piece> board = chessGame.getPieces();
 
         final Map<Position, Piece> expected = new HashMap<>();
 
@@ -204,7 +204,7 @@ class ChessGameTest {
         chessGame.move(new Moving(A4, B5));
 
         //then
-        assertThat(chessGame.getBoard()).hasSize(31);
+        assertThat(chessGame.getPieces()).hasSize(31);
     }
 
     @DisplayName("선공은 WHITE이다.")

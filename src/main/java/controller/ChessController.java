@@ -3,6 +3,7 @@ package controller;
 import db.Repository;
 import db.dto.BoardDto;
 import db.dto.MovingDto;
+import db.dto.TurnDto;
 import dto.ChessBoardDto;
 import dto.ScoreDto;
 import exception.CustomException;
@@ -10,6 +11,7 @@ import java.util.List;
 import model.Board;
 import model.Camp;
 import model.ChessGame;
+import model.Turn;
 import model.command.CommandLine;
 import model.status.GameStatus;
 import model.status.StatusFactory;
@@ -43,9 +45,12 @@ public class ChessController {
             repository.removeAll();
             return;
         }
-        final Board board = new Board(chessGame.getBoard());
+        final Board board = chessGame.getBoard();
+        final Camp camp = chessGame.getCamp();
+        final Turn turn = chessGame.getTurn();
         final BoardDto boardDto = BoardDto.from(board);
-        repository.save(boardDto, chessGame.getCamp(), chessGame.getTurn());
+        final TurnDto turnDto = TurnDto.from(camp, turn);
+        repository.save(boardDto, turnDto);
     }
 
     private ChessGame create() {

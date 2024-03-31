@@ -34,11 +34,11 @@ public class Repository { //TODO 이름 변경
         return movingDao.countMoving() > 0;
     }
 
-    public void save(final BoardDto board, final Camp camp, final Turn turn) {
+    public void save(final BoardDto board, final TurnDto turnDto) {
         boardDao.remove();
         boardDao.saveBoard(board);
         turnDao.remove();
-        turnDao.saveTurn(camp, turn);
+        turnDao.saveTurn(turnDto);
     }
 
     public void saveMoving(final MovingDto moving) {
