@@ -2,6 +2,7 @@ package repository;
 
 import db.JdbcTemplate;
 import db.RowMapper;
+import dto.RoomDto;
 import dto.TurnDto;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public class TurnDao {
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<TurnDto> rowMapper = (resultSet) -> new TurnDto(
             resultSet.getString("state"),
-            resultSet.getString("game_id")
+            resultSet.getInt("game_id")
     );
 
     TurnDao() {
@@ -23,14 +24,14 @@ public class TurnDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    void add(TurnDto turnDto) {
+    void add(final TurnDto turnDto) {
         final String query = "INSERT INTO " + TABLE_NAME + " VALUES (?, ?)";
-        jdbcTemplate.execute(query, turnDto.turn(), turnDto.gameId());
+        jdbcTemplate.execute(query, turnDto.turn(), String.valueOf(turnDto.gameId()));
     }
 
-    TurnDto findOne() {
-        final String query = "SELECT * FROM " + TABLE_NAME + " LIMIT 1";
-        final List<TurnDto> turns = jdbcTemplate.executeAndGet(query, rowMapper);
+    TurnDto findTurnByGameId(final RoomDto roomDto) {
+        final String query = "SELECT * FROM " + TABLE_NAME + " WHERE game_id = ?";
+        final List<TurnDto> turns = jdbcTemplate.executeAndGet(query, rowMapper, String.valueOf(roomDto.room_id()));
         if (turns.isEmpty()) {
             throw new IllegalArgumentException("데이터가 없습니다.");
         }

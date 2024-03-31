@@ -26,9 +26,9 @@ class RoomDaoTest {
         roomDao.add(new RoomDto(1));
         roomDao.add(new RoomDto(2));
         roomDao.add(new RoomDto(3));
-        turnDao.add(new TurnDto("WHITE", "1"));
-        turnDao.add(new TurnDto("GAMEOVER", "2"));
-        turnDao.add(new TurnDto("BLACK", "3"));
+        turnDao.add(new TurnDto("WHITE", 1));
+        turnDao.add(new TurnDto("GAMEOVER", 2));
+        turnDao.add(new TurnDto("BLACK", 3));
 
         List<RoomDto> activeRoomAll = roomDao.findActiveRoomAll();
 

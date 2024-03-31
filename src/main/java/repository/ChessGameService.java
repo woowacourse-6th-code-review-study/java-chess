@@ -2,6 +2,7 @@ package repository;
 
 import db.JdbcTemplate;
 import dto.PieceDto;
+import dto.RoomDto;
 import dto.TurnDto;
 
 import java.util.List;
@@ -29,8 +30,8 @@ public class ChessGameService {
         return pieceDao.findAll();
     }
 
-    public TurnDto loadPreviousTurn() {
-        return turnDao.findOne();
+    public TurnDto loadPreviousTurn(final RoomDto roomDto) {
+        return turnDao.findTurnByGameId(roomDto);
     }
 
     public void updatePiece(final List<PieceDto> pieceDtos) {

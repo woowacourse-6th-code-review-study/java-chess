@@ -29,9 +29,9 @@ class GameRoomServiceTest {
             room3.room_id(), room3);
 
     private final Map<Integer, TurnDto> turnRepository = Map.of(
-            room1.room_id(), new TurnDto("GAMEOVER", String.valueOf(room1.room_id())),
-            room2.room_id(), new TurnDto("WHITE", String.valueOf(room2.room_id())),
-            room3.room_id(), new TurnDto("BLACK", String.valueOf(room3.room_id())));
+            room1.room_id(), new TurnDto("GAMEOVER", room1.room_id()),
+            room2.room_id(), new TurnDto("WHITE", room2.room_id()),
+            room3.room_id(), new TurnDto("BLACK", room3.room_id()));
 
     @Test
     void 활성화된_모든_방을_불러온다() {

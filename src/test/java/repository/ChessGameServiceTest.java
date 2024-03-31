@@ -3,6 +3,7 @@ package repository;
 import domain.piece.Color;
 import domain.position.Position;
 import dto.PieceDto;
+import dto.RoomDto;
 import dto.TurnDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,8 +23,8 @@ class ChessGameServiceTest {
     private static final PieceDto A2WhitePawn = new PieceDto("A", "2", "WHITE", "PAWN");
     private static final PieceDto B2WhitePawn = new PieceDto("B", "2", "WHITE", "PAWN");
     private static final PieceDto C2WhitePawn = new PieceDto("C", "2", "WHITE", "PAWN");
-    private static final TurnDto whiteTurn = TurnDto.of(Color.WHITE);
-    private static final TurnDto blackTurn = TurnDto.of(Color.BLACK);
+    private static final TurnDto whiteTurn = new TurnDto("WHITE", 1);
+    private static final TurnDto blackTurn = new TurnDto("BLACK", 2);
 
     private final PieceDao pieceDao = new PieceMockDao();
     private final TurnDao turnDao = new TurnMockDao();
@@ -56,7 +57,9 @@ class ChessGameServiceTest {
 
     @Test
     void 이전_게임의_턴_데이터를_불러온다() {
-        assertThat(chessGameService.loadPreviousTurn().getTurn())
+        RoomDto roomDto = new RoomDto(1);
+
+        assertThat(chessGameService.loadPreviousTurn(roomDto).getTurn())
                 .isEqualTo(Color.WHITE);
     }
 
@@ -76,9 +79,11 @@ class ChessGameServiceTest {
 
     @Test
     void 턴_데이터를_갱신한다() {
+        RoomDto room = new RoomDto(blackTurn.gameId());
+
         chessGameService.updateTurn(blackTurn);
 
-        assertThat(chessGameService.loadPreviousTurn().getTurn())
+        assertThat(chessGameService.loadPreviousTurn(room).getTurn())
                 .isEqualTo(Color.BLACK);
     }
 
@@ -118,22 +123,23 @@ class ChessGameServiceTest {
         }
     }
 
-    static class TurnMockDao extends TurnDao {
-        private Color repository;
 
-        TurnDto findOne() {
-            if (repository == null) {
+    static class TurnMockDao extends TurnDao {
+        private final Map<Integer, TurnDto> repository = new HashMap<>();
+
+        void add(TurnDto turnDto) {
+            repository.put(turnDto.gameId(), turnDto);
+        }
+
+        TurnDto findTurnByGameId(RoomDto roomDto) {
+            if (!repository.containsKey(roomDto.room_id())) {
                 throw new IllegalArgumentException("데이터가 없습니다.");
             }
-            return TurnDto.of(repository);
+            return repository.get(roomDto.room_id());
         }
 
         void update(final TurnDto turnDto) {
-            repository = turnDto.getTurn();
-        }
-
-        void deleteAll() {
-            repository = null;
+            repository.put(turnDto.gameId(), turnDto);
         }
     }
 }
