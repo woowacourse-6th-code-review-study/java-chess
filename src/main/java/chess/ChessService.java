@@ -116,4 +116,8 @@ public class ChessService {
                 .map(piece -> new PieceEntity(position, piece))
                 .orElse(PieceEntity.createEmptyPiece(position));
     }
+
+    public Team findCurrentTeam() {
+        return board.getTurn();
+    }
 }

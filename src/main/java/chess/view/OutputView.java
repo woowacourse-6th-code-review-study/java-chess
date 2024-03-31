@@ -32,6 +32,14 @@ public class OutputView {
                 > 게임 이동 : move source위치 target위치 - 예. move b2 b3""");
     }
 
+    public void printCurrentTurn(Team turn) {
+        if (turn.isBlack()) {
+            System.out.println("현재 검은 팀 차례입니다.");
+            return;
+        }
+        System.out.println("현재 흰 팀 차례입니다.");
+    }
+
     public void printBoard(Map<Position, PieceDto> board) {
         System.out.println();
         for (Rank rank : RANK_ORDER) {

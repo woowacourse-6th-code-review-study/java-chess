@@ -31,6 +31,7 @@ public class ChessGame {
         GameCommand command = inputView.readCommand();
         if (command.isStart()) {
             initBoard();
+            showCurrentTeam();
             showBoard();
             return;
         }
@@ -39,6 +40,11 @@ public class ChessGame {
 
     private void initBoard() {
         chessService.init();
+    }
+
+    private void showCurrentTeam() {
+        Team turn = chessService.findCurrentTeam();
+        outputView.printCurrentTurn(turn);
     }
 
     private void play() {
