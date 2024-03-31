@@ -1,7 +1,8 @@
 package chess.controller.command;
 
 import chess.controller.State;
-import chess.domain.game.ChessGame;
+import chess.service.BoardService;
+import chess.service.GameService;
 import java.util.List;
 
 public class End implements Command {
@@ -15,7 +16,7 @@ public class End implements Command {
     }
 
     @Override
-    public State execute(ChessGame chessGame) {
+    public State execute(GameService gameService, BoardService boardService, Long roomId) {
         return State.END;
     }
 }

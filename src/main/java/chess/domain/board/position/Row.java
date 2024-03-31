@@ -36,4 +36,8 @@ public enum Row {
         int nextIndex = index + distance;
         return EIGHT.index >= nextIndex && nextIndex >= ONE.index;
     }
+
+    public int getIndex() {
+        return index;
+    }
 }

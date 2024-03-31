@@ -22,13 +22,15 @@ public final class Score {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == this)
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
-        if (obj == null || obj.getClass() != this.getClass())
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
-        var that = (Score) obj;
-        return Objects.equals(this.score, that.score);
+        }
+        Score score1 = (Score) o;
+        return Objects.equals(score, score1.score);
     }
 
     @Override

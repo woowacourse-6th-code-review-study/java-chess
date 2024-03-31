@@ -9,19 +9,19 @@ import java.util.Map;
 
 public interface BoardRepository {
 
-    void savePiece(Piece piece, Position position);
+    void savePiece(Piece piece, Position position, Long roomId);
 
-    boolean existsPieceByPosition(Position position);
+    boolean existsPieceByPosition(Position position, Long roomId);
 
-    void deletePieceByPosition(Position position);
+    void deletePieceByPosition(Position position, Long roomId);
 
-    Piece findPieceByPosition(Position position);
+    Piece findPieceByPosition(Position position, Long roomId);
 
-    List<Piece> findPieceByColor(Color color);
+    List<Piece> findPieceByColor(Color piece_color, Long roomId);
 
-    List<Integer> getPieceCountByPieceType(PieceType pieceType);
+    List<Integer> getPieceCountByPieceType(PieceType pieceType, Long roomId);
 
-    Map<Position, Piece> findAllPiece();
+    Map<Position, Piece> findAllPieceByRoomId(Long roomId);
 
-    List<Piece> findPieceByPieceType(PieceType pieceType);
+    List<Piece> findPieceByPieceType(PieceType pieceType, Long roomId);
 }

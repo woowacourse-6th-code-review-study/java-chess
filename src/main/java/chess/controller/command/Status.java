@@ -1,12 +1,10 @@
 package chess.controller.command;
 
 import chess.controller.State;
-import chess.domain.game.ChessGame;
-import chess.domain.game.Score;
-import chess.domain.piece.Color;
+import chess.service.BoardService;
+import chess.service.GameService;
 import chess.view.OutputView;
 import java.util.List;
-import java.util.Map;
 
 public class Status implements Command {
 
@@ -19,9 +17,8 @@ public class Status implements Command {
     }
 
     @Override
-    public State execute(ChessGame chessGame) {
-        Map<Color, Score> teamScore = chessGame.calculateScore();
-        OutputView.printTeamScore(teamScore.get(Color.WHITE), teamScore.get(Color.BLACK));
+    public State execute(GameService gameService, BoardService boardService, Long roomId) {
+        OutputView.printTeamScore(gameService.generateGameResult(roomId));
         return State.RUNNING;
     }
 }

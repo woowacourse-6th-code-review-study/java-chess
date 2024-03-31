@@ -20,14 +20,14 @@ public enum Winner {
     public static Winner selectWinnerByScore(Map<Color, Score> teamScore) {
         return Arrays.stream(values())
                 .filter(winner -> winner.selectWinner.test(teamScore.get(Color.WHITE), teamScore.get(Color.BLACK)))
-                .findFirst()
+                .findAny()
                 .orElseThrow(IllegalStateException::new);
     }
 
-    public static Winner selectWinnerByCheckmate(Color kingColor) {
-        if (kingColor == Color.WHITE) {
-            return BLACK_WIN;
+    public static Winner selectWinnerByCheckmate(Color aliveKingColor) {
+        if (aliveKingColor == Color.WHITE) {
+            return WHITE_WIN;
         }
-        return WHITE_WIN;
+        return BLACK_WIN;
     }
 }

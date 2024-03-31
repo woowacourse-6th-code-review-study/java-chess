@@ -16,6 +16,10 @@ public class Piece {
         this.color = color;
     }
 
+    public Piece(String pieceType, String color) {
+        this(PieceType.valueOf(pieceType), Color.valueOf(color));
+    }
+
     public Map<Direction, Queue<Position>> generateAllDirectionPositions(Position currentPosition) {
         return pieceType.generateAllDirectionPositions(currentPosition);
     }
@@ -30,13 +34,6 @@ public class Piece {
 
     public boolean isNotSameColor(Color color) {
         return !isSameColor(color);
-    }
-
-    public boolean isPawnByColor(Color color) {
-        if (color == Color.BLACK) {
-            return pieceType.isBlackPawn();
-        }
-        return pieceType.isWhitePawn();
     }
 
     public boolean isKing() {

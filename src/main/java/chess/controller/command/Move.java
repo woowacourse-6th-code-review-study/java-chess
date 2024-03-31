@@ -4,8 +4,9 @@ import chess.controller.State;
 import chess.domain.board.position.Column;
 import chess.domain.board.position.Position;
 import chess.domain.board.position.Row;
-import chess.domain.game.ChessGame;
-import chess.domain.game.ChessGameResult;
+import chess.service.BoardService;
+import chess.service.GameService;
+import chess.service.dto.ChessGameResult;
 import chess.view.OutputView;
 import chess.view.mapper.ColumnMapper;
 import chess.view.mapper.RowMapper;
@@ -36,20 +37,20 @@ public class Move implements Command {
     }
 
     @Override
-    public State execute(ChessGame chessGame) {
-        if (chessGame.isCheckmate(to)) {
-            ChessGameResult chessGameResult = chessGame.generateGameResult(to);
-            moveAndPrintBoard(chessGame);
+    public State execute(GameService gameService, BoardService boardService, Long roomId) {
+        if (boardService.isCheckmate(to, roomId)) {
+            moveAndPrintBoard(gameService, boardService, roomId);
+            ChessGameResult chessGameResult = gameService.generateGameResult(roomId);
             OutputView.printChessGameResult(chessGameResult);
             return State.END;
         }
-        moveAndPrintBoard(chessGame);
+        moveAndPrintBoard(gameService, boardService, roomId);
         return State.RUNNING;
     }
 
-    private void moveAndPrintBoard(ChessGame chessGame) {
-        chessGame.movePiece(from, to);
-        OutputView.printBoard(chessGame.getBoard());
+    private void moveAndPrintBoard(GameService gameService, BoardService boardService, Long roomId) {
+        boardService.movePiece(from, to, roomId);
+        OutputView.printBoard(boardService.getAllPieces(roomId));
     }
 
     private Position createPosition(String requestColumn, String requestRow) {

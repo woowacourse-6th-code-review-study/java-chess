@@ -1,9 +1,10 @@
 package chess.controller.command;
 
 import chess.controller.State;
-import chess.domain.game.ChessGame;
+import chess.service.BoardService;
+import chess.service.GameService;
 
 public interface Command {
 
-    State execute(ChessGame chessGame);
+    State execute(GameService gameService, BoardService boardService, Long roomId);
 }

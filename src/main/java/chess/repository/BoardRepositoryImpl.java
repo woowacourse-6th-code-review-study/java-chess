@@ -18,25 +18,27 @@ public class BoardRepositoryImpl implements BoardRepository {
     private final DBConnection dbConnection = new DBConnection();
 
     @Override
-    public void savePiece(Piece piece, Position position) {
-        final String query = "INSERT INTO board(`row`, `column`, piece_type, piece_color) VALUES(?, ?, ?, ?)";
+    public void savePiece(Piece piece, Position position, Long roomId) {
+        final String query = "INSERT INTO board(`row`, `column`, piece_type, piece_color, room_id) VALUES(?, ?, ?, ?, ?)";
         processQuery(query, preparedStatement -> {
             preparedStatement.setInt(1, position.getRowIndex());
             preparedStatement.setString(2, position.getColumn().name());
             preparedStatement.setString(3, piece.getPieceType().name());
             preparedStatement.setString(4, piece.getColor().name());
+            preparedStatement.setLong(5, roomId);
             preparedStatement.executeUpdate();
         });
     }
 
     @Override
-    public boolean existsPieceByPosition(Position position) {
+    public boolean existsPieceByPosition(Position position, Long roomId) {
         List<Boolean> existsPiece = new ArrayList<>();
         final String query = "SELECT EXISTS ("
-                + "SELECT 1 FROM board WHERE `row` = ? AND `column` = ?) AS exists_piece";
+                + "SELECT 1 FROM board WHERE `row` = ? AND `column` = ? AND room_id = ?) AS exists_piece";
         processQuery(query, preparedStatement -> {
             preparedStatement.setInt(1, position.getRowIndex());
             preparedStatement.setString(2, position.getColumn().name());
+            preparedStatement.setLong(3, roomId);
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 existsPiece.add(rs.getBoolean("exists_piece"));
@@ -46,22 +48,24 @@ public class BoardRepositoryImpl implements BoardRepository {
     }
 
     @Override
-    public void deletePieceByPosition(Position position) {
-        final String query = "DELETE FROM board WHERE `row` = ? AND `column` = ?";
+    public void deletePieceByPosition(Position position, Long roomId) {
+        final String query = "DELETE FROM board WHERE `row` = ? AND `column` = ? AND room_id = ?";
         processQuery(query, preparedStatement -> {
             preparedStatement.setInt(1, position.getRowIndex());
             preparedStatement.setString(2, position.getColumn().name());
+            preparedStatement.setLong(3, roomId);
             preparedStatement.executeUpdate();
         });
     }
 
     @Override
-    public Piece findPieceByPosition(Position position) {
+    public Piece findPieceByPosition(Position position, Long roomId) {
         List<Piece> pieces = new ArrayList<>();
-        final String query = "SELECT piece_type, piece_color FROM board WHERE `row` = ? AND `column` = ?";
+        final String query = "SELECT piece_type, piece_color FROM board WHERE `row` = ? AND `column` = ? AND room_id = ?";
         processQuery(query, preparedStatement -> {
             preparedStatement.setInt(1, position.getRowIndex());
             preparedStatement.setString(2, position.getColumn().name());
+            preparedStatement.setLong(3, roomId);
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 pieces.add(new Piece(rs.getString("piece_type"), rs.getString("piece_color")));
@@ -71,11 +75,12 @@ public class BoardRepositoryImpl implements BoardRepository {
     }
 
     @Override
-    public List<Piece> findPieceByColor(Color piece_color) {
+    public List<Piece> findPieceByColor(Color piece_color, Long roomId) {
         List<Piece> pieces = new ArrayList<>();
-        String query = "SELECT piece_type, piece_color FROM board WHERE piece_color = ?";
+        String query = "SELECT piece_type, piece_color FROM board WHERE piece_color = ? AND room_id = ?";
         processQuery(query, preparedStatement -> {
             preparedStatement.setString(1, piece_color.name());
+            preparedStatement.setLong(2, roomId);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 Piece piece = new Piece(rs.getString("piece_type"), rs.getString("piece_color"));
@@ -86,11 +91,12 @@ public class BoardRepositoryImpl implements BoardRepository {
     }
 
     @Override
-    public List<Integer> getPieceCountByPieceType(PieceType pieceType) {
+    public List<Integer> getPieceCountByPieceType(PieceType pieceType, Long roomId) {
         List<Integer> pieceCount = new ArrayList<>();
-        String query = "SELECT COUNT(*) AS piece_count FROM board WHERE piece_type = ? GROUP BY `column`";
+        String query = "SELECT COUNT(*) AS piece_count FROM board WHERE piece_type = ? AND room_id = ? GROUP BY `column`";
         processQuery(query, preparedStatement -> {
             preparedStatement.setString(1, pieceType.name());
+            preparedStatement.setLong(2, roomId);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 pieceCount.add(rs.getInt("piece_count"));
@@ -100,10 +106,11 @@ public class BoardRepositoryImpl implements BoardRepository {
     }
 
     @Override
-    public Map<Position, Piece> findAllPiece() {
+    public Map<Position, Piece> findAllPieceByRoomId(Long roomId) {
         Map<Position, Piece> allPieces = new HashMap<>();
-        String query = "SELECT * FROM board";
+        String query = "SELECT * FROM board JOIN room ON board.room_id = room.id WHERE board.room_id = ?";
         processQuery(query, preparedStatement -> {
+            preparedStatement.setLong(1, roomId);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 Position position = new Position(rs.getInt("row"), rs.getString("column"));
@@ -115,11 +122,12 @@ public class BoardRepositoryImpl implements BoardRepository {
     }
 
     @Override
-    public List<Piece> findPieceByPieceType(PieceType pieceType) {
+    public List<Piece> findPieceByPieceType(PieceType pieceType, Long roomId) {
         List<Piece> pieces = new ArrayList<>();
-        final String query = "SELECT piece_type, piece_color FROM board WHERE piece_type = ?";
+        final String query = "SELECT piece_type, piece_color FROM board WHERE piece_type = ? AND room_id = ?";
         processQuery(query, preparedStatement -> {
             preparedStatement.setString(1, pieceType.name());
+            preparedStatement.setLong(2, roomId);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 pieces.add(new Piece(rs.getString("piece_type"), rs.getString("piece_color")));

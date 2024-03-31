@@ -13,6 +13,10 @@ public class Position {
         this.column = column;
     }
 
+    public Position(int row, String column) {
+        this(Row.findByIndex(row), Column.valueOf(column));
+    }
+
     public Position calculateNextPosition(Direction direction, int weight) {
         int rowDistance = direction.calculateRowDistance(weight);
         int columnDistance = direction.calculateColumnDistance(weight);
@@ -38,6 +42,10 @@ public class Position {
 
     public int getColumnIndex() {
         return column.getIndex();
+    }
+
+    public int getRowIndex() {
+        return row.getIndex();
     }
 
     public Row getRow() {

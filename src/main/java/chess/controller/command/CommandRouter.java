@@ -29,6 +29,6 @@ public enum CommandRouter {
                 .filter(commandRouter -> commandRouter.value.equals(commandInput.get(COMMAND_INDEX)))
                 .map(commandRouter -> commandRouter.command.apply(commandInput))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("옳바르지 않은 명령어 입력입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("올바르지 않은 명령어 입력입니다."));
     }
 }

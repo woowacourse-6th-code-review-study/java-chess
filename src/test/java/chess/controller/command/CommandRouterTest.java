@@ -54,6 +54,6 @@ class CommandRouterTest {
     void findCommendByInputFailTest() {
         assertThatThrownBy(() -> CommandRouter.findCommendByInput(List.of("jazz")))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("옳바르지 않은 명령어 입력입니다.");
+                .hasMessage("올바르지 않은 명령어 입력입니다.");
     }
 }

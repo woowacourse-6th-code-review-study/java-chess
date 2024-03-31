@@ -5,7 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import chess.controller.State;
-import chess.domain.game.ChessGame;
+import chess.service.BoardService;
+import chess.service.GameService;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,9 +32,9 @@ class StatusTest {
     @Test
     void executeTest() {
         Status status = new Status(List.of("status"));
-        ChessGame chessGame = new ChessGame();
-
-        State gameState = status.execute(chessGame);
+        GameService gameService = new GameService();
+        BoardService boardService = new BoardService();
+        State gameState = status.execute(gameService, boardService, 0L);
 
         assertThat(gameState).isEqualTo(State.RUNNING);
     }

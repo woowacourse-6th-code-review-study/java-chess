@@ -1,5 +1,7 @@
-package chess.domain.game;
+package chess.service.dto;
 
+import chess.domain.game.Score;
+import chess.domain.game.Winner;
 import chess.domain.piece.Color;
 import java.util.Map;
 

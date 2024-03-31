@@ -11,38 +11,40 @@ import java.util.Map;
 public class WhitePieceRepository implements BoardRepository {
 
     @Override
-    public void savePiece(Piece piece, Position position) {}
+    public void savePiece(Piece piece, Position position, Long roomId) {
+    }
 
     @Override
-    public boolean existsPieceByPosition(Position position) {
+    public boolean existsPieceByPosition(Position position, Long roomId) {
         return true;
     }
 
     @Override
-    public void deletePieceByPosition(Position position) {}
+    public void deletePieceByPosition(Position position, Long roomId) {
+    }
 
     @Override
-    public Piece findPieceByPosition(Position position) {
+    public Piece findPieceByPosition(Position position, Long roomId) {
         return new Piece(PieceType.WHITE_PAWN, Color.WHITE);
     }
 
     @Override
-    public List<Piece> findPieceByColor(Color color) {
+    public List<Piece> findPieceByColor(Color piece_color, Long roomId) {
         return null;
     }
 
     @Override
-    public List<Integer> getPieceCountByPieceType(PieceType pieceType) {
+    public List<Integer> getPieceCountByPieceType(PieceType pieceType, Long roomId) {
         return null;
     }
 
     @Override
-    public Map<Position, Piece> findAllPiece() {
+    public Map<Position, Piece> findAllPieceByRoomId(Long roomId) {
         return null;
     }
 
     @Override
-    public List<Piece> findPieceByPieceType(PieceType pieceType) {
+    public List<Piece> findPieceByPieceType(PieceType pieceType, Long roomId) {
         return null;
     }
 }

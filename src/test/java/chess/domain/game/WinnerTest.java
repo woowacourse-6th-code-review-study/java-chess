@@ -49,18 +49,18 @@ class WinnerTest {
     @DisplayName("체크메이트로 승리를 결정한다")
     class SelectWinnerByCheckmateTest {
 
-        @DisplayName("검정 색의 King이 체크메이트를 당하면 흰색 팀이 승리한다.")
+        @DisplayName("혼자 살아있는 왕이 흰색이면 흰색이 승리한다.")
         @Test
         void blackKingCheckmateTest() {
-            Winner winner = Winner.selectWinnerByCheckmate(Color.BLACK);
+            Winner winner = Winner.selectWinnerByCheckmate(Color.WHITE);
 
             assertThat(winner).isEqualTo(Winner.WHITE_WIN);
         }
 
-        @DisplayName("흰색 색의 King이 체크메이트를 당하면 검정 팀이 승리한다.")
+        @DisplayName("혼자 살아있는 왕이 검은색이면 검은색이 승리한다.")
         @Test
         void whiteKingCheckmateTest() {
-            Winner winner = Winner.selectWinnerByCheckmate(Color.WHITE);
+            Winner winner = Winner.selectWinnerByCheckmate(Color.BLACK);
 
             assertThat(winner).isEqualTo(Winner.BLACK_WIN);
         }
