@@ -1,5 +1,48 @@
 # 체스 미션
 
+## DB 연동
+
+### Docker 실행하기
+
+```bash
+docker-compose -p chess up -d
+```
+
+### DB 스키마
+
+```sql
+use chess;
+
+drop table if exists board;
+
+create table board
+(
+    position   varchar(2)  not null,
+    piece_type varchar(6) not null,
+    camp       varchar(5)  not null
+
+);
+
+drop table if exists moving;
+
+create table moving
+(
+  movement_id INT primary key auto_increment,
+  camp        varchar(5)  not null,
+  start       varchar(2) not null,
+  destination varchar(2) not null
+);
+
+drop table if exists turn;
+
+create table turn
+(
+  camp varchar(5) not null,
+  count int not null
+);
+```
+
+
 ## 기능 요구 사항
 
 * [x] 8 * 8 의 체스 판 생성
