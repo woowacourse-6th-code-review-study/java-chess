@@ -1,7 +1,7 @@
 package controller;
 
 import dto.RoomDto;
-import repository.GameRoomService;
+import service.GameRoomService;
 import view.InputView;
 import view.OutputView;
 import view.command.CommandInput;

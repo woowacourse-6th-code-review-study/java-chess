@@ -4,10 +4,12 @@ import domain.ChessGame;
 import domain.board.ChessBoard;
 import domain.board.ChessBoardFactory;
 import dto.RoomDto;
-import dto.TurnDto;
-import repository.ChessGameService;
+import dto.StateDto;
+import service.ChessGameService;
 import view.InputView;
 import view.OutputView;
+
+import java.util.NoSuchElementException;
 
 public class ChessGameController {
     private final ChessGameService chessGameService;
@@ -28,9 +30,9 @@ public class ChessGameController {
 
     private ChessBoard initializeChessGame(RoomDto roomDto) {
         try {
-            TurnDto turnDto = chessGameService.loadPreviousTurn(roomDto);
-            return ChessBoardFactory.loadPreviousChessBoard(chessGameService.loadPreviousData(roomDto), turnDto.getTurn());
-        } catch (IllegalArgumentException e) {
+            StateDto stateDto = chessGameService.loadPreviousState(roomDto);
+            return ChessBoardFactory.loadPreviousChessBoard(chessGameService.loadPreviousPieces(roomDto), stateDto.getState());
+        } catch (NoSuchElementException e) {
             return ChessBoardFactory.createInitialChessBoard();
         }
     }
@@ -46,10 +48,10 @@ public class ChessGameController {
 
     private void updateGameStatus(final RoomDto roomDto) {
         if (chessGame.isGameOver()) {
-            chessGameService.updateTurn(roomDto, new TurnDto("GAMEOVER", roomDto.room_id()));
+            chessGameService.updateState(new StateDto("GAMEOVER", roomDto.room_id()));
             return;
         }
-        chessGameService.updatePiece(roomDto, chessGame.getBoard().getPieces());
-        chessGameService.updateTurn(roomDto, new TurnDto(chessGame.getTurn().name(), roomDto.room_id()));
+        chessGameService.updatePieces(roomDto, chessGame.getBoard().getPieces());
+        chessGameService.updateState(new StateDto(chessGame.getTurn().name(), roomDto.room_id()));
     }
 }

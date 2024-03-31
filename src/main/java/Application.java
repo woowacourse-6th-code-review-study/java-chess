@@ -1,8 +1,8 @@
 import controller.ChessGameController;
 import controller.GameRoomController;
 import dto.RoomDto;
-import repository.ChessGameService;
-import repository.GameRoomService;
+import service.ChessGameService;
+import service.GameRoomService;
 
 public class Application {
     public static void main(String[] args) {
