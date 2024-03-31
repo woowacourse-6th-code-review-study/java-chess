@@ -10,8 +10,11 @@ import chess.domain.piece.Piece;
 import chess.domain.position.File;
 import chess.domain.position.Position;
 import chess.domain.position.Rank;
+import chess.dto.BoardSnapShotDto;
+import chess.dto.RankSnapShotDto;
 import chess.dto.ScoreStatusDto;
 import java.util.Arrays;
+import java.util.List;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
@@ -25,6 +28,22 @@ public class OutputView {
 
     public void printChessBoardMessage(ChessBoard chessBoard) {
         System.out.println(resolveChessBoardMessage(chessBoard));
+    }
+
+    public void printChessBoardMessage(BoardSnapShotDto boardSnapshotDto) {
+        System.out.println(resolveBoardSnapshotMessage(boardSnapshotDto));
+    }
+
+    private String resolveBoardSnapshotMessage(BoardSnapShotDto boardSnapshot) {
+        List<RankSnapShotDto> boardSnapShot = boardSnapshot.getBoardSnapShot();
+        return boardSnapShot.stream()
+                .map(this::resolveRankSnapshotMessage)
+                .collect(Collectors.joining(LINE_SEPARATOR));
+    }
+
+    private String resolveRankSnapshotMessage(RankSnapShotDto rankSnapShotDto) {
+        List<String> rank = rankSnapShotDto.getRank();
+        return String.join("", rank);
     }
 
     public void printStatusMessage(ScoreStatusDto scoreStatusDto) {
