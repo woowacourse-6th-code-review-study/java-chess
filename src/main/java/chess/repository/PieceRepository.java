@@ -1,6 +1,6 @@
 package chess.repository;
 
-import chess.dto.PiecePlacementDto;
+import chess.dto.PieceDto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +18,7 @@ public class PieceRepository {
         this.connectionManager = connectionManager;
     }
 
-    public void savePieces(List<PiecePlacementDto> pieces) {
+    public void savePieces(List<PieceDto> pieces) {
         try (Connection connection = connectionManager.getConnection()) {
             pieces.forEach(piece -> savePiece(piece, connection));
         } catch (SQLException e) {
@@ -26,23 +26,23 @@ public class PieceRepository {
         }
     }
 
-    private void savePiece(PiecePlacementDto piecePlacementDto, Connection connection) {
+    private void savePiece(PieceDto pieceDto, Connection connection) {
         String query = String.format("INSERT INTO %s (position, team, type) VALUES (?, ?, ?)", TABLE_NAME);
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, piecePlacementDto.getPosition());
-            pstmt.setString(2, piecePlacementDto.getTeam());
-            pstmt.setString(3, piecePlacementDto.getType());
+            pstmt.setString(1, pieceDto.getPosition());
+            pstmt.setString(2, pieceDto.getTeam());
+            pstmt.setString(3, pieceDto.getType());
             pstmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public Optional<List<PiecePlacementDto>> findPieces() {
+    public Optional<List<PieceDto>> findPieces() {
         String query = String.format("SELECT * FROM %s", TABLE_NAME);
 
-        List<PiecePlacementDto> result = new ArrayList<>();
+        List<PieceDto> result = new ArrayList<>();
 
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(query);
@@ -54,7 +54,7 @@ public class PieceRepository {
                 String team = resultSet.getString("team");
                 String type = resultSet.getString("type");
 
-                result.add(new PiecePlacementDto(position, team, type));
+                result.add(new PieceDto(position, team, type));
             }
             if (!result.isEmpty()) {
                 return Optional.of(result);

@@ -7,7 +7,7 @@ import chess.domain.piece.Score;
 import chess.domain.piece.Team;
 import chess.domain.position.Position;
 import chess.dto.BoardDto;
-import chess.dto.PiecePlacementDto;
+import chess.dto.PieceDto;
 import chess.dto.ScoreStatusDto;
 import chess.repository.PieceRepository;
 import chess.repository.TurnRepository;
@@ -48,7 +48,7 @@ public class ChessGameService {
     }
 
     public ChessGame loadChessGame() {
-        List<PiecePlacementDto> pieces = pieceRepository.findPieces().get();
+        List<PieceDto> pieces = pieceRepository.findPieces().get();
         Team currentTurn = turnRepository.findCurrentTurn().get();
         ChessBoard chessBoard = DomainMapper.mapToBoard(pieces);
 
@@ -69,8 +69,8 @@ public class ChessGameService {
         deleteSavedChessGame();
         ChessBoard chessBoard = chessGame.getChessBoard();
         Map<Position, Piece> board = chessBoard.getBoard();
-        List<PiecePlacementDto> pieces = board.keySet().stream()
-                .map(position -> PiecePlacementDto.of(board.get(position), position))
+        List<PieceDto> pieces = board.keySet().stream()
+                .map(position -> PieceDto.of(board.get(position), position))
                 .toList();
         pieceRepository.savePieces(pieces);
         turnRepository.saveTurn(chessGame.getTurn());
