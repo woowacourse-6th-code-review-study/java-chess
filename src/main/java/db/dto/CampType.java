@@ -16,11 +16,25 @@ public enum CampType {
         this.colorName = colorName;
     }
 
-    public static Camp findByColorName(final String color) {
+    public static CampType findByColorName(final String color) {
         return Arrays.stream(values())
                 .filter(campType -> campType.colorName.equals(color))
                 .findFirst()
-                .orElseThrow()
-                .camp;
+                .orElseThrow();
+    }
+
+    public static CampType findByCamp(final Camp camp) {
+        return Arrays.stream(values())
+                .filter(campType -> campType.camp == camp)
+                .findFirst()
+                .orElseThrow();
+    }
+
+    public String getColorName() {
+        return colorName;
+    }
+
+    public Camp getCamp() {
+        return camp;
     }
 }

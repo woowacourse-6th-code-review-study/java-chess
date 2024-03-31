@@ -36,20 +36,26 @@ public enum PieceType {
         this.camp = camp;
     }
 
-    public static String findValue(final Piece piece) {
+    public static PieceType findValue(final Piece piece) {
         return Arrays.stream(values())
                 .filter(pieceType1 -> pieceType1.piece.getClass().isInstance(piece))
                 .findFirst()
-                .orElseThrow()
-                .pieceName;
+                .orElseThrow();
     }
 
-    public static Piece findValue(final Camp camp, final String type) {
+    public static PieceType findValue(final Camp camp, final String type) {
         return Arrays.stream(values())
                 .filter(pieceType -> pieceType.pieceName.equals(type))
                 .filter(pieceType -> pieceType.camp == camp)
                 .findFirst()
-                .orElseThrow()
-                .piece;
+                .orElseThrow();
+    }
+
+    public String getPieceName() {
+        return pieceName;
+    }
+
+    public Piece getPiece() {
+        return piece;
     }
 }

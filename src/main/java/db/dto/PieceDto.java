@@ -1,16 +1,18 @@
 package db.dto;
 
-import model.Camp;
 import model.piece.Piece;
 
 public record PieceDto(String type, String camp) {
 
     public static PieceDto from(final Piece piece) {
-        return new PieceDto(PieceType.findValue(piece), piece.getCamp().name());
+        final PieceType pieceType = PieceType.findValue(piece);
+        final CampType campType = CampType.findByCamp(piece.getCamp());
+        return new PieceDto(pieceType.getPieceName(), campType.getColorName());
     }
 
     public Piece convert() {
-        final Camp army = CampType.findByColorName(camp);
-        return PieceType.findValue(army, type);
+        final CampType army = CampType.findByColorName(camp);
+        final PieceType pieceType = PieceType.findValue(army.getCamp(), type);
+        return pieceType.getPiece();
     }
 }
