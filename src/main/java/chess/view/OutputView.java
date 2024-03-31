@@ -63,24 +63,21 @@ public class OutputView {
     public static void printChessGameResult(ChessGameResult chessGameResult) {
         System.out.print("왕이 죽어서 게임이 종료되었습니다. \n체스 게임 결과 : ");
         Winner winner = chessGameResult.getWinner();
-        Map<Color, Score> teamScore = chessGameResult.getTeamScore();
-        Score whiteScore = teamScore.get(Color.WHITE);
-        Score blackScore = teamScore.get(Color.BLACK);
         if (winner == Winner.WHITE_WIN) {
             System.out.println("흰색이 검은색 왕을 죽이고 승리하였습니다.");
         }
         if (winner == Winner.BLACK_WIN) {
             System.out.println("검은색이 흰색 왕을 죽이고 승리하였습니다.");
         }
-        printScore(whiteScore, blackScore);
+
+        Map<Color, Score> teamScore = chessGameResult.getTeamScore();
+        printScore(teamScore.get(Color.WHITE), teamScore.get(Color.BLACK));
     }
 
     public static void printTeamScore(ChessGameResult chessGameResult) {
         Winner winner = chessGameResult.getWinner();
         Map<Color, Score> teamScore = chessGameResult.getTeamScore();
-        Score whiteScore = teamScore.get(Color.WHITE);
-        Score blackScore = teamScore.get(Color.BLACK);
-        printScore(whiteScore, blackScore);
+        printScore(teamScore.get(Color.WHITE), teamScore.get(Color.BLACK));
 
         if (winner == Winner.WHITE_WIN) {
             System.out.println("현재 대국 상황은 흰색이 우세합니다.");
