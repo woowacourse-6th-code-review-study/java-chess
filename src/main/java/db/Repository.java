@@ -59,12 +59,16 @@ public class Repository {
         final List<MovingDto> findMoving = movingDao.findAll();
         final Board board = findBoard.convert();
 
-        if (findTurn.count() < findMoving.size()) {
+        if (unsaved(findTurn, findMoving)) {
             restore(findTurn, findMoving, board);
         }
         final Camp camp = findLastTurnCamp(findMoving);
         final GameTurn gameTurn = new GameTurn(camp, new Turn(findMoving.size()));
         return new ChessGame(board, gameTurn);
+    }
+
+    private boolean unsaved(final TurnDto findTurn, final List<MovingDto> findMoving) {
+        return findTurn.count() < findMoving.size();
     }
 
     private Camp findLastTurnCamp(final List<MovingDto> findMoving) {

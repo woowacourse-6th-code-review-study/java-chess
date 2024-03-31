@@ -27,7 +27,6 @@ public class TurnDao {
         ) {
             preparedStatement.setString(1, camp.toString());
             preparedStatement.setInt(2, turn.count());
-
             preparedStatement.executeUpdate();
         } catch (final SQLException exception) {
             throw new DaoException(ErrorCode.FAIL_SAVE);
@@ -40,12 +39,10 @@ public class TurnDao {
         try (final Connection connection = DBConnectionUtil.getConnection(database);
              final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             final ResultSet resultSet = preparedStatement.executeQuery();
-
             if (resultSet.next()) {
                 return new TurnDto(resultSet.getString("camp"), resultSet.getInt("count"));
             }
             return new TurnDto("WHITE", 0);
-
         } catch (SQLException exception) {
             throw new DaoException(ErrorCode.FAIL_FIND);
         }

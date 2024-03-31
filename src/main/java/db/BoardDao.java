@@ -54,9 +54,7 @@ public class BoardDao {
 
         try (final Connection connection = DBConnectionUtil.getConnection(database);
              final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
             final ResultSet resultSet = preparedStatement.executeQuery();
-
             final Map<PositionDto, PieceDto> result = new HashMap<>();
 
             while (resultSet.next()) {

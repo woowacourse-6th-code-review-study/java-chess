@@ -11,7 +11,6 @@ public record BoardDto(Map<PositionDto, PieceDto> pieces) {
 
     public static BoardDto from(final Board board) {
         final Map<PositionDto, PieceDto> result = new HashMap<>();
-
         final Map<Position, Piece> pieces = board.getPieces();
 
         for (Entry<Position, Piece> entry : pieces.entrySet()) {
@@ -19,7 +18,6 @@ public record BoardDto(Map<PositionDto, PieceDto> pieces) {
             final PieceDto piece = PieceDto.from(entry.getValue());
             result.put(position, piece);
         }
-
         return new BoardDto(result);
     }
 
