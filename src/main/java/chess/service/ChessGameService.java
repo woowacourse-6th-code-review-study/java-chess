@@ -2,18 +2,17 @@ package chess.service;
 
 import chess.domain.ChessGame;
 import chess.domain.board.ChessBoard;
-import chess.domain.piece.Piece;
 import chess.domain.piece.Score;
 import chess.domain.piece.Team;
 import chess.domain.position.Position;
 import chess.dto.BoardDto;
 import chess.dto.PieceDto;
+import chess.dto.PiecesDto;
 import chess.dto.ScoreStatusDto;
 import chess.repository.PieceRepository;
 import chess.repository.TurnRepository;
 import chess.repository.mapper.DomainMapper;
 import java.util.List;
-import java.util.Map;
 
 public class ChessGameService {
     private final PieceRepository pieceRepository;
@@ -68,11 +67,8 @@ public class ChessGameService {
     private void saveChessGame(ChessGame chessGame) {
         deleteSavedChessGame();
         ChessBoard chessBoard = chessGame.getChessBoard();
-        Map<Position, Piece> board = chessBoard.getBoard();
-        List<PieceDto> pieces = board.keySet().stream()
-                .map(position -> PieceDto.of(board.get(position), position))
-                .toList();
-        pieceRepository.savePieces(pieces);
+        PiecesDto piecesDto = PiecesDto.from(chessBoard);
+        pieceRepository.savePieces(piecesDto);
         turnRepository.saveTurn(chessGame.getTurn());
     }
 

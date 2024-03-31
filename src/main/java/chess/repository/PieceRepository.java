@@ -1,6 +1,7 @@
 package chess.repository;
 
 import chess.dto.PieceDto;
+import chess.dto.PiecesDto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,9 +19,9 @@ public class PieceRepository {
         this.connectionManager = connectionManager;
     }
 
-    public void savePieces(List<PieceDto> pieces) {
+    public void savePieces(PiecesDto pieces) {
         try (Connection connection = connectionManager.getConnection()) {
-            pieces.forEach(piece -> savePiece(piece, connection));
+            pieces.getPieces().forEach(piece -> savePiece(piece, connection));
         } catch (SQLException e) {
             e.printStackTrace();
         }
