@@ -4,9 +4,11 @@ import chess.domain.ChessGame;
 import chess.domain.board.ChessBoard;
 import chess.domain.board.ChessBoardCreator;
 import chess.domain.piece.Piece;
+import chess.domain.piece.Score;
 import chess.domain.piece.Team;
 import chess.domain.position.Position;
 import chess.dto.PiecePlacementDto;
+import chess.dto.ScoreStatusDto;
 import chess.repository.PieceRepository;
 import chess.repository.TurnRepository;
 import chess.repository.mapper.DomainMapper;
@@ -22,11 +24,11 @@ public class ChessGameService {
         this.turnRepository = turnRepository;
     }
 
-    public ChessGame startChessGame() {
+    public void startChessGame() {
         if (isChessGameInProgress()) {
-            return loadChessGame();
+            return;
         }
-        return createNewChessGame();
+        createNewChessGame();
     }
 
     public void saveChessGame(ChessGame chessGame) {
@@ -39,6 +41,20 @@ public class ChessGameService {
             pieceRepository.savePiece(PiecePlacementDto.of(piece, position));
         }
         turnRepository.saveTurn(chessGame.getTurn());
+    }
+
+    public void movePiece(Position start, Position destination) {
+        ChessGame chessGame = loadChessGame();
+        chessGame.move(start, destination);
+        saveChessGame(chessGame);
+    }
+
+    public ScoreStatusDto calculateScoreStatus() {
+        ChessGame chessGame = loadChessGame();
+        Score blackScore = chessGame.calculateTeamScore(Team.BLACK);
+        Score whiteScore = chessGame.calculateTeamScore(Team.WHITE);
+        Team winnerTeam = judgeWinnerTeam(whiteScore, blackScore);
+        return ScoreStatusDto.of(whiteScore, blackScore, winnerTeam);
     }
 
     private void deleteSavedChessGame() {
@@ -61,9 +77,17 @@ public class ChessGameService {
         return true;
     }
 
-    private ChessGame createNewChessGame() {
+    //체스 게임 도메인으로 응집
+    private void createNewChessGame() {
         ChessBoardCreator chessBoardCreator = new ChessBoardCreator();
         ChessBoard chessBoard = chessBoardCreator.create();
-        return new ChessGame(chessBoard);
+        saveChessGame(new ChessGame(chessBoard));
+    }
+
+    private Team judgeWinnerTeam(Score whiteTeamScore, Score blackTeamScore) {
+        if (whiteTeamScore.isAbove(blackTeamScore)) {
+            return Team.WHITE;
+        }
+        return Team.BLACK;
     }
 }

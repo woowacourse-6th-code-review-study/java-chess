@@ -7,11 +7,10 @@ import static chess.view.CommandParser.STATUS;
 
 import chess.domain.board.ChessBoard;
 import chess.domain.piece.Piece;
-import chess.domain.piece.Score;
-import chess.domain.piece.Team;
 import chess.domain.position.File;
 import chess.domain.position.Position;
 import chess.domain.position.Rank;
+import chess.dto.ScoreStatusDto;
 import java.util.Arrays;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
@@ -28,8 +27,8 @@ public class OutputView {
         System.out.println(resolveChessBoardMessage(chessBoard));
     }
 
-    public void printStatusMessage(Score whiteScore, Score blackScore, Team winner) {
-        System.out.println(resolveStatusMessage(whiteScore, blackScore, winner));
+    public void printStatusMessage(ScoreStatusDto scoreStatusDto) {
+        System.out.println(resolveStatusMessage(scoreStatusDto));
     }
 
     private String resolveStartMessage() {
@@ -63,19 +62,19 @@ public class OutputView {
         return PieceMessage.messageOf(foundPiece);
     }
 
-    private String resolveStatusMessage(Score whiteScore, Score blackScore, Team winner) {
+    private String resolveStatusMessage(ScoreStatusDto scoreStatusDto) {
         return new StringJoiner(LINE_SEPARATOR)
-                .add(resolveTeamStatusMessage(Team.WHITE, whiteScore))
-                .add(resolveTeamStatusMessage(Team.BLACK, blackScore))
-                .add(resolveStatusWinnerMessage(winner))
+                .add(resolveTeamStatusMessage("백", scoreStatusDto.getWhiteTeamScore()))
+                .add(resolveTeamStatusMessage("흑", scoreStatusDto.getBlackTeamScore()))
+                .add(resolveStatusWinnerMessage(scoreStatusDto.getWinnerTeam()))
                 .toString();
     }
 
-    private String resolveTeamStatusMessage(Team team, Score score) {
-        return String.format("%s팀: %.1f점", team, score.getValue());
+    private String resolveTeamStatusMessage(String team, double score) {
+        return String.format("%s팀: %.1f점", team, score);
     }
 
-    private String resolveStatusWinnerMessage(Team winner) {
+    private String resolveStatusWinnerMessage(String winner) {
         return String.format("현 시점 기물 점수 승부 %s 승리", winner);
     }
 }

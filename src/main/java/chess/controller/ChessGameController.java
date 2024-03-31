@@ -2,7 +2,6 @@ package chess.controller;
 
 import chess.controller.command.Command;
 import chess.controller.command.ExecuteResult;
-import chess.domain.ChessGame;
 import chess.service.ChessGameService;
 import chess.view.InputView;
 import chess.view.OutputView;
@@ -20,13 +19,13 @@ public class ChessGameController {
 
     public void run() {
         outputView.printStartMessage();
-        ChessGame chessGame = chessGameService.startChessGame();
+        chessGameService.startChessGame();
 
         ExecuteResult result;
         do {
             Command command = inputView.readCommand();
-            result = command.execute(chessGameService, chessGame, outputView);
+            result = command.execute(chessGameService, outputView);
         }
-        while (result.isSuccess() && result.isNeedNextCommand() && chessGame.isNotEnd());
+        while (result.isSuccess() && result.isNeedNextCommand());
     }
 }

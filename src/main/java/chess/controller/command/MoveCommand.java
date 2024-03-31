@@ -15,9 +15,9 @@ public class MoveCommand implements Command {
     }
 
     @Override
-    public ExecuteResult execute(ChessGameService chessGameService, ChessGame chessGame, OutputView outputView) {
-        chessGame.move(start, destination);
-        chessGameService.saveChessGame(chessGame);
+    public ExecuteResult execute(ChessGameService chessGameService, OutputView outputView) {
+        chessGameService.movePiece(start, destination);
+        ChessGame chessGame = chessGameService.loadChessGame();
         outputView.printChessBoardMessage(chessGame.getChessBoard());
         return new ExecuteResult(true, true);
     }
