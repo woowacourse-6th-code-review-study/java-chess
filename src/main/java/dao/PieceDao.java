@@ -11,11 +11,11 @@ public interface PieceDao {
 
     boolean existPiecePositions();
 
-    void savePiece(PieceEntity piece);
+    void save(PieceEntity piece);
 
-    void updatePiecePosition(File sourceFile, Rank sourceRank, File destinationFile, Rank destinationRank);
+    void update(File sourceFile, Rank sourceRank, File destinationFile, Rank destinationRank);
 
-    void deleteByFileAndRank(File file, Rank rank);
+    void delete(File file, Rank rank);
 
     void deleteAll();
 }

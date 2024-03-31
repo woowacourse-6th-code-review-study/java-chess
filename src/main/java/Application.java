@@ -1,6 +1,6 @@
 import controller.GameController;
-import dao.ProductionPieceColorDao;
-import dao.MysqlPieceDao;
+import dao.ProductionTurnColorDao;
+import dao.ProductionPieceDao;
 import database.JdbcConnectionPool;
 import domain.board.Board;
 import domain.board.BoardInitializer;
@@ -16,10 +16,10 @@ public class Application {
     public static void main(String[] args) {
         JdbcConnectionPool connectionPool = JdbcConnectionPool.getInstance();
         Map<Position, Piece> initialPiecePositions = BoardInitializer.initBoard();
-        MysqlPieceDao mysqlPieceDao = new MysqlPieceDao(connectionPool);
-        Board board = new Board(mysqlPieceDao, initialPiecePositions);
+        ProductionPieceDao productionPieceDao = new ProductionPieceDao(connectionPool);
+        Board board = new Board(productionPieceDao, initialPiecePositions);
 
-        ProductionPieceColorDao productionPieceColorDao = new ProductionPieceColorDao(connectionPool);
+        ProductionTurnColorDao productionPieceColorDao = new ProductionTurnColorDao(connectionPool);
         ChessGame chessGame = new ChessGame(productionPieceColorDao, board);
 
         GameController gameController = new GameController(new InputView(), new OutputView(), chessGame);

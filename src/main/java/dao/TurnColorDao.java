@@ -2,7 +2,7 @@ package dao;
 
 import domain.piece.PieceColor;
 
-public interface PieceColorDao {
+public interface TurnColorDao {
 
     PieceColor find();
 

@@ -28,7 +28,7 @@ public class Board {
         piecePositions.entrySet()
                 .stream()
                 .map(entry -> convertPieceEntity(entry.getValue(), entry.getKey()))
-                .forEach(pieceDao::savePiece);
+                .forEach(pieceDao::save);
     }
 
     public void roadPrevPiecePositions() {
@@ -61,8 +61,8 @@ public class Board {
         piecePositions.put(destination, targetPiece);
         piecePositions.remove(source);
 
-        pieceDao.deleteByFileAndRank(destination.file(), destination.rank());
-        pieceDao.updatePiecePosition(source.file(), source.rank(), destination.file(), destination.rank());
+        pieceDao.delete(destination.file(), destination.rank());
+        pieceDao.update(source.file(), source.rank(), destination.file(), destination.rank());
     }
 
     private void validatePosition(final PieceColor pieceColor, final Position source, final Position destination) {

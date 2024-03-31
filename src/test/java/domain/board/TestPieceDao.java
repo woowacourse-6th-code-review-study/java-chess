@@ -19,17 +19,17 @@ public class TestPieceDao implements PieceDao {
     }
 
     @Override
-    public void savePiece(final PieceEntity piece) {
+    public void save(final PieceEntity piece) {
 
     }
 
     @Override
-    public void updatePiecePosition(final File sourceFile, final Rank sourceRank, final File destinationFile, final Rank destinationRank) {
+    public void update(final File sourceFile, final Rank sourceRank, final File destinationFile, final Rank destinationRank) {
 
     }
 
     @Override
-    public void deleteByFileAndRank(final File file, final Rank rank) {
+    public void delete(final File file, final Rank rank) {
 
     }
 

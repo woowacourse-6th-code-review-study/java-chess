@@ -9,10 +9,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class ProductionPieceColorDao implements PieceColorDao {
+public class ProductionTurnColorDao implements TurnColorDao {
+    private static final int PIECE_COLOR_INDEX = 2;
+
     private final JdbcConnectionPool connectionPool;
 
-    public ProductionPieceColorDao(final JdbcConnectionPool connectionPool) {
+    public ProductionTurnColorDao(final JdbcConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 
@@ -47,11 +49,15 @@ public class ProductionPieceColorDao implements PieceColorDao {
     }
 
     private PieceColor convertPieceColor(final ResultSet resultSet) throws SQLException {
-        if (resultSet.next()) {
-            return PieceColor.of(resultSet.getString(2));
+        if (!existData(resultSet)) {
+            throw new IllegalArgumentException("현재 플레이어의 색상 정보가 존재하지 않습니다.");
         }
 
-        throw new IllegalArgumentException("현재 플레이어의 색상 정보가 존재하지 않습니다.");
+        return PieceColor.of(resultSet.getString(PIECE_COLOR_INDEX));
+    }
+
+    private boolean existData(final ResultSet resultSet) throws SQLException {
+        return resultSet.next();
     }
 
     @Override
