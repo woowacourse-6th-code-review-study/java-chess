@@ -75,10 +75,10 @@ public class ChessGame {
     }
 
     public GameScore getGameResult() {
-        double whiteTeamScore = board.calculateTeamScore(WHITE);
-        double blackTeamScore = board.calculateTeamScore(BLACK);
+        Score whiteTeamScore = Score.of(board, WHITE);
+        Score blackTeamScore = Score.of(board, BLACK);
 
-        return new GameScore(new Score(whiteTeamScore), new Score(blackTeamScore));
+        return new GameScore(whiteTeamScore, blackTeamScore);
     }
 
     public PieceColor currentPlayTeamColor() {
