@@ -6,13 +6,11 @@ import chess.domain.piece.Score;
 import chess.domain.piece.Team;
 import chess.domain.position.Position;
 import chess.dto.BoardDto;
-import chess.dto.PieceDto;
 import chess.dto.PiecesDto;
 import chess.dto.ScoreStatusDto;
 import chess.repository.PieceRepository;
 import chess.repository.TurnRepository;
 import chess.repository.mapper.DomainMapper;
-import java.util.List;
 
 public class ChessGameService {
     private final PieceRepository pieceRepository;
@@ -46,7 +44,7 @@ public class ChessGameService {
     }
 
     public ChessGame loadChessGame() {
-        List<PieceDto> pieces = pieceRepository.findPieces().get();
+        PiecesDto pieces = pieceRepository.findPieces().get();
         Team currentTurn = turnRepository.findCurrentTurn().get();
         ChessBoard chessBoard = DomainMapper.mapToBoard(pieces);
         return new ChessGame(chessBoard, currentTurn);

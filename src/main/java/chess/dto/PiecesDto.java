@@ -9,7 +9,7 @@ import java.util.Map;
 public class PiecesDto {
     private final List<PieceDto> pieces;
 
-    private PiecesDto(List<PieceDto> pieces) {
+    public PiecesDto(List<PieceDto> pieces) {
         this.pieces = pieces;
     }
 

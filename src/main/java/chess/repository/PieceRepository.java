@@ -40,7 +40,7 @@ public class PieceRepository {
         }
     }
 
-    public Optional<List<PieceDto>> findPieces() {
+    public Optional<PiecesDto> findPieces() {
         String query = String.format("SELECT * FROM %s", TABLE_NAME);
 
         List<PieceDto> result = new ArrayList<>();
@@ -58,7 +58,7 @@ public class PieceRepository {
                 result.add(new PieceDto(position, team, type));
             }
             if (!result.isEmpty()) {
-                return Optional.of(result);
+                return Optional.of(new PiecesDto(result));
             }
         } catch (SQLException e) {
             e.printStackTrace();

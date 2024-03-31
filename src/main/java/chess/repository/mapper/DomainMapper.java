@@ -13,8 +13,8 @@ import chess.domain.position.File;
 import chess.domain.position.Position;
 import chess.domain.position.Rank;
 import chess.dto.PieceDto;
+import chess.dto.PiecesDto;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DomainMapper {
@@ -28,10 +28,10 @@ public class DomainMapper {
         return Team.BLACK;
     }
 
-    public static ChessBoard mapToBoard(List<PieceDto> piecePlacements) {
+    public static ChessBoard mapToBoard(PiecesDto piecePlacements) {
         Map<Position, Piece> positionPiece = new HashMap<>();
 
-        for (PieceDto pieceDto : piecePlacements) {
+        for (PieceDto pieceDto : piecePlacements.getPieces()) {
             Position position = mapToPosition(pieceDto.getPosition());
             Team team = mapToTeam(pieceDto.getTeam());
             Piece piece = mapToPiece(pieceDto.getType(), team);
