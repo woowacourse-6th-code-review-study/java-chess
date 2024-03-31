@@ -39,6 +39,7 @@ public class Board {
             File.G, Knight::new,
             File.H, Rook::new
     );
+    private static final Score SAME_FILE_PAWN_SCORE = new Score(0.5F);
 
     private final Map<Position, Piece> pieces;
 
@@ -156,8 +157,8 @@ public class Board {
     private Score duplicateFilePawns(final Map<File, Integer> count) {
         return count.values()
                 .stream()
-                .filter(sameFilePawn -> sameFilePawn > 1)
-                .map(sameFilePawn -> new Score(sameFilePawn * 0.5F)) // TODO 0.5 상수화
+                .filter(sameFilePawnCount -> sameFilePawnCount > 1)
+                .map(sameFilePawnCount -> new Score(sameFilePawnCount * SAME_FILE_PAWN_SCORE.value()))
                 .reduce(Score::add)
                 .orElse(new Score(0));
     }
