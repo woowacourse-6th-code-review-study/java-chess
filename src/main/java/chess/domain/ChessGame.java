@@ -42,6 +42,15 @@ public class ChessGame {
         return defaultScore.add(weight);
     }
 
+    public Team selectHigherScoreTeam() {
+        Score blackScore = calculateTeamScore(Team.BLACK);
+        Score whiteScore = calculateTeamScore(Team.WHITE);
+        if (whiteScore.isAbove(blackScore)) {
+            return Team.WHITE;
+        }
+        return Team.BLACK;
+    }
+
     public boolean isNotEnd() {
         return chessBoard.isBlackKingAlive() && chessBoard.isWhiteKingAlive();
     }
