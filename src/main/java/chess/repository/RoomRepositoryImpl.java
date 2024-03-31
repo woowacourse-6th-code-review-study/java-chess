@@ -20,11 +20,15 @@ public class RoomRepositoryImpl implements RoomRepository{
         String query = "SELECT name FROM room";
         processQuery(query, preparedStatement -> {
             ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                allRoomNames.add(rs.getString("name"));
-            }
+            addRoomNames(allRoomNames, rs);
         });
         return allRoomNames;
+    }
+
+    private void addRoomNames(List<String> allRoomNames, ResultSet rs) throws SQLException {
+        while (rs.next()) {
+            allRoomNames.add(rs.getString("name"));
+        }
     }
 
     @Override
@@ -35,11 +39,15 @@ public class RoomRepositoryImpl implements RoomRepository{
         processQuery(query, preparedStatement -> {
             preparedStatement.setString(1, roomName.getValue());
             ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) {
-                existsRoom.add(rs.getBoolean("exists_room"));
-            }
+            addExistsRoomResult(existsRoom, rs);
         });
         return existsRoom.get(0);
+    }
+
+    private void addExistsRoomResult(List<Boolean> existsRoom, ResultSet rs) throws SQLException {
+        if (rs.next()) {
+            existsRoom.add(rs.getBoolean("exists_room"));
+        }
     }
 
     @Override
@@ -69,11 +77,15 @@ public class RoomRepositoryImpl implements RoomRepository{
         processQuery(query, preparedStatement -> {
             preparedStatement.setString(1, roomName.getValue());
             ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) {
-                roomId.add(new Room(rs.getLong("id"), rs.getString("name")));
-            }
+            addRoom(roomId, rs);
         });
         return roomId.get(0);
+    }
+
+    private void addRoom(List<Room> roomId, ResultSet rs) throws SQLException {
+        if (rs.next()) {
+            roomId.add(new Room(rs.getLong("id"), rs.getString("name")));
+        }
     }
 
     @Override
@@ -83,11 +95,15 @@ public class RoomRepositoryImpl implements RoomRepository{
         processQuery(query, preparedStatement -> {
             preparedStatement.setLong(1, roomId);
             ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) {
-                color.add(Color.valueOf(rs.getString("turn")));
-            }
+            addColor(color, rs);
         });
         return color.get(0);
+    }
+
+    private void addColor(List<Color> color, ResultSet rs) throws SQLException {
+        if (rs.next()) {
+            color.add(Color.valueOf(rs.getString("turn")));
+        }
     }
 
     private void processQuery(String query, QueryProcessor queryProcessor) {

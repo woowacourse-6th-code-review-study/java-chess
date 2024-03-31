@@ -17,7 +17,7 @@ public interface BoardRepository {
 
     Piece findPieceByPosition(Position position, Long roomId);
 
-    List<Piece> findPieceByColor(Color piece_color, Long roomId);
+    List<Piece> findPiecesByColor(Color piece_color, Long roomId);
 
     List<Integer> getPieceCountByPieceType(PieceType pieceType, Long roomId);
 

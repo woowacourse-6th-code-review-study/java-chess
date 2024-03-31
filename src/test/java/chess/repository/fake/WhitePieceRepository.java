@@ -29,7 +29,7 @@ public class WhitePieceRepository implements BoardRepository {
     }
 
     @Override
-    public List<Piece> findPieceByColor(Color piece_color, Long roomId) {
+    public List<Piece> findPiecesByColor(Color piece_color, Long roomId) {
         return List.of(
                 new Piece(PieceType.WHITE_PAWN, Color.WHITE),
                 new Piece(PieceType.WHITE_PAWN, Color.WHITE),

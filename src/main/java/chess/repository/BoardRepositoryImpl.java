@@ -40,11 +40,15 @@ public class BoardRepositoryImpl implements BoardRepository {
             preparedStatement.setString(2, position.getColumn().name());
             preparedStatement.setLong(3, roomId);
             ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) {
-                existsPiece.add(rs.getBoolean("exists_piece"));
-            }
+            addExistPieceResult(existsPiece, rs);
         });
         return existsPiece.get(0);
+    }
+
+    private void addExistPieceResult(List<Boolean> existsPiece, ResultSet rs) throws SQLException {
+        if (rs.next()) {
+            existsPiece.add(rs.getBoolean("exists_piece"));
+        }
     }
 
     @Override
@@ -67,27 +71,34 @@ public class BoardRepositoryImpl implements BoardRepository {
             preparedStatement.setString(2, position.getColumn().name());
             preparedStatement.setLong(3, roomId);
             ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) {
-                pieces.add(new Piece(rs.getString("piece_type"), rs.getString("piece_color")));
-            }
+            addPiece(pieces, rs);
         });
         return pieces.get(0);
     }
 
+    private void addPiece(List<Piece> pieces, ResultSet rs) throws SQLException {
+        if (rs.next()) {
+            pieces.add(new Piece(rs.getString("piece_type"), rs.getString("piece_color")));
+        }
+    }
+
     @Override
-    public List<Piece> findPieceByColor(Color piece_color, Long roomId) {
+    public List<Piece> findPiecesByColor(Color piece_color, Long roomId) {
         List<Piece> pieces = new ArrayList<>();
         String query = "SELECT piece_type, piece_color FROM board WHERE piece_color = ? AND room_id = ?";
         processQuery(query, preparedStatement -> {
             preparedStatement.setString(1, piece_color.name());
             preparedStatement.setLong(2, roomId);
             ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                Piece piece = new Piece(rs.getString("piece_type"), rs.getString("piece_color"));
-                pieces.add(piece);
-            }
+            addPieces(pieces, rs);
         });
         return pieces;
+    }
+
+    private void addPieces(List<Piece> pieces, ResultSet rs) throws SQLException {
+        while (rs.next()) {
+            pieces.add(new Piece(rs.getString("piece_type"), rs.getString("piece_color")));
+        }
     }
 
     @Override
@@ -98,11 +109,15 @@ public class BoardRepositoryImpl implements BoardRepository {
             preparedStatement.setString(1, pieceType.name());
             preparedStatement.setLong(2, roomId);
             ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                pieceCount.add(rs.getInt("piece_count"));
-            }
+            addPieceCount(pieceCount, rs);
         });
         return pieceCount;
+    }
+
+    private void addPieceCount(List<Integer> pieceCount, ResultSet rs) throws SQLException {
+        while (rs.next()) {
+            pieceCount.add(rs.getInt("piece_count"));
+        }
     }
 
     @Override
@@ -112,13 +127,17 @@ public class BoardRepositoryImpl implements BoardRepository {
         processQuery(query, preparedStatement -> {
             preparedStatement.setLong(1, roomId);
             ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                Position position = new Position(rs.getInt("row"), rs.getString("column"));
-                Piece piece = new Piece(rs.getString("piece_type"), rs.getString("piece_color"));
-                allPieces.put(position, piece);
-            }
+            addPositionPieces(allPieces, rs);
         });
         return allPieces;
+    }
+
+    private void addPositionPieces(Map<Position, Piece> allPieces, ResultSet rs) throws SQLException {
+        while (rs.next()) {
+            Position position = new Position(rs.getInt("row"), rs.getString("column"));
+            Piece piece = new Piece(rs.getString("piece_type"), rs.getString("piece_color"));
+            allPieces.put(position, piece);
+        }
     }
 
     @Override
@@ -129,9 +148,7 @@ public class BoardRepositoryImpl implements BoardRepository {
             preparedStatement.setString(1, pieceType.name());
             preparedStatement.setLong(2, roomId);
             ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                pieces.add(new Piece(rs.getString("piece_type"), rs.getString("piece_color")));
-            }
+            addPieces(pieces, rs);
         });
         return pieces;
     }

@@ -29,7 +29,7 @@ public class NotExistsPieceRepository implements BoardRepository {
     }
 
     @Override
-    public List<Piece> findPieceByColor(Color piece_color, Long roomId) {
+    public List<Piece> findPiecesByColor(Color piece_color, Long roomId) {
         return null;
     }
 

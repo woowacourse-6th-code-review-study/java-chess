@@ -78,7 +78,7 @@ public class GameService {
     }
 
     private double sumTotalScore(Color color, Long roomId) {
-        List<Piece> pieces = boardRepository.findPieceByColor(color, roomId);
+        List<Piece> pieces = boardRepository.findPiecesByColor(color, roomId);
         return pieces.stream()
                 .mapToDouble(Piece::getScore)
                 .sum();
