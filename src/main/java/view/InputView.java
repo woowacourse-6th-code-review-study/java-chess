@@ -19,7 +19,7 @@ public class InputView {
         }
     }
 
-    private static CommandInput readCommandInput() {
+    public static CommandInput readCommandInput() {
         return new CommandInput(SCANNER.nextLine());
     }
 }

@@ -26,28 +26,23 @@ public class ChessGameService {
         return pieceDao.hasRecords();
     }
 
-    public List<PieceDto> loadPreviousData() {
-        return pieceDao.findAll();
+    public List<PieceDto> loadPreviousData(final RoomDto roomDto) {
+        return pieceDao.findPieceByGameId(roomDto.room_id());
     }
 
     public TurnDto loadPreviousTurn(final RoomDto roomDto) {
         return turnDao.findTurnByGameId(roomDto);
     }
 
-    public void updatePiece(final List<PieceDto> pieceDtos) {
-        pieceDao.deleteAll();
+    public void updatePiece(final RoomDto roomDto, final List<PieceDto> pieceDtos) {
+        pieceDao.deleteAll(roomDto);
         for (PieceDto pieceDto : pieceDtos) {
-            pieceDao.add(pieceDto);
+            pieceDao.add(roomDto, pieceDto);
         }
     }
 
-    public void updateTurn(final TurnDto turnDto) {
-        turnDao.deleteAll();
-        turnDao.update(turnDto);
-    }
-
-    public void deletePreviousData() {
-        pieceDao.deleteAll();
-        turnDao.deleteAll();
+    public void updateTurn(final RoomDto roomDto, final TurnDto turnDto) {
+        turnDao.delete(roomDto);
+        turnDao.add(turnDto);
     }
 }
