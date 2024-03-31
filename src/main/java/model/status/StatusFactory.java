@@ -16,6 +16,9 @@ public class StatusFactory {
         if (commandLine.isEnd()) {
             return new End();
         }
+        if (commandLine.isQuit()) {
+            return new Quit();
+        }
         throw new InvalidStatusException(ErrorCode.INVALID_STATUS);
     }
 }
