@@ -39,8 +39,7 @@ public class ChessGameService {
         ChessGame chessGame = loadChessGame();
         Score blackScore = chessGame.calculateTeamScore(Team.BLACK);
         Score whiteScore = chessGame.calculateTeamScore(Team.WHITE);
-        Team winnerTeam = judgeWinnerTeam(whiteScore, blackScore);
-        return ScoreStatusDto.of(whiteScore, blackScore, winnerTeam);
+        return ScoreStatusDto.of(whiteScore, blackScore, chessGame.selectHigherScoreTeam());
     }
 
     public ChessGame loadChessGame() {
@@ -75,12 +74,5 @@ public class ChessGameService {
 
     private boolean isChessGameInProgress() {
         return pieceRepository.findPieces().isPresent();
-    }
-
-    private Team judgeWinnerTeam(Score whiteTeamScore, Score blackTeamScore) {
-        if (whiteTeamScore.isAbove(blackTeamScore)) {
-            return Team.WHITE;
-        }
-        return Team.BLACK;
     }
 }
