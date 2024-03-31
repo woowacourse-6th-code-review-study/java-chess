@@ -11,9 +11,29 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static domain.board.File.*;
-import static domain.piece.KnightMovementDirection.*;
-import static domain.board.Rank.*;
+import static domain.board.File.A;
+import static domain.board.File.B;
+import static domain.board.File.C;
+import static domain.board.File.D;
+import static domain.board.File.E;
+import static domain.board.File.F;
+import static domain.board.File.G;
+import static domain.board.Rank.EIGHT;
+import static domain.board.Rank.FIVE;
+import static domain.board.Rank.FOUR;
+import static domain.board.Rank.ONE;
+import static domain.board.Rank.SIX;
+import static domain.board.Rank.THREE;
+import static domain.board.Rank.TWO;
+import static domain.piece.KnightMovementDirection.DOWN_LEFT;
+import static domain.piece.KnightMovementDirection.DOWN_RIGHT;
+import static domain.piece.KnightMovementDirection.LEFT_DOWN;
+import static domain.piece.KnightMovementDirection.LEFT_UP;
+import static domain.piece.KnightMovementDirection.RIGHT_DOWN;
+import static domain.piece.KnightMovementDirection.RIGHT_UP;
+import static domain.piece.KnightMovementDirection.UP_LEFT;
+import static domain.piece.KnightMovementDirection.UP_RIGHT;
+import static domain.piece.KnightMovementDirection.calculateDirection;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -48,7 +68,7 @@ class KnightMovementDirectionTest {
     @ParameterizedTest
     void throwExceptionWhenInvalidLocationTest(final Position source, final Position destination) {
         // When & Then
-        assertThatThrownBy(() -> KnightMovementDirection.calculateDirection(source, destination))
+        assertThatThrownBy(() -> calculateDirection(source, destination))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("나이트가 이동할 수 없는 방향입니다.");
     }

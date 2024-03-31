@@ -3,7 +3,11 @@ package dao;
 import database.JdbcConnectionPool;
 import domain.piece.PieceColor;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class MysqlCurrentPlayerColorDao implements CurrentPlayerColorDao {
     private final JdbcConnectionPool connectionPool;

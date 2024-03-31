@@ -10,8 +10,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static domain.board.File.*;
-import static domain.board.Rank.*;
+import static domain.board.File.B;
+import static domain.board.File.D;
+import static domain.board.Rank.FIVE;
+import static domain.board.Rank.FOUR;
+import static domain.board.Rank.SEVEN;
+import static domain.board.Rank.SIX;
+import static domain.board.Rank.TWO;
 import static domain.piece.PieceColor.BLACK;
 import static domain.piece.PieceColor.WHITE;
 import static org.assertj.core.api.Assertions.assertThat;

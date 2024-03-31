@@ -1,7 +1,11 @@
 package controller;
 
 import domain.board.Position;
-import domain.game.*;
+import domain.game.ChessGame;
+import domain.game.GameCommand;
+import domain.game.GameCommandType;
+import domain.game.GameScore;
+import domain.game.GameStatus;
 import domain.piece.PieceColor;
 import dto.BoardDto;
 import view.InputView;

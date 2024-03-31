@@ -11,9 +11,27 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static domain.board.File.*;
-import static domain.piece.CommonMovementDirection.*;
-import static domain.board.Rank.*;
+import static domain.board.File.A;
+import static domain.board.File.B;
+import static domain.board.File.C;
+import static domain.board.File.D;
+import static domain.board.File.E;
+import static domain.board.File.F;
+import static domain.board.File.G;
+import static domain.board.Rank.EIGHT;
+import static domain.board.Rank.FIVE;
+import static domain.board.Rank.FOUR;
+import static domain.board.Rank.ONE;
+import static domain.board.Rank.SIX;
+import static domain.board.Rank.TWO;
+import static domain.piece.CommonMovementDirection.DOWN;
+import static domain.piece.CommonMovementDirection.DOWN_LEFT;
+import static domain.piece.CommonMovementDirection.DOWN_RIGHT;
+import static domain.piece.CommonMovementDirection.LEFT;
+import static domain.piece.CommonMovementDirection.RIGHT;
+import static domain.piece.CommonMovementDirection.UP;
+import static domain.piece.CommonMovementDirection.UP_LEFT;
+import static domain.piece.CommonMovementDirection.UP_RIGHT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

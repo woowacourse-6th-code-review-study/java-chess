@@ -1,6 +1,10 @@
 package domain.piece;
 
-import domain.board.*;
+import domain.board.Board;
+import domain.board.File;
+import domain.board.Position;
+import domain.board.Rank;
+import domain.board.TestPieceDao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -12,10 +12,29 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static domain.piece.PieceColor.*;
-import static domain.board.File.*;
-import static domain.piece.PawnMovementDirection.*;
-import static domain.board.Rank.*;
+import static domain.board.File.A;
+import static domain.board.File.B;
+import static domain.board.File.C;
+import static domain.board.File.D;
+import static domain.board.File.E;
+import static domain.board.Rank.FIVE;
+import static domain.board.Rank.FOUR;
+import static domain.board.Rank.ONE;
+import static domain.board.Rank.SEVEN;
+import static domain.board.Rank.SIX;
+import static domain.board.Rank.THREE;
+import static domain.board.Rank.TWO;
+import static domain.piece.PawnMovementDirection.DOWN_LEFT;
+import static domain.piece.PawnMovementDirection.DOWN_ONE_STEP;
+import static domain.piece.PawnMovementDirection.DOWN_RIGHT;
+import static domain.piece.PawnMovementDirection.DOWN_TWO_STEP;
+import static domain.piece.PawnMovementDirection.UP_LEFT;
+import static domain.piece.PawnMovementDirection.UP_ONE_STEP;
+import static domain.piece.PawnMovementDirection.UP_RIGHT;
+import static domain.piece.PawnMovementDirection.UP_TWO_STEP;
+import static domain.piece.PawnMovementDirection.calculateDirection;
+import static domain.piece.PieceColor.BLACK;
+import static domain.piece.PieceColor.WHITE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -50,7 +69,7 @@ class PawnMovementDirectionTest {
     @ParameterizedTest
     void throwExceptionWhenInputInvalidPositionTest(final PieceColor pieceColor, final Position source, final Position destination) {
         // When & Then
-        assertThatThrownBy(() -> PawnMovementDirection.calculateDirection(pieceColor, source, destination))
+        assertThatThrownBy(() -> calculateDirection(pieceColor, source, destination))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(pieceColor.name() + "색상의 폰이 이동할 수 없는 방향입니다.");
     }
