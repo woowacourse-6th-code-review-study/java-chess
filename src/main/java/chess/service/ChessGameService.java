@@ -6,6 +6,7 @@ import chess.domain.piece.Piece;
 import chess.domain.piece.Score;
 import chess.domain.piece.Team;
 import chess.domain.position.Position;
+import chess.dto.BoardSnapShotDto;
 import chess.dto.PiecePlacementDto;
 import chess.dto.ScoreStatusDto;
 import chess.repository.PieceRepository;
@@ -23,17 +24,19 @@ public class ChessGameService {
         this.turnRepository = turnRepository;
     }
 
-    public void startChessGame() {
+    public BoardSnapShotDto startChessGame() {
         if (isChessGameInProgress()) {
-            return;
+            return BoardSnapShotDto.from(loadChessGame().getChessBoard());
         }
         createNewChessGame();
+        return BoardSnapShotDto.from(loadChessGame().getChessBoard());
     }
 
-    public void movePiece(Position start, Position destination) {
+    public BoardSnapShotDto movePiece(Position start, Position destination) {
         ChessGame chessGame = loadChessGame();
         chessGame.move(start, destination);
         saveChessGame(chessGame);
+        return BoardSnapShotDto.from(chessGame.getChessBoard());
     }
 
     public ScoreStatusDto calculateScoreStatus() {

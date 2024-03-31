@@ -1,7 +1,7 @@
 package chess.controller.command;
 
-import chess.domain.ChessGame;
 import chess.domain.position.Position;
+import chess.dto.BoardSnapShotDto;
 import chess.service.ChessGameService;
 import chess.view.OutputView;
 
@@ -16,9 +16,8 @@ public class MoveCommand implements Command {
 
     @Override
     public ExecuteResult execute(ChessGameService chessGameService, OutputView outputView) {
-        chessGameService.movePiece(start, destination);
-        ChessGame chessGame = chessGameService.loadChessGame();
-        outputView.printChessBoardMessage(chessGame.getChessBoard());
+        BoardSnapShotDto boardSnapShotDto = chessGameService.movePiece(start, destination);
+        outputView.printChessBoardMessage(boardSnapShotDto);
         return new ExecuteResult(true, true);
     }
 }
