@@ -1,4 +1,4 @@
-package chess.domain.mock;
+package chess.repository.fake;
 
 import chess.domain.board.position.Position;
 import chess.domain.piece.Color;
