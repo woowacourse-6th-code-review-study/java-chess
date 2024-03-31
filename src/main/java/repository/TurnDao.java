@@ -7,11 +7,13 @@ import dto.TurnDto;
 import java.util.List;
 
 public class TurnDao {
-    private static final String TABLE_NAME = "turns";
+    private static final String TABLE_NAME = "game_states";
 
     private final JdbcTemplate jdbcTemplate;
-    private final RowMapper<TurnDto> rowMapper = (resultSet) ->
-            new TurnDto(resultSet.getString("turn"));
+    private final RowMapper<TurnDto> rowMapper = (resultSet) -> new TurnDto(
+            resultSet.getString("state"),
+            resultSet.getString("game_id")
+    );
 
     TurnDao() {
         this(new JdbcTemplate());
@@ -19,6 +21,11 @@ public class TurnDao {
 
     TurnDao(final JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    void add(TurnDto turnDto) {
+        final String query = "INSERT INTO " + TABLE_NAME + " VALUES (?, ?)";
+        jdbcTemplate.execute(query, turnDto.turn(), turnDto.gameId());
     }
 
     TurnDto findOne() {
