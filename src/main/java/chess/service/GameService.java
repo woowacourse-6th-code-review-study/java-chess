@@ -10,9 +10,7 @@ import chess.domain.piece.Color;
 import chess.domain.piece.Piece;
 import chess.domain.piece.PieceType;
 import chess.repository.BoardRepository;
-import chess.repository.BoardRepositoryImpl;
 import chess.repository.RoomRepository;
-import chess.repository.RoomRepositoryImpl;
 import chess.service.dto.ChessGameResult;
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +22,13 @@ public class GameService {
     private static final int PWAN_DUPLICATE_THRESHOLD = 2;
     private static final double PWAN_DEDUCTION_SCORE = 0.5;
 
-    private final RoomRepository roomRepository = new RoomRepositoryImpl();
-    private final BoardRepository boardRepository = new BoardRepositoryImpl();
+    private final RoomRepository roomRepository;
+    private final BoardRepository boardRepository;
+
+    public GameService(RoomRepository roomRepository, BoardRepository boardRepository) {
+        this.roomRepository = roomRepository;
+        this.boardRepository = boardRepository;
+    }
 
     public List<String> findAllRoomNames() {
         return roomRepository.findAllRoomNames();

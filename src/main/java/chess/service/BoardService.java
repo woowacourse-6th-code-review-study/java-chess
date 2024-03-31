@@ -6,17 +6,20 @@ import chess.domain.game.PositionsFilter;
 import chess.domain.piece.Color;
 import chess.domain.piece.Piece;
 import chess.repository.BoardRepository;
-import chess.repository.BoardRepositoryImpl;
 import chess.repository.RoomRepository;
-import chess.repository.RoomRepositoryImpl;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
 public class BoardService {
 
-    private final RoomRepository roomRepository = new RoomRepositoryImpl();
-    private final BoardRepository boardRepository = new BoardRepositoryImpl();
+    private final RoomRepository roomRepository;
+    private final BoardRepository boardRepository;
+
+    public BoardService(RoomRepository roomRepository, BoardRepository boardRepository) {
+        this.roomRepository = roomRepository;
+        this.boardRepository = boardRepository;
+    }
 
     public void movePiece(Position from, Position to, Long roomId) {
         Piece piece = findFromPositionPiece(from, roomId);
