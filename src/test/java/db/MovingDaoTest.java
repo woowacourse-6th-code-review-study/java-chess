@@ -1,9 +1,12 @@
 package db;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import db.connection.DBConnectionUtil;
 import db.dto.MovingDto;
+import db.exception.DaoException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +24,7 @@ class MovingDaoTest {
     @DisplayName("데이터베이스 접속 확인")
     @Test
     void connection() throws SQLException {
-        try (final var connection = DBConnectionUtil.getConnection("chess_test")) {
+        try (final Connection connection = DBConnectionUtil.getConnection("chess_test")) {
             assertThat(connection).isNotNull();
         }
     }
@@ -29,9 +32,21 @@ class MovingDaoTest {
     @Test
     @DisplayName("이동 저장 확인")
     void addMoving() {
-        final var moving = new MovingDto("WHITE", "a2", "a3");
-        final var id = movingDao.addMoving(moving);
+        final MovingDto moving = new MovingDto("WHITE", "a2", "a3");
+        final long id = movingDao.addMoving(moving);
 
         assertThat(movingDao.findByMovementId(id)).isEqualTo(moving);
+    }
+
+    @Test
+    @DisplayName("찾고자 하는 기보가 없으면 예외가 발생한다.")
+    void failFindMoving() {
+        //given
+        movingDao.addMoving(new MovingDto("WHITE", "a2", "a3"));
+        movingDao.addMoving(new MovingDto("BLACK", "h7", "h6"));
+
+        //when then
+        assertThatThrownBy(() -> movingDao.findByMovementId(3))
+                .isInstanceOf(DaoException.class);
     }
 }

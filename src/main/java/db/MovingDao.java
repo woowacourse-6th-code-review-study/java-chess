@@ -73,7 +73,7 @@ public class MovingDao {
                         resultSet.getString("destination")
                 );
             }
-            return null; // TODO 없으면 어카지?
+            throw new DaoException(ErrorCode.FAIL_FIND);
         } catch (final SQLException exception) {
             throw new DaoException(ErrorCode.FAIL_FIND);
         }
