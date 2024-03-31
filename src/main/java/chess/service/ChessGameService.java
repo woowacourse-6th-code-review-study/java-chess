@@ -2,7 +2,6 @@ package chess.service;
 
 import chess.domain.ChessGame;
 import chess.domain.board.ChessBoard;
-import chess.domain.board.ChessBoardCreator;
 import chess.domain.piece.Piece;
 import chess.domain.piece.Score;
 import chess.domain.piece.Team;
@@ -31,18 +30,6 @@ public class ChessGameService {
         createNewChessGame();
     }
 
-    public void saveChessGame(ChessGame chessGame) {
-        deleteSavedChessGame();
-        ChessBoard chessBoard = chessGame.getChessBoard();
-        Map<Position, Piece> board = chessBoard.getBoard();
-
-        for (Position position : board.keySet()) {
-            Piece piece = board.get(position);
-            pieceRepository.savePiece(PiecePlacementDto.of(piece, position));
-        }
-        turnRepository.saveTurn(chessGame.getTurn());
-    }
-
     public void movePiece(Position start, Position destination) {
         ChessGame chessGame = loadChessGame();
         chessGame.move(start, destination);
@@ -55,11 +42,6 @@ public class ChessGameService {
         Score whiteScore = chessGame.calculateTeamScore(Team.WHITE);
         Team winnerTeam = judgeWinnerTeam(whiteScore, blackScore);
         return ScoreStatusDto.of(whiteScore, blackScore, winnerTeam);
-    }
-
-    private void deleteSavedChessGame() {
-        pieceRepository.deleteAll();
-        turnRepository.deleteAll();
     }
 
     public ChessGame loadChessGame() {
@@ -75,18 +57,33 @@ public class ChessGameService {
         return chessGame.isNotEnd();
     }
 
+    private void createNewChessGame() {
+        ChessGame newChessGame = ChessGame.createNewChessGame();
+        saveChessGame(newChessGame);
+    }
+
+    private void saveChessGame(ChessGame chessGame) {
+        deleteSavedChessGame();
+        ChessBoard chessBoard = chessGame.getChessBoard();
+        Map<Position, Piece> board = chessBoard.getBoard();
+
+        for (Position position : board.keySet()) {
+            Piece piece = board.get(position);
+            pieceRepository.savePiece(PiecePlacementDto.of(piece, position));
+        }
+        turnRepository.saveTurn(chessGame.getTurn());
+    }
+
+    private void deleteSavedChessGame() {
+        pieceRepository.deleteAll();
+        turnRepository.deleteAll();
+    }
+
     private boolean isChessGameInProgress() {
         if (pieceRepository.findPieces().isEmpty()) {
             return false;
         }
         return true;
-    }
-
-    //체스 게임 도메인으로 응집
-    private void createNewChessGame() {
-        ChessBoardCreator chessBoardCreator = new ChessBoardCreator();
-        ChessBoard chessBoard = chessBoardCreator.create();
-        saveChessGame(new ChessGame(chessBoard));
     }
 
     private Team judgeWinnerTeam(Score whiteTeamScore, Score blackTeamScore) {
