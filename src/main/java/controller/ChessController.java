@@ -89,7 +89,7 @@ public class ChessController {
     private void saveMoving(final ChessGame chessGame, final CommandLine commandLine) {
         if (commandLine.isMove()) {
             final List<String> body = commandLine.getBody();
-            final Camp camp = chessGame.getCamp();
+            final Camp camp = chessGame.getCamp().toggle();
             final MovingDto movingDto = MovingDto.from(body, camp);
             repository.saveMoving(movingDto);
         }
