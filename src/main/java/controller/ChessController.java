@@ -3,7 +3,6 @@ package controller;
 import db.Repository;
 import db.dto.BoardDto;
 import db.dto.MovingDto;
-import db.dto.TurnDto;
 import dto.ChessBoardDto;
 import dto.ScoreDto;
 import exception.CustomException;
@@ -31,8 +30,8 @@ public class ChessController {
 
     public void run() {
 
-        final ChessGame chessGame = create();
         outputView.printStartMessage();
+        final ChessGame chessGame = create();
         GameStatus gameStatus = initGame();
         outputView.printChessBoard(ChessBoardDto.from(chessGame));
 
@@ -51,14 +50,12 @@ public class ChessController {
             return; // TODO 체크로 게임이 끝났을때 어떻게 처리할까
         }
         final BoardDto boardDto = BoardDto.from(new Board(chessGame.getBoard())); // TODO 형태 너무 이상 변경 필요
-        repository.save(boardDto, chessGame.getCamp());
+        repository.save(boardDto, chessGame.getCamp(), chessGame.getTurn());
     }
 
     private ChessGame create() {
         if (repository.hasGame()) {
-            final BoardDto board = repository.findBoard();
-            final TurnDto turn = repository.findTurn();
-            return new ChessGame(board.convert(), turn.convert());
+            return repository.findGame();
         }
         return ChessGame.setupStartingPosition();
 

@@ -7,24 +7,22 @@ import model.position.Position;
 
 public class ChessGame {
 
-    private static final Camp STARTING_CAMP = Camp.WHITE;
-
     private final Board board;
-    private Camp camp;
+    private final GameTurn gameTurn;
 
-    public ChessGame(final Board board, final Camp camp) {
+    public ChessGame(final Board board, final GameTurn gameTurn) {
         this.board = board;
-        this.camp = camp;
+        this.gameTurn = gameTurn;
     }
 
     public static ChessGame setupStartingPosition() {
-        return new ChessGame(Board.create(), STARTING_CAMP);
+        return new ChessGame(Board.create(), GameTurn.create());
     }
 
     public void move(final Moving moving) {
-        board.validate(moving, camp);
+        board.validate(moving, getCamp());
         board.move(moving);
-        camp = camp.toggle();
+        gameTurn.progress();
     }
 
     public Map<Position, Piece> getBoard() {
@@ -32,7 +30,11 @@ public class ChessGame {
     }
 
     public Camp getCamp() {
-        return camp;
+        return gameTurn.getCamp();
+    }
+
+    public Turn getTurn() {
+        return gameTurn.getTurn();
     }
 
     public Score calculateScore(final Camp camp) {

@@ -6,6 +6,8 @@ import db.dto.MovingDto;
 import db.exception.DaoException;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MovingDao {
 
@@ -38,8 +40,27 @@ public class MovingDao {
         }
     }
 
+    public List<MovingDto> findAll() {
+        final String query = "SELECT * FROM moving";
+        final List<MovingDto> moving = new ArrayList<>();
+        try (final var connection = DBConnectionUtil.getConnection(database);
+             final var preparedStatement = connection.prepareStatement(query)) {
+
+            final var resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                var camp = resultSet.getString("camp");
+                var current = resultSet.getString("start");
+                var next = resultSet.getString("destination");
+                moving.add(new MovingDto(camp, current, next));
+            }
+            return moving;
+        } catch (SQLException exception) {
+            throw new DaoException(ErrorCode.FAIL_FIND);
+        }
+    }
+
     public MovingDto findByMovementId(final long movementId) {
-        final var query = "SELECT * FROM moving WHERE movement_id = ?";
+        final String query = "SELECT * FROM moving WHERE movement_id = ?";
         try (final var connection = DBConnectionUtil.getConnection(database);
              final var preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, movementId);

@@ -29,7 +29,7 @@ class MovingDaoTest {
     @Test
     @DisplayName("이동 저장 확인")
     void addMoving() {
-        final var moving = new MovingDto("WHITE", "a", "2", "a", "3");
+        final var moving = new MovingDto("WHITE", "a2", "a3");
         final var id = movingDao.addMoving(moving);
 
         assertThat(movingDao.findByMovementId(id)).isEqualTo(moving);

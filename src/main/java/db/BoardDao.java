@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import model.Board;
 
 public class BoardDao {
 
@@ -59,8 +60,10 @@ public class BoardDao {
                 final var type = resultSet.getString("piece_type");
                 final var camp = resultSet.getString("camp");
                 final var piece = new PieceDto(type, camp);
-
                 result.put(position, piece);
+            }
+            if (result.isEmpty()) {
+                return BoardDto.from(Board.create());
             }
             return new BoardDto(result);
         } catch (final SQLException exception) {

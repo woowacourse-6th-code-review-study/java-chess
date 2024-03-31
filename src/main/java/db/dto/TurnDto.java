@@ -2,7 +2,7 @@ package db.dto;
 
 import model.Camp;
 
-public record TurnDto(String value) {
+public record TurnDto(String value, int count) {
 
     public Camp convert() {
         if ("WHITE".equals(value)) {
