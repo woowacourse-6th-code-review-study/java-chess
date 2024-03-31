@@ -22,10 +22,8 @@ public class ChessGameController {
 
     public void run() {
         outputView.printStartMessage();
-        ChessGame chessGame = initializeChessGame();
-        if (chessGameService.isChessGameInProgress()) {
-            chessGame = chessGameService.loadChessGame();
-        }
+        ChessGame chessGame = chessGameService.startChessGame();
+
         ExecuteResult result;
         do {
             Command command = inputView.readCommand();

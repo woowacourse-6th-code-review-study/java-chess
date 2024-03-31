@@ -2,6 +2,7 @@ package chess.service;
 
 import chess.domain.ChessGame;
 import chess.domain.board.ChessBoard;
+import chess.domain.board.ChessBoardCreator;
 import chess.domain.piece.Piece;
 import chess.domain.piece.Team;
 import chess.domain.position.Position;
@@ -19,6 +20,13 @@ public class ChessGameService {
     public ChessGameService(PieceRepository pieceRepository, TurnRepository turnRepository) {
         this.pieceRepository = pieceRepository;
         this.turnRepository = turnRepository;
+    }
+
+    public ChessGame startChessGame() {
+        if (isChessGameInProgress()) {
+            return loadChessGame();
+        }
+        return createNewChessGame();
     }
 
     public void saveChessGame(ChessGame chessGame) {
@@ -46,10 +54,16 @@ public class ChessGameService {
         return new ChessGame(chessBoard, currentTurn);
     }
 
-    public boolean isChessGameInProgress() {
+    private boolean isChessGameInProgress() {
         if (pieceRepository.findPieces().isEmpty()) {
             return false;
         }
         return true;
+    }
+
+    private ChessGame createNewChessGame() {
+        ChessBoardCreator chessBoardCreator = new ChessBoardCreator();
+        ChessBoard chessBoard = chessBoardCreator.create();
+        return new ChessGame(chessBoard);
     }
 }
