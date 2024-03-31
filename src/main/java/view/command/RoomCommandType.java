@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 public enum RoomCommandType {
-    NEW_ROOM("new", NewRoomOnCommand::new),
+    NEW_ROOM("new", (arguments, rooms) -> new NewRoomOnCommand(arguments)),
     ROOM_SELECTION("room", SelectRoomOnCommand::new);
 
     private final String command;
