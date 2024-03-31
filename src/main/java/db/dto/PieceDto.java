@@ -10,14 +10,7 @@ public record PieceDto(String type, String camp) {
     }
 
     public Piece convert() {
-        final Camp army = find();
+        final Camp army = CampType.findByColorName(camp);
         return PieceType.findValue(army, type);
-    }
-
-    private Camp find() {
-        if ("BLACK".equals(camp)) {
-            return Camp.BLACK;
-        }
-        return Camp.WHITE;
     }
 }
