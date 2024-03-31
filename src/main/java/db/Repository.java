@@ -40,7 +40,6 @@ public class Repository {
 
     public void save(final BoardDto board, final Camp camp, final Turn turn) {
         remove();
-
         boardDao.saveBoard(board);
         turnDao.saveTurn(camp, turn);
     }
@@ -58,7 +57,6 @@ public class Repository {
     }
 
     public ChessGame findGame() {
-        System.out.println("찾자 ");
         final BoardDto findBoard = findBoard();
         final TurnDto findTurn = findTurn();
         final List<MovingDto> findMoving = movingDao.findAll();
@@ -67,10 +65,16 @@ public class Repository {
         if (findTurn.count() < findMoving.size()) {
             restore(findTurn, findMoving, board);
         }
-        //TODO 리팩터링
-        final Camp camp = findMoving.size() % 2 == 0 ? Camp.WHITE : Camp.BLACK;
+        final Camp camp = findLastTurnCamp(findMoving);
         final GameTurn gameTurn = new GameTurn(camp, new Turn(findMoving.size()));
         return new ChessGame(board, gameTurn);
+    }
+
+    private Camp findLastTurnCamp(final List<MovingDto> findMoving) {
+        if (findMoving.size() % 2 == 0) {
+            return Camp.WHITE;
+        }
+        return Camp.BLACK;
     }
 
     private void restore(final TurnDto findTurn, final List<MovingDto> findMoving, final Board board) {
