@@ -6,7 +6,6 @@ import chess.domain.position.Position;
 import chess.domain.position.Rank;
 import chess.dto.ProgressStatus;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -147,10 +146,6 @@ public class Board {
         return pieces.stream()
                 .filter(Piece::isPawn)
                 .count() >= 2;
-    }
-
-    public Map<Position, Piece> getBoard() {
-        return Collections.unmodifiableMap(board);
     }
 
     public Team getTurn() {
