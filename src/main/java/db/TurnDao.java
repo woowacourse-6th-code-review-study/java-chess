@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class TurnDao {
 
@@ -49,8 +48,7 @@ public class TurnDao {
     public void remove() {
         final String query = "TRUNCATE TABLE turn";
         try (final Connection connection = DBConnectionUtil.getConnection(database);
-             final PreparedStatement preparedStatement = connection.prepareStatement(query,
-                     Statement.RETURN_GENERATED_KEYS)
+             final PreparedStatement preparedStatement = connection.prepareStatement(query)
         ) {
             preparedStatement.executeUpdate();
         } catch (final SQLException exception) {

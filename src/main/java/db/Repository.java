@@ -50,7 +50,6 @@ public class Repository { //TODO 이름 변경
         final TurnDto findTurn = findTurn();
         final List<MovingDto> findMoving = movingDao.findAll();
         final Board board = findBoard.convert();
-
         if (unsaved(findTurn, findMoving)) {
             restore(findTurn, findMoving, board);
         }

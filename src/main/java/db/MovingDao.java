@@ -26,41 +26,49 @@ public class MovingDao {
              final PreparedStatement preparedStatement = connection.prepareStatement(query,
                      Statement.RETURN_GENERATED_KEYS)
         ) {
-            long autoIncrement = 0;
-            preparedStatement.setNull(1, 0);
-            preparedStatement.setString(2, moving.camp());
-            preparedStatement.setString(3, moving.current());
-            preparedStatement.setString(4, moving.next());
-
+            preparedStatementSet(moving, preparedStatement);
             preparedStatement.executeUpdate();
-            final ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-
-            if (generatedKeys.next()) {
-                autoIncrement = generatedKeys.getLong(1);
-            }
-            return autoIncrement;
+            return increaseKey(preparedStatement.getGeneratedKeys());
         } catch (final SQLException exception) {
             throw new DaoException(ErrorCode.FAIL_SAVE);
         }
     }
 
+    private long increaseKey(final ResultSet generatedKeys) throws SQLException {
+        if (generatedKeys.next()) {
+            return generatedKeys.getLong(1);
+        }
+        return 0;
+    }
+
+    private void preparedStatementSet(final MovingDto moving, final PreparedStatement preparedStatement)
+            throws SQLException {
+        preparedStatement.setNull(1, 0);
+        preparedStatement.setString(2, moving.camp());
+        preparedStatement.setString(3, moving.current());
+        preparedStatement.setString(4, moving.next());
+    }
+
     public List<MovingDto> findAll() {
         final String query = "SELECT * FROM moving";
-        final List<MovingDto> moving = new ArrayList<>();
         try (final Connection connection = DBConnectionUtil.getConnection(database);
              final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
             final ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                String camp = resultSet.getString("camp");
-                String current = resultSet.getString("start");
-                String next = resultSet.getString("destination");
-                moving.add(new MovingDto(camp, current, next));
-            }
-            return moving;
+            return convert(resultSet);
         } catch (SQLException exception) {
             throw new DaoException(ErrorCode.FAIL_FIND);
         }
+    }
+
+    private List<MovingDto> convert(final ResultSet resultSet) throws SQLException {
+        final List<MovingDto> moving = new ArrayList<>();
+        while (resultSet.next()) {
+            String camp = resultSet.getString("camp");
+            String current = resultSet.getString("start");
+            String next = resultSet.getString("destination");
+            moving.add(new MovingDto(camp, current, next));
+        }
+        return moving;
     }
 
     public int countMoving() {
@@ -100,8 +108,7 @@ public class MovingDao {
     public void remove() {
         final String query = "TRUNCATE TABLE moving";
         try (final Connection connection = DBConnectionUtil.getConnection(database);
-             final PreparedStatement preparedStatement = connection.prepareStatement(query,
-                     Statement.RETURN_GENERATED_KEYS)
+             final PreparedStatement preparedStatement = connection.prepareStatement(query)
         ) {
             preparedStatement.executeUpdate();
         } catch (final SQLException exception) {
