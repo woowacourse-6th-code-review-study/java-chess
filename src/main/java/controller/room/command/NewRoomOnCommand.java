@@ -1,14 +1,14 @@
-package controller.command;
+package controller.room.command;
 
-import domain.ChessGame;
-import view.OutputView;
+import dto.RoomDto;
+import service.GameRoomService;
 
 import java.util.List;
 
-public class StartOnCommand implements Command {
+public class NewRoomOnCommand implements Command {
     private static final int ARGUMENT_SIZE = 0;
 
-    public StartOnCommand(final List<String> arguments) {
+    public NewRoomOnCommand(final List<String> arguments) {
         validateArgumentSize(arguments);
     }
 
@@ -19,8 +19,7 @@ public class StartOnCommand implements Command {
     }
 
     @Override
-    public void execute(final ChessGame game) {
-        game.start();
-        OutputView.printBoard(game.getBoard());
+    public RoomDto execute(final GameRoomService gameRoomService) {
+        return gameRoomService.createNewRoom();
     }
 }

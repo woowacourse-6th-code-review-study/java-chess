@@ -1,10 +1,9 @@
-package controller;
+package controller.room;
 
 import dto.RoomDto;
 import service.GameRoomService;
 import view.InputView;
 import view.OutputView;
-import view.command.CommandInput;
 
 import java.util.List;
 
@@ -30,24 +29,10 @@ public class GameRoomController {
 
     private RoomDto readCommandUntilValid() {
         try {
-            return findRoom();
+            return InputView.readRoomCommand().execute(roomService);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             return readCommandUntilValid();
         }
-    }
-
-    private RoomDto findRoom() {
-        CommandInput commandInput = InputView.readCommandInput();
-
-        if (commandInput.prefix().equals("new")) {
-            return roomService.createNewRoom();
-        }
-        if (commandInput.prefix().equals("room")) {
-            String roomId = commandInput.getArguments().get(0);
-            return roomService.findRoomById(roomId);
-        }
-
-        throw new IllegalArgumentException("방을 찾을 수 없습니다.");
     }
 }

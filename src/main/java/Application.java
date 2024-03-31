@@ -1,5 +1,5 @@
-import controller.ChessGameController;
-import controller.GameRoomController;
+import controller.game.ChessGameController;
+import controller.room.GameRoomController;
 import dto.RoomDto;
 import service.ChessGameService;
 import service.GameRoomService;

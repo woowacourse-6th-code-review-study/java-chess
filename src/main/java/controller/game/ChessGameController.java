@@ -1,4 +1,4 @@
-package controller;
+package controller.game;
 
 import domain.ChessGame;
 import domain.board.ChessBoard;
@@ -39,7 +39,7 @@ public class ChessGameController {
 
     private void readCommandUntilValid() {
         try {
-            InputView.readCommand().execute(chessGame);
+            InputView.readGameCommand().execute(chessGame);
         } catch (Exception e) {
             OutputView.printErrorMessage(e);
             readCommandUntilValid();

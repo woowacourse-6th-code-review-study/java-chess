@@ -1,13 +1,15 @@
-package controller.command;
+package controller.game.command;
 
 import domain.ChessGame;
+import domain.board.Score;
+import view.OutputView;
 
 import java.util.List;
 
-public class EndOnCommand implements Command {
+public class StatusOnCommand implements Command {
     private static final int ARGUMENT_SIZE = 0;
 
-    public EndOnCommand(final List<String> arguments) {
+    public StatusOnCommand(final List<String> arguments) {
         validateArgumentSize(arguments);
     }
 
@@ -19,6 +21,7 @@ public class EndOnCommand implements Command {
 
     @Override
     public void execute(final ChessGame game) {
-        game.end();
+        final Score score = game.getScore();
+        OutputView.printScore(score);
     }
 }

@@ -1,4 +1,4 @@
-package controller.command;
+package controller.game.command;
 
 import domain.ChessGame;
 

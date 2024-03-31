@@ -14,9 +14,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static view.command.CommandType.END;
-import static view.command.CommandType.MOVE;
-import static view.command.CommandType.START;
+import static view.command.GameCommandType.END;
+import static view.command.GameCommandType.MOVE;
+import static view.command.GameCommandType.START;
 
 public class MessageResolver {
     private static final String LINE_SEPARATOR = System.lineSeparator();
