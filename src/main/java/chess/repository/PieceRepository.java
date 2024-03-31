@@ -23,7 +23,7 @@ public class PieceRepository {
         try (Connection connection = connectionManager.getConnection()) {
             pieces.getPieces().forEach(piece -> savePiece(piece, connection));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("기물 저장 과정 중 오류 발생");
         }
     }
 
@@ -36,7 +36,7 @@ public class PieceRepository {
             pstmt.setString(3, pieceDto.getType());
             pstmt.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("기물 저장 과정 중 오류 발생");
         }
     }
 
@@ -61,7 +61,7 @@ public class PieceRepository {
                 return Optional.of(new PiecesDto(result));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("기물 조회 과정 중 오류 발생");
         }
         return Optional.empty();
     }
@@ -74,7 +74,7 @@ public class PieceRepository {
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("기물 조회 과정 중 오류 발생");
         }
     }
 }

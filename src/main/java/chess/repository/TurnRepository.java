@@ -28,7 +28,7 @@ public class TurnRepository {
             pstmt.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("턴 저장 과정 중 오류 발생");
         }
     }
 
@@ -44,7 +44,7 @@ public class TurnRepository {
                 return Optional.of(DomainMapper.mapToTurn(value));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("턴 조회 과정 중 오류 발생");
         }
         return Optional.empty();
     }
@@ -58,7 +58,7 @@ public class TurnRepository {
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("턴 삭세 과정 중 오류 발생");
         }
     }
 }
