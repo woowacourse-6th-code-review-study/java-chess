@@ -84,4 +84,21 @@ class ChessGameTest {
 
         assertThat(chessGame.calculateTeamScore(Team.WHITE)).isEqualTo(new Score(1));
     }
+
+    @DisplayName("체스 게임 도메인은 점수가 더 높은 팀을 가려낼 수 있다")
+    @Test
+    void should_ChessGameCanSelectHigherScoreTeam() {
+        Map<Position, Piece> board = new HashMap<>();
+        board.put(PositionFixtures.A1, new Pawn(Team.WHITE));
+        board.put(PositionFixtures.A2, new Pawn(Team.WHITE));
+
+        board.put(PositionFixtures.A3, new Knight(Team.BLACK));
+        board.put(PositionFixtures.A8, new Rook(Team.BLACK));
+
+        ChessBoard chessBoard = new ChessBoard(board);
+        ChessGame chessGame = new ChessGame(chessBoard);
+
+        assertThat(chessGame.selectHigherScoreTeam()).isEqualTo(Team.BLACK);
+    }
 }
+
