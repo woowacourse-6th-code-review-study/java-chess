@@ -129,9 +129,8 @@ public class Board {
     public Score calculateScore(final Camp camp) {
         final Map<File, Integer> pawnCount = countSameFilePawn(camp);
         final List<Score> scores = collectScore(camp);
-
         final Score result = scores.stream()
-                .reduce(Score::add)
+                .reduce(Score::plus)
                 .orElse(new Score(0));
 
         return result.minus(duplicateFilePawns(pawnCount));
@@ -159,7 +158,7 @@ public class Board {
                 .stream()
                 .filter(sameFilePawnCount -> sameFilePawnCount > 1)
                 .map(sameFilePawnCount -> new Score(sameFilePawnCount * SAME_FILE_PAWN_SCORE.value()))
-                .reduce(Score::add)
+                .reduce(Score::plus)
                 .orElse(new Score(0));
     }
 
