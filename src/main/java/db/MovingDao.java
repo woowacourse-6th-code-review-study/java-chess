@@ -1,7 +1,9 @@
 package db;
 
+import constant.ErrorCode;
 import db.connection.DBConnectionUtil;
 import db.dto.MovingDto;
+import db.exception.DaoException;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -34,7 +36,7 @@ public class MovingDao {
             }
             return autoIncrement;
         } catch (final SQLException exception) {
-            throw new RuntimeException(exception);
+            throw new DaoException(ErrorCode.FAIL_SAVE);
         }
     }
 
@@ -43,7 +45,6 @@ public class MovingDao {
         try (final var connection = DBConnectionUtil.getConnection(database);
              final var preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, movementId);
-
             final var resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
@@ -55,21 +56,20 @@ public class MovingDao {
                         resultSet.getString("destination_file")
                 );
             }
+            return null; // TODO 없으면 어카지?
         } catch (final SQLException exception) {
-            throw new RuntimeException(exception);
+            throw new DaoException(ErrorCode.FAIL_FIND);
         }
-        return null;
     }
 
     public void remove() {
-        final String query = "truncate table moving";
+        final String query = "TRUNCATE TABLE moving";
         try (final var connection = DBConnectionUtil.getConnection(database);
              final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)
         ) {
             preparedStatement.executeUpdate();
-
         } catch (final SQLException exception) {
-            throw new RuntimeException(exception);
+            throw new DaoException(ErrorCode.FAIL_DELETE);
         }
     }
 }

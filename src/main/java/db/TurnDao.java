@@ -1,7 +1,9 @@
 package db;
 
+import constant.ErrorCode;
 import db.connection.DBConnectionUtil;
 import db.dto.TurnDto;
+import db.exception.DaoException;
 import java.sql.SQLException;
 import java.sql.Statement;
 import model.Camp;
@@ -21,9 +23,8 @@ public class TurnDao {
         ) {
             preparedStatement.setString(1, camp.toString());
             preparedStatement.executeUpdate();
-
         } catch (final SQLException exception) {
-            throw new RuntimeException(exception);
+            throw new DaoException(ErrorCode.FAIL_SAVE);
         }
     }
 
@@ -40,19 +41,18 @@ public class TurnDao {
             return null;
 
         } catch (SQLException exception) {
-            throw new RuntimeException(exception);
+            throw new DaoException(ErrorCode.FAIL_FIND);
         }
     }
 
     public void remove() {
-        final String query = "truncate table turn";
+        final String query = "TRUNCATE TABLE turn";
         try (final var connection = DBConnectionUtil.getConnection(database);
              final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)
         ) {
             preparedStatement.executeUpdate();
-
         } catch (final SQLException exception) {
-            throw new RuntimeException(exception);
+            throw new DaoException(ErrorCode.FAIL_DELETE);
         }
     }
 }

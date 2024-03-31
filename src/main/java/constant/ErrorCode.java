@@ -17,6 +17,9 @@ public enum ErrorCode {
     PIECE_DOES_NOT_EXIST_POSITION,
     INVALID_CAMP_PIECE,
     KING_DEAD,
+    CONNECTION,
+    FAIL_SAVE,
+    FAIL_FIND,
+    FAIL_DELETE,
     NO_MESSAGE
-
 }

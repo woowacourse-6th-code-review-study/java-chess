@@ -1,9 +1,11 @@
 package db;
 
+import constant.ErrorCode;
 import db.connection.DBConnectionUtil;
 import db.dto.BoardDto;
 import db.dto.PieceDto;
 import db.dto.PositionDto;
+import db.exception.DaoException;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
@@ -38,7 +40,7 @@ public class BoardDao {
             preparedStatement.executeUpdate();
 
         } catch (final SQLException exception) {
-            throw new RuntimeException(exception);
+            throw new DaoException(ErrorCode.FAIL_SAVE);
         }
     }
 
@@ -62,19 +64,19 @@ public class BoardDao {
             }
             return new BoardDto(result);
         } catch (final SQLException exception) {
-            throw new RuntimeException(exception);
+            throw new DaoException(ErrorCode.FAIL_FIND);
         }
     }
 
     public void remove() {
-        final String query = "truncate table board";
+        final String query = "TRUNCATE TABLE board";
         try (final var connection = DBConnectionUtil.getConnection(database);
              final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)
         ) {
             preparedStatement.executeUpdate();
 
         } catch (final SQLException exception) {
-            throw new RuntimeException(exception);
+            throw new DaoException(ErrorCode.FAIL_DELETE);
         }
     }
 }

@@ -1,6 +1,7 @@
 package application;
 
 import controller.ChessController;
+import db.exception.DBException;
 import java.util.Scanner;
 import view.InputView;
 import view.OutputView;
@@ -12,6 +13,10 @@ public class Application {
         final OutputView outputView = new OutputView();
 
         final ChessController chessController = new ChessController(inputView, outputView);
-        chessController.run();
+        try {
+            chessController.run();
+        } catch (DBException exception) {
+            outputView.printException(exception.getErrorCode());
+        }
     }
 }

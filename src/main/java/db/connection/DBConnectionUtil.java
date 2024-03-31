@@ -5,6 +5,8 @@ import static db.connection.ConnectionConst.PASSWORD;
 import static db.connection.ConnectionConst.SERVER;
 import static db.connection.ConnectionConst.USERNAME;
 
+import constant.ErrorCode;
+import db.exception.ConnectionException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,14 +17,11 @@ public class DBConnectionUtil {
     }
 
     public static Connection getConnection(final String database) {
-        // 드라이버 연결
         try {
             final String url = "jdbc:mysql://" + SERVER.getValue() + "/" + database + OPTION.getValue();
             return DriverManager.getConnection(url, USERNAME.getValue(), PASSWORD.getValue());
         } catch (final SQLException exception) {
-            System.err.println("DB 연결 오류:" + exception.getMessage());
-            exception.printStackTrace();
-            return null; // TODO null 을 리턴하는게 맞을지 예외 던지는게 맞을지
+            throw new ConnectionException(ErrorCode.CONNECTION);
         }
     }
 }

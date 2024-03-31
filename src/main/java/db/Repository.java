@@ -12,7 +12,7 @@ public class Repository {
     private final TurnDao turnDao;
     private final BoardDao boardDao;
 
-    public Repository(String database) {
+    public Repository(final String database) {
         this.movingDao = new MovingDao(database);
         this.turnDao = new TurnDao(database);
         this.boardDao = new BoardDao(database);

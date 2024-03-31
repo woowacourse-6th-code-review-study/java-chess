@@ -23,6 +23,11 @@ public enum ErrorCodeMessage {
     OWN_PIECE_EXIST_POSITION(ErrorCode.OWN_PIECE_EXIST_POSITION, "도착 위치에 자신의 기물이 있습니다."),
     PIECE_DOES_NOT_EXIST_POSITION(ErrorCode.PIECE_DOES_NOT_EXIST_POSITION, "해당 위치에 기물이 없습니다."),
     INVALID_CAMP_PIECE(ErrorCode.INVALID_CAMP_PIECE, "자신의 기물만 움직일 수 있습니다."),
+    CONNECTION(ErrorCode.CONNECTION, "DB 연결 오류 입니다."),
+    FAIL_SAVE(ErrorCode.FAIL_SAVE, "저장에 실패하였습니다."),
+    FAIL_FIND(ErrorCode.FAIL_FIND, "게임을 불러오는데 실패하였습니다."),
+    FAIL_DELETE(ErrorCode.FAIL_DELETE, "게임을 삭제하는데 실패하였습니다."),
+
     NO_MESSAGE(ErrorCode.NO_MESSAGE, "해당 메시지가 없습니다.");
 
     private static final Map<ErrorCode, ErrorCodeMessage> SUIT_MESSAGE = Arrays.stream(values())
