@@ -24,5 +24,7 @@ public class Application {
 
         GameController gameController = new GameController(new InputView(), new OutputView(), chessGame);
         gameController.run();
+
+        connectionPool.close();
     }
 }

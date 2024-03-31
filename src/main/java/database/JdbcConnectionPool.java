@@ -3,6 +3,7 @@ package database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -10,6 +11,7 @@ public class JdbcConnectionPool {
     private static final String FAILED_INITIALIZE = "커넥션 풀 초기화에 실패했습니다.";
     private static final String FAILED_TO_GET_CONNECTION = "커넥션 획득에 실패했습니다.";
     private static final String FAILED_RELEASE = "커넥션 해제에 실패했습니다.";
+    private static final String FAILED_CLOSE = "커넥션 종료에 실패했습니다.";
     private static final int INITIAL_POOL_SIZE = 2;
     private static final JdbcConnectionPool INSTANCE = new JdbcConnectionPool();
     private final DatabaseConfiguration configuration;
@@ -62,6 +64,16 @@ public class JdbcConnectionPool {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new RuntimeException(FAILED_RELEASE);
+        }
+    }
+
+    public void close() {
+        try {
+            for (Connection collection : pool) {
+                collection.close();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(FAILED_CLOSE);
         }
     }
 }
