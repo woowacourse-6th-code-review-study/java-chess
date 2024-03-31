@@ -1,5 +1,6 @@
 package db;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,8 +15,8 @@ public class JdbcTemplate {
     }
 
     public void execute(final String query, final String... parameters) {
-        try (final var connection = connectionManager.getConnection();
-             final var preparedStatement = connection.prepareStatement(query)) {
+        try (final Connection connection = connectionManager.getConnection();
+             final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             setParameters(preparedStatement, parameters);
             preparedStatement.executeUpdate();
         } catch (final SQLException e) {
@@ -24,8 +25,8 @@ public class JdbcTemplate {
     }
 
     public <T> List<T> executeAndGet(final String query, final RowMapper<T> mapper, final String... parameters) {
-        try (final var connection = connectionManager.getConnection();
-             final var preparedStatement = connection.prepareStatement(query)) {
+        try (final Connection connection = connectionManager.getConnection();
+             final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             setParameters(preparedStatement, parameters);
             return resolveResult(mapper, preparedStatement);
         } catch (final SQLException e) {
