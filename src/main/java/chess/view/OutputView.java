@@ -5,8 +5,8 @@ import static chess.view.CommandParser.MOVE;
 import static chess.view.CommandParser.START;
 import static chess.view.CommandParser.STATUS;
 
-import chess.dto.BoardSnapShotDto;
-import chess.dto.RankSnapShotDto;
+import chess.dto.BoardDto;
+import chess.dto.RankDto;
 import chess.dto.ScoreStatusDto;
 import java.util.List;
 import java.util.StringJoiner;
@@ -20,7 +20,7 @@ public class OutputView {
         System.out.println(resolveStartMessage());
     }
 
-    public void printChessBoardMessage(BoardSnapShotDto boardSnapshotDto) {
+    public void printChessBoardMessage(BoardDto boardSnapshotDto) {
         System.out.println(resolveBoardSnapshotMessage(boardSnapshotDto));
     }
 
@@ -38,15 +38,15 @@ public class OutputView {
                 .toString();
     }
 
-    private String resolveBoardSnapshotMessage(BoardSnapShotDto boardSnapshot) {
-        List<RankSnapShotDto> boardSnapShot = boardSnapshot.getBoardSnapShot();
+    private String resolveBoardSnapshotMessage(BoardDto boardSnapshot) {
+        List<RankDto> boardSnapShot = boardSnapshot.getBoardSnapShot();
         return boardSnapShot.stream()
                 .map(this::resolveRankSnapshotMessage)
                 .collect(Collectors.joining(LINE_SEPARATOR));
     }
 
-    private String resolveRankSnapshotMessage(RankSnapShotDto rankSnapShotDto) {
-        List<String> rank = rankSnapShotDto.getRank();
+    private String resolveRankSnapshotMessage(RankDto rankDto) {
+        List<String> rank = rankDto.getRank();
         return String.join("", rank);
     }
 

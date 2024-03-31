@@ -10,27 +10,27 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BoardSnapShotDto {
-    private final List<RankSnapShotDto> boardSnapShot;
+public class BoardDto {
+    private final List<RankDto> boardSnapShot;
 
-    public BoardSnapShotDto(List<RankSnapShotDto> boardSnapShot) {
+    public BoardDto(List<RankDto> boardSnapShot) {
         this.boardSnapShot = boardSnapShot;
     }
 
-    public static BoardSnapShotDto from(ChessBoard chessBoard) {
-        List<RankSnapShotDto> boardSnapShot = Arrays.stream(Rank.values())
+    public static BoardDto from(ChessBoard chessBoard) {
+        List<RankDto> boardSnapShot = Arrays.stream(Rank.values())
                 .map(rank -> rankSnapShot(chessBoard, rank))
                 .collect(Collectors.toList());
-        return new BoardSnapShotDto(boardSnapShot);
+        return new BoardDto(boardSnapShot);
     }
 
-    private static RankSnapShotDto rankSnapShot(ChessBoard chessBoard, Rank rank) {
+    private static RankDto rankSnapShot(ChessBoard chessBoard, Rank rank) {
         List<String> rankSnapShot = new ArrayList<>();
         for (File file : File.values()) {
             Position position = new Position(file, rank);
             rankSnapShot.add(squareSnapshot(chessBoard, position));
         }
-        return new RankSnapShotDto(rankSnapShot);
+        return new RankDto(rankSnapShot);
     }
 
     private static String squareSnapshot(ChessBoard chessBoard, Position position) {
@@ -40,7 +40,7 @@ public class BoardSnapShotDto {
         return PieceMessage.messageOf(chessBoard.findPieceByPosition(position));
     }
 
-    public List<RankSnapShotDto> getBoardSnapShot() {
+    public List<RankDto> getBoardSnapShot() {
         return boardSnapShot;
     }
 }

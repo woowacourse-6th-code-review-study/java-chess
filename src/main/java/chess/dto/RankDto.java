@@ -2,10 +2,10 @@ package chess.dto;
 
 import java.util.List;
 
-public class RankSnapShotDto {
+public class RankDto {
     private final List<String> rank;
 
-    public RankSnapShotDto(List<String> rank) {
+    public RankDto(List<String> rank) {
         this.rank = rank;
     }
 

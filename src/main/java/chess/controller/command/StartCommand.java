@@ -1,14 +1,14 @@
 package chess.controller.command;
 
-import chess.dto.BoardSnapShotDto;
+import chess.dto.BoardDto;
 import chess.service.ChessGameService;
 import chess.view.OutputView;
 
 public class StartCommand implements Command {
     @Override
     public ExecuteResult execute(ChessGameService chessGameService, OutputView outputView) {
-        BoardSnapShotDto boardSnapShotDto = chessGameService.startChessGame();
-        outputView.printChessBoardMessage(boardSnapShotDto);
+        BoardDto boardDto = chessGameService.startChessGame();
+        outputView.printChessBoardMessage(boardDto);
         return new ExecuteResult(true, true);
     }
 }
