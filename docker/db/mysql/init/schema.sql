@@ -14,11 +14,11 @@ create table game_states
 
 create table pieces
 (
+    game_id    int,
     board_file varchar(1) not null,
     board_rank varchar(1) not null,
     color      varchar(8) not null,
     type       varchar(8) not null,
-    game_id    int,
-    primary key (board_file, board_rank),
+    primary key (game_id, board_file, board_rank),
     foreign key (game_id) references rooms (room_id)
 );

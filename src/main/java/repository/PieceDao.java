@@ -3,6 +3,7 @@ package repository;
 import db.JdbcTemplate;
 import db.RowMapper;
 import dto.PieceDto;
+import dto.RoomDto;
 
 import java.util.List;
 
@@ -25,9 +26,11 @@ public class PieceDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    void add(final PieceDto piece) {
-        final String query = "INSERT INTO " + TABLE_NAME + " VALUES(?, ?, ?, ?)";
-        jdbcTemplate.execute(query, piece.boardFile(), piece.boardRank(), piece.color(), piece.type());
+    void add(final RoomDto room, final PieceDto piece) {
+        final String query = "INSERT INTO " + TABLE_NAME + " VALUES(?, ?, ?, ?, ?)";
+        jdbcTemplate.execute(query,
+                String.valueOf(room.room_id()), piece.boardFile(), piece.boardRank(),
+                piece.color(), piece.type());
     }
 
     PieceDto findOne(final String file, final String rank) {
@@ -39,14 +42,14 @@ public class PieceDao {
         return pieces.get(0);
     }
 
-    List<PieceDto> findAll() {
-        final String query = "SELECT * FROM " + TABLE_NAME;
-        return jdbcTemplate.executeAndGet(query, rowMapper);
+    List<PieceDto> findPieceByGameId(final int gameId) {
+        final String query = "SELECT * FROM " + TABLE_NAME + " WHERE game_id = ?";
+        return jdbcTemplate.executeAndGet(query, rowMapper, String.valueOf(gameId));
     }
 
-    void deleteAll() {
-        final String query = "DELETE FROM " + TABLE_NAME;
-        jdbcTemplate.execute(query);
+    void deleteAll(final RoomDto roomDto) {
+        final String query = "DELETE FROM " + TABLE_NAME + " WHERE game_id = ?";
+        jdbcTemplate.execute(query, String.valueOf(roomDto.room_id()));
     }
 
     boolean hasRecords() {

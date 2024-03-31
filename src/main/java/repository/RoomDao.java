@@ -32,15 +32,21 @@ public class RoomDao {
     public Optional<RoomDto> addNewRoom() {
         final String selectQuery = "SELECT MAX(room_id) AS room_id FROM " + TABLE_NAME;
         List<RoomDto> roomDtos = jdbcTemplate.executeAndGet(selectQuery, rowMapper);
+        if (roomDtos.isEmpty()) {
+            final String insertQuery = "INSERT INTO " + TABLE_NAME + " VALUES (1)";
+            int newRoomId = roomDtos.get(0).room_id() + 1;
+            jdbcTemplate.execute(insertQuery, String.valueOf(newRoomId));
+            return Optional.of(new RoomDto(newRoomId));
+        }
         final String insertQuery = "INSERT INTO " + TABLE_NAME + " VALUES (?)";
-        final String roodId = String.valueOf(roomDtos.get(0).room_id() + 1);
-        jdbcTemplate.execute(insertQuery, roodId);
-        return Optional.ofNullable(roomDtos.get(0));
+        int newRoomId = roomDtos.get(0).room_id() + 1;
+        jdbcTemplate.execute(insertQuery, String.valueOf(newRoomId));
+        return Optional.of(new RoomDto(newRoomId));
     }
 
     public Optional<RoomDto> find(final String roomId) {
         final String query = "SELECT * FROM " + TABLE_NAME + " WHERE room_id = ?";
-        List<RoomDto> roomDtos = jdbcTemplate.executeAndGet(query, rowMapper, roomId);
+        final List<RoomDto> roomDtos = jdbcTemplate.executeAndGet(query, rowMapper, roomId);
         return Optional.of(roomDtos.get(0));
     }
 

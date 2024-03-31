@@ -26,7 +26,7 @@ public class TurnDao {
 
     void add(final TurnDto turnDto) {
         final String query = "INSERT INTO " + TABLE_NAME + " VALUES (?, ?)";
-        jdbcTemplate.execute(query, turnDto.turn(), String.valueOf(turnDto.gameId()));
+        jdbcTemplate.execute(query, String.valueOf(turnDto.gameId()), turnDto.turn());
     }
 
     TurnDto findTurnByGameId(final RoomDto roomDto) {
@@ -38,15 +38,18 @@ public class TurnDao {
         return turns.get(0);
     }
 
-    void update(final TurnDto turnDto) {
-        final String deleteQuery = "DELETE FROM " + TABLE_NAME;
-        final String insertQuery = "INSERT INTO " + TABLE_NAME + " VALUES (?)";
-        jdbcTemplate.execute(deleteQuery);
-        jdbcTemplate.execute(insertQuery, turnDto.turn());
+    void update(final RoomDto roomDto, final TurnDto turnDto) {
+        final String insertQuery = "UPDATE " + TABLE_NAME + " SET state = ? WHERE game_id = ?";
+        jdbcTemplate.execute(insertQuery, String.valueOf(roomDto.room_id()), turnDto.turn());
     }
 
-    void deleteAll() {
-        final String query = "DELETE FROM " + TABLE_NAME;
-        jdbcTemplate.execute(query);
+    void delete(final RoomDto roomDto) {
+        final String query = "DELETE FROM " + TABLE_NAME + " WHERE game_id = ?";
+        jdbcTemplate.execute(query, String.valueOf(roomDto.room_id()));
+    }
+
+    void deleteAll(final RoomDto roomDto) {
+        final String query = "DELETE FROM " + TABLE_NAME + " WHERE game_id = ?";
+        jdbcTemplate.execute(query, String.valueOf(roomDto.room_id()));
     }
 }
