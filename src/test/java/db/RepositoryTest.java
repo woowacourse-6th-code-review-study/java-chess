@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import db.dto.BoardDto;
 import db.dto.MovingDto;
+import db.dto.TurnDto;
 import model.ChessGame;
 import model.position.Moving;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +45,7 @@ class RepositoryTest {
         final ChessGame expected = ChessGame.setupStartingPosition();
         // TODO 이 때 chessgame객체 equal 재정의 안하고 이렇게 꺼내서 비교하는 방법 괜춘?
         assertAll(
-                () -> assertThat(game.getBoard()).isEqualTo(expected.getBoard()),
+                () -> assertThat(game.getPieces()).isEqualTo(expected.getPieces()),
                 () -> assertThat(game.getCamp()).isEqualTo(expected.getCamp()),
                 () -> assertThat(game.getTurn()).isEqualTo(expected.getTurn())
         );
@@ -63,7 +64,7 @@ class RepositoryTest {
 
         //then
         assertAll(
-                () -> assertThat(game.getBoard()).isEqualTo(expected.getBoard()),
+                () -> assertThat(game.getPieces()).isEqualTo(expected.getPieces()),
                 () -> assertThat(game.getCamp()).isEqualTo(expected.getCamp()),
                 () -> assertThat(game.getTurn()).isEqualTo(expected.getTurn())
         );
@@ -71,17 +72,26 @@ class RepositoryTest {
 
     @Test
     @DisplayName("보드와 턴을 저장한다.")
-    void saveBoardAndTurn() { //TODO boardDto 형태 고치고 다시 돌아올것!
+    void saveBoardAndTurn() {
         //given
         final ChessGame expected = ChessGame.setupStartingPosition();
         expected.move(new Moving(A2, A3));
+        repository.saveMoving(new MovingDto("WHITE", "a2", "a3"));
         expected.move(new Moving(G7, G6));
+        repository.saveMoving(new MovingDto("BLACK", "g7", "g6"));
 
-//        final BoardDto boardDto = BoardDto.from(expected.getBoard());
+        final BoardDto boardDto = BoardDto.from(expected.getBoard());
+        final TurnDto turnDto = TurnDto.from(expected.getCamp(), expected.getTurn());
 
         //when
-//        repository.save();
+        repository.save(boardDto, turnDto);
 
         //then
+        final ChessGame game = repository.findGame();
+        assertAll(
+                () -> assertThat(game.getPieces()).isEqualTo(expected.getPieces()),
+                () -> assertThat(game.getCamp()).isEqualTo(expected.getCamp()),
+                () -> assertThat(game.getTurn()).isEqualTo(expected.getTurn())
+        );
     }
 }
