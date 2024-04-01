@@ -51,6 +51,14 @@ public class Position {
         return new Position(file, rank.toSouth());
     }
 
+    public String getFile() {
+        return file.toString();
+    }
+
+    public String getRank() {
+        return rank.toString();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
