@@ -50,26 +50,34 @@ public class MysqlPieceRepository implements PieceRepository {
         String query = "SELECT board_file, board_rank, type, team FROM piece";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
-
-            List<PieceEntity> result = new ArrayList<>();
-            while (resultSet.next()) {
-                String fileString = resultSet.getString(1);
-                String rankString = resultSet.getString(2);
-                String pieceString = resultSet.getString(3);
-                String teamString = resultSet.getString(4);
-
-                File file = STRING_TO_FILE.get(fileString);
-                Rank rank = STRING_TO_RANK.get(rankString);
-                Position position = new Position(file, rank);
-                PieceType pieceType = STRING_TO_PIECE_TYPE.get(pieceString);
-                TeamType teamType = STRING_TO_TEAM_TYPE.get(teamString);
-
-                result.add(new PieceEntity(position, pieceType, teamType));
-            }
-            return result;
+            return toPieceEntities(resultSet);
         } catch (SQLException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    private List<PieceEntity> toPieceEntities(ResultSet resultSet) throws SQLException {
+        List<PieceEntity> result = new ArrayList<>();
+        while (resultSet.next()) {
+            PieceEntity pieceEntity = toPieceEntity(resultSet);
+            result.add(pieceEntity);
+        }
+        return result;
+    }
+
+    private PieceEntity toPieceEntity(ResultSet resultSet) throws SQLException {
+        String fileString = resultSet.getString(1);
+        String rankString = resultSet.getString(2);
+        String pieceString = resultSet.getString(3);
+        String teamString = resultSet.getString(4);
+
+        File file = STRING_TO_FILE.get(fileString);
+        Rank rank = STRING_TO_RANK.get(rankString);
+        Position position = new Position(file, rank);
+        PieceType pieceType = STRING_TO_PIECE_TYPE.get(pieceString);
+        TeamType teamType = STRING_TO_TEAM_TYPE.get(teamString);
+
+        return new PieceEntity(position, pieceType, teamType);
     }
 
     @Override
