@@ -13,7 +13,7 @@ public class ChessGameController {
         this.chessGameService = chessGameService;
     }
 
-    public void start(RoomDto roomDto) {
+    public void run(RoomDto roomDto) {
         ChessGame chessGame = chessGameService.initializeChessGame(roomDto);
         OutputView.printGameGuideMessage();
         while (chessGame.isPlaying()) {

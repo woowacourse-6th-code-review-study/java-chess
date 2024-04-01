@@ -2,10 +2,10 @@ package controller;
 
 import controller.game.ChessGameController;
 import controller.room.GameRoomController;
-import dto.RoomDto;
 import database.dao.GameStateDaoImpl;
 import database.dao.PieceDaoImpl;
 import database.dao.RoomDaoImpl;
+import dto.RoomDto;
 import service.ChessGameService;
 import service.GameRoomService;
 
@@ -17,7 +17,7 @@ public class MainController {
     public void run() {
         while (true) {
             RoomDto roomDto = gameRoomController.run();
-            chessGameController.start(roomDto);
+            chessGameController.run(roomDto);
         }
     }
 }
