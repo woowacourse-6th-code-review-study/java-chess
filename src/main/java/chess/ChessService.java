@@ -14,6 +14,7 @@ import chess.dto.TurnType;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ChessService {
@@ -83,6 +84,27 @@ public class ChessService {
         chessDao.saveMoving(movedPiece, start, turnType);
     }
 
+    public Map<Position, PieceDto> findTotalBoard() {
+        return Position.ALL_POSITIONS.stream()
+                .map(this::toEntry)
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+    }
+
+    private Entry<Position, PieceDto> toEntry(Position position) {
+        Optional<Piece> optionalPiece = board.find(position);
+        if (optionalPiece.isEmpty()) {
+            return Map.entry(position, PieceDto.createEmptyPiece());
+        }
+        PieceDto pieceDto = PieceDto.from(optionalPiece.get());
+        return Map.entry(position, pieceDto);
+    }
+
+    private PieceEntity findPieceToEntity(Position position) {
+        return board.find(position)
+                .map(piece -> new PieceEntity(position, piece))
+                .orElse(PieceEntity.createEmptyPiece(position));
+    }
+
     public Map<Team, Double> calculatePiecePoints() {
         Map<Team, Point> status = board.calculateTotalPoints();
         return toDto(status);
@@ -94,27 +116,6 @@ public class ChessService {
                         Entry::getKey,
                         entry -> entry.getValue().toDouble()
                 ));
-    }
-
-    public Map<Position, PieceDto> findTotalBoard() {
-
-        return Position.ALL_POSITIONS.stream()
-                .filter(position -> board.find(position).isPresent())
-                .map(this::toEntry)
-                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
-    }
-
-    private Entry<Position, PieceDto> toEntry(Position position) {
-        Piece piece = board.find(position)
-                .orElseThrow();
-        PieceDto pieceDto = PieceDto.from(piece);
-        return Map.entry(position, pieceDto);
-    }
-
-    private PieceEntity findPieceToEntity(Position position) {
-        return board.find(position)
-                .map(piece -> new PieceEntity(position, piece))
-                .orElse(PieceEntity.createEmptyPiece(position));
     }
 
     public Team findCurrentTeam() {

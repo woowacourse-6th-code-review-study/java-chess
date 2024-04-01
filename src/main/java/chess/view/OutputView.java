@@ -9,7 +9,6 @@ import chess.dto.PieceType;
 import chess.dto.ProgressStatus;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class OutputView {
 
@@ -19,8 +18,8 @@ public class OutputView {
             File.A, File.B, File.C, File.D, File.E, File.F, File.G, File.H);
     private static final List<Team> TEAM_ORDER = List.of(Team.WHITE, Team.BLACK);
     private static final Map<PieceType, String> PIECE_DISPLAY = Map.of(
-            PieceType.KING, "K", PieceType.QUEEN, "Q", PieceType.KNIGHT, "N",
-            PieceType.BISHOP, "B", PieceType.ROOK, "R", PieceType.PAWN, "P");
+            PieceType.KING, "K", PieceType.QUEEN, "Q", PieceType.KNIGHT, "N", PieceType.BISHOP, "B",
+            PieceType.ROOK, "R", PieceType.PAWN, "P", PieceType.EMPTY, ".");
     private static final String EMPTY_SPACE = ".";
     private static final String ERROR_PREFIX = "[ERROR] ";
 
@@ -52,8 +51,7 @@ public class OutputView {
     private void printBoardOneLine(Map<Position, PieceDto> board, Rank rank) {
         for (File file : FILE_ORDER) {
             PieceDto piece = board.get(new Position(file, rank));
-            Optional<PieceDto> optional = Optional.ofNullable(piece);
-            optional.ifPresentOrElse(this::printPiece, this::printEmptySpace);
+            printPiece(piece);
         }
         System.out.println();
     }
@@ -64,10 +62,6 @@ public class OutputView {
             return;
         }
         printWhitePiece(piece.type());
-    }
-
-    private void printEmptySpace() {
-        System.out.print(EMPTY_SPACE);
     }
 
     private void printBlackPiece(PieceType type) {

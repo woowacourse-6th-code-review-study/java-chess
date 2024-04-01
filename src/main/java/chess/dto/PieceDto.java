@@ -10,4 +10,12 @@ public record PieceDto(PieceType type, boolean isBlack) {
 
         return new PieceDto(type, isBlackTeam);
     }
+
+    public static PieceDto createEmptyPiece() {
+        return new PieceDto(PieceType.getEmptyType(), true);
+    }
+
+    public boolean isEmpty() {
+        return type.isEmpty();
+    }
 }
