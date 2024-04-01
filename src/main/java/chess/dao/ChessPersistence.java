@@ -32,6 +32,7 @@ public class ChessPersistence {
         if (isSaveDataExist()) {
             List<Piece> pieces = piecesOnChessBoardDAO.selectAll(connection);
             Team currentTeam = turnDAO.select(connection).get();
+            commitTransaction(connection);
             return new ChessGame(pieces, currentTeam);
         }
         piecesOnChessBoardDAO.deleteAll(connection);
@@ -50,10 +51,8 @@ public class ChessPersistence {
 
     public boolean isSaveDataExist() {
         Connection connection = dbConnectionCache.getConnection();
-        startTransaction(connection);
         boolean turnNotEmpty = turnDAO.isNotEmpty(connection);
         boolean piecesNotEmpty = piecesOnChessBoardDAO.isNotEmpty(connection);
-        commitTransaction(connection);
         return turnNotEmpty && piecesNotEmpty;
     }
 
@@ -83,7 +82,7 @@ public class ChessPersistence {
     private boolean canNotSave(Connection connection) {
         boolean piecesNotEmpty = piecesOnChessBoardDAO.isNotEmpty(connection);
         boolean turnNotEmpty = turnDAO.isNotEmpty(connection);
-        return piecesNotEmpty && turnNotEmpty;
+        return piecesNotEmpty || turnNotEmpty;
     }
 
     public boolean updateChessGame(ChessGame chessGame, MoveCommand moveCommand) {
@@ -108,5 +107,13 @@ public class ChessPersistence {
                 .filter(piece -> piece.isOn(to))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("움직인 말이 없습니다.", null));
+    }
+
+    public void deleteAll() {
+        Connection connection = dbConnectionCache.getConnection();
+        startTransaction(connection);
+        piecesOnChessBoardDAO.deleteAll(connection);
+        turnDAO.delete(connection);
+        commitTransaction(connection);
     }
 }

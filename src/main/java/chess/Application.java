@@ -29,10 +29,10 @@ public class Application {
         if (isEndCommand(startOrEnd)) {
             return;
         }
+        ChessGame chessGame = CHESS_PERSISTENCE_SERVICE.loadChessGame();
         if (!CHESS_PERSISTENCE_SERVICE.isSaveDataExist()) {
             CHESS_PERSISTENCE_SERVICE.saveChessGame(new ChessGame());
         }
-        ChessGame chessGame = CHESS_PERSISTENCE_SERVICE.loadChessGame();
         printPiecesOnChessBoard(chessGame);
 
         playChess(chessGame);
@@ -94,6 +94,9 @@ public class Application {
         PieceMoveResult moveResult = chessGame.move(moveCommand);
         if (!moveResult.equals(FAILURE)) {
             CHESS_PERSISTENCE_SERVICE.updateChessGame(chessGame, moveCommand);
+        }
+        if (moveResult.isEnd()) {
+            CHESS_PERSISTENCE_SERVICE.deleteAll();
         }
         printPiecesOnChessBoard(chessGame);
         printReInputGuideIfNeed(moveResult);
