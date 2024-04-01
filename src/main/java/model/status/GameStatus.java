@@ -1,11 +1,17 @@
 package model.status;
 
-import java.util.List;
-import model.ChessBoard;
+import model.ChessGame;
+import model.command.CommandLine;
 
 public interface GameStatus {
 
-    GameStatus play(List<String> command, ChessBoard chessBoard);
+    GameStatus play(final CommandLine commandLine, final ChessGame chessGame);
 
     boolean isRunning();
+
+    boolean isCheck();
+
+    default boolean isQuit() {
+        return false;
+    }
 }

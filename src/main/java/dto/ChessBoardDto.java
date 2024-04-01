@@ -1,9 +1,7 @@
 package dto;
 
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import model.ChessBoard;
+import model.ChessGame;
 import model.piece.Piece;
 import model.position.File;
 import model.position.Position;
@@ -13,32 +11,43 @@ import view.message.PieceType;
 public class ChessBoardDto {
 
     private static final String FILE_GUIDE_LINE = "abcdefgh";
+    private static final String RANK_GUIDE_LINE_FORM = "  %s";
     private static final String EMPTY_POINT = ".";
-    private static final String RANK_GUIDE_LINE = "  %s";
     private static final int BOARD_SIZE = 8;
 
-    private final String value;
+    private final String board;
+    private final String currentTurn;
 
-    private ChessBoardDto(final String value) {
-        this.value = value;
+    private ChessBoardDto(final String board, final String currentTurn) {
+        this.board = board;
+        this.currentTurn = currentTurn;
     }
 
-    public static ChessBoardDto from(final ChessBoard chessBoard) {
-        final Map<Position, Piece> pieceOfPosition = chessBoard.getBoard();
-        final String result = IntStream.range(0, BOARD_SIZE)
-                .mapToObj(Rank::from)
-                .map(rank -> IntStream.range(0, BOARD_SIZE)
-                        .mapToObj(File::from)
-                        .map(file -> convertToString(pieceOfPosition, file, rank))
-                        .collect(Collectors.joining()))
-                .collect(Collectors.joining(System.lineSeparator()))
-                .concat(String.format("%n%n%s%n", FILE_GUIDE_LINE));
-        return new ChessBoardDto(result);
+    public static ChessBoardDto from(final ChessGame chessGame) {
+        final Map<Position, Piece> pieceOfPosition = chessGame.getPieces();
+
+        final StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            stringBuilder.append(generateBoardLine(pieceOfPosition, Rank.from(i)));
+            stringBuilder.append(System.lineSeparator());
+        }
+        stringBuilder.append(String.format("%n%s%n", FILE_GUIDE_LINE));
+
+        return new ChessBoardDto(stringBuilder.toString(), chessGame.getCamp().toString());
     }
 
-    private static String convertToString(final Map<Position, Piece> board, final File file, final Rank rank) {
-        final Position position = new Position(file, rank);
-        final Piece piece = board.get(position);
+    private static String generateBoardLine(final Map<Position, Piece> pieceOfPosition, final Rank rank) {
+        final StringBuilder stringBuilder = new StringBuilder();
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            final File file = File.from(j);
+            final Position position = new Position(file, rank);
+            final Piece piece = pieceOfPosition.get(position);
+            stringBuilder.append(convertToString(piece, file, rank));
+        }
+        return stringBuilder.toString();
+    }
+
+    private static String convertToString(final Piece piece, final File file, final Rank rank) {
         if (piece != null) {
             return PieceType.from(piece).getValue() + paddedRankGuidLine(file, rank);
         }
@@ -47,12 +56,16 @@ public class ChessBoardDto {
 
     private static String paddedRankGuidLine(final File file, final Rank rank) {
         if (file.isLast()) {
-            return String.format(RANK_GUIDE_LINE, rank.getValue());
+            return String.format(RANK_GUIDE_LINE_FORM, rank.getValue());
         }
         return "";
     }
 
-    public String getValue() {
-        return value;
+    public String getBoard() {
+        return board;
+    }
+
+    public String getCurrentTurn() {
+        return currentTurn;
     }
 }

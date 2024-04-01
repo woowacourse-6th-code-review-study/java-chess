@@ -31,8 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import exception.InvalidMovingException;
 import java.util.Set;
 import java.util.stream.Stream;
-import model.Camp;
-import model.ChessBoard;
+import model.ChessGame;
 import model.position.Moving;
 import model.position.Position;
 import org.junit.jupiter.api.DisplayName;
@@ -46,9 +45,7 @@ class PawnTest {
     @DisplayName("이동할 수 없는 경로면 예외가 발생한다.")
     @ParameterizedTest
     @MethodSource("invalidMovingParameterProvider")
-    void invalidMoving(final Camp camp, final Moving moving) {
-        final Pawn pawn = new Pawn(camp);
-
+    void invalidMoving(final Pawn pawn, final Moving moving) {
         assertAll(
                 () -> assertThat(pawn.canMovable(moving)).isFalse(),
                 () -> assertThatThrownBy(() -> pawn.getMoveRoute(moving))
@@ -58,18 +55,16 @@ class PawnTest {
 
     static Stream<Arguments> invalidMovingParameterProvider() {
         return Stream.of(
-                Arguments.of(Camp.BLACK, new Moving(A6, A4)),
-                Arguments.of(Camp.BLACK, new Moving(A7, A4)),
-                Arguments.of(Camp.WHITE, new Moving(A8, A7))
+                Arguments.of(new BlackPawn(), new Moving(A6, A4)),
+                Arguments.of(new BlackPawn(), new Moving(A7, A4)),
+                Arguments.of(new WhitePawn(), new Moving(A8, A7))
         );
     }
 
     @DisplayName("이동 경로를 반환한다. 출발지와 도착지는 포함하지 않는다.")
     @ParameterizedTest
     @MethodSource("checkRouteParameterProvider")
-    void checkRoute(final Camp camp, final Moving moving, final Set<Position> expected) {
-        final Pawn pawn = new Pawn(camp);
-
+    void checkRoute(final Pawn pawn, final Moving moving, final Set<Position> expected) {
         assertAll(
                 () -> assertThat(pawn.canMovable(moving)).isTrue(),
                 () -> assertThat(pawn.getMoveRoute(moving)).isEqualTo(expected)
@@ -79,10 +74,10 @@ class PawnTest {
 
     static Stream<Arguments> checkRouteParameterProvider() {
         return Stream.of(
-                Arguments.of(Camp.BLACK, new Moving(A7, A5), Set.of(A6)),
-                Arguments.of(Camp.BLACK, new Moving(A6, A5), Set.of()),
-                Arguments.of(Camp.WHITE, new Moving(B2, B4), Set.of(B3)),
-                Arguments.of(Camp.WHITE, new Moving(C2, C3), Set.of())
+                Arguments.of(new BlackPawn(), new Moving(A7, A5), Set.of(A6)),
+                Arguments.of(new BlackPawn(), new Moving(A6, A5), Set.of()),
+                Arguments.of(new WhitePawn(), new Moving(B2, B4), Set.of(B3)),
+                Arguments.of(new WhitePawn(), new Moving(C2, C3), Set.of())
         );
     }
 
@@ -90,7 +85,7 @@ class PawnTest {
     @DisplayName("앞에 기물이 있을때 전진이 불가하다.")
     void whenPieceInFrontCanNotMoveForward() {
         //given
-        final ChessBoard chessBoard = ChessBoard.setupStartingPosition();
+        final ChessGame chessGame = ChessGame.setupStartingPosition();
 
         /*
         RNBQKBNR  8
@@ -106,13 +101,13 @@ class PawnTest {
          */
 
         //when
-        chessBoard.move(new Moving(A2, A4));
-        chessBoard.move(new Moving(A7, A5));
+        chessGame.move(new Moving(A2, A4));
+        chessGame.move(new Moving(A7, A5));
 
         final Moving forwadMoving = new Moving(A4, A5);
 
         //then
-        assertThatThrownBy(() -> chessBoard.move(forwadMoving))
+        assertThatThrownBy(() -> chessGame.move(forwadMoving))
                 .isInstanceOf(InvalidMovingException.class);
     }
 
@@ -120,7 +115,7 @@ class PawnTest {
     @DisplayName("대각선에 기물이 있을 때 대각선 이동이 가능하다. WHITE (위 오른쪽)")
     void whenPieceInDiagonalCanMove1() {
         //given
-        final ChessBoard chessBoard = ChessBoard.setupStartingPosition();
+        final ChessGame chessGame = ChessGame.setupStartingPosition();
 
         /*
         RNBQKBNR  8
@@ -136,11 +131,11 @@ class PawnTest {
          */
 
         //when
-        chessBoard.move(new Moving(A2, A4));
-        chessBoard.move(new Moving(B7, B5));
+        chessGame.move(new Moving(A2, A4));
+        chessGame.move(new Moving(B7, B5));
 
         //then
-        assertThatCode(() -> chessBoard.move(new Moving(A4, B5)))
+        assertThatCode(() -> chessGame.move(new Moving(A4, B5)))
                 .doesNotThrowAnyException();
     }
 
@@ -148,7 +143,7 @@ class PawnTest {
     @DisplayName("대각선에 기물이 있다면 이동이 가능하다. BLACK (아래 오른쪽)")
     void whenPieceInDiagonalCanMove2() {
         //given
-        final ChessBoard chessBoard = ChessBoard.setupStartingPosition();
+        final ChessGame chessGame = ChessGame.setupStartingPosition();
 
         /*
         RNBQKBNR  8
@@ -164,12 +159,12 @@ class PawnTest {
          */
 
         //when
-        chessBoard.move(new Moving(C2, C4));
-        chessBoard.move(new Moving(B7, B5));
-        chessBoard.move(new Moving(B2, B3));
+        chessGame.move(new Moving(C2, C4));
+        chessGame.move(new Moving(B7, B5));
+        chessGame.move(new Moving(B2, B3));
 
         //then
-        assertThatCode(() -> chessBoard.move(new Moving(B5, C4)))
+        assertThatCode(() -> chessGame.move(new Moving(B5, C4)))
                 .doesNotThrowAnyException();
     }
 
@@ -177,7 +172,7 @@ class PawnTest {
     @DisplayName("대각선에 기물이 없다면 대각선 이동이 불가하다.")
     void whenPieceNotInDiagonalCanNotMove() {
         //given
-        final ChessBoard chessBoard = ChessBoard.setupStartingPosition();
+        final ChessGame chessGame = ChessGame.setupStartingPosition();
 
         /*
         RNBQKB.R  8
@@ -193,13 +188,13 @@ class PawnTest {
          */
 
         //when
-        chessBoard.move(new Moving(A2, A4));
-        chessBoard.move(new Moving(G8, H6));
+        chessGame.move(new Moving(A2, A4));
+        chessGame.move(new Moving(G8, H6));
 
         final Moving diagonalMoving = new Moving(A4, B5);
 
         //then
-        assertThatThrownBy(() -> chessBoard.move(diagonalMoving))
+        assertThatThrownBy(() -> chessGame.move(diagonalMoving))
                 .isInstanceOf(InvalidMovingException.class);
     }
 
@@ -207,16 +202,16 @@ class PawnTest {
     @DisplayName("폰은 후진할 수 없다. WHITE")
     void failToMoveBackWhitePawn() {
         //given
-        final ChessBoard chessBoard = ChessBoard.setupStartingPosition();
+        final ChessGame chessGame = ChessGame.setupStartingPosition();
 
         //when
-        chessBoard.move(new Moving(H2, H4));
-        chessBoard.move(new Moving(D7, D5));
+        chessGame.move(new Moving(H2, H4));
+        chessGame.move(new Moving(D7, D5));
 
         final Moving whiteBackMoving = new Moving(H4, H3);
 
         //then
-        assertThatThrownBy(() -> chessBoard.move(whiteBackMoving))
+        assertThatThrownBy(() -> chessGame.move(whiteBackMoving))
                 .isInstanceOf(InvalidMovingException.class);
     }
 
@@ -224,17 +219,17 @@ class PawnTest {
     @DisplayName("폰은 후진할 수 없다. BLACK")
     void failToMoveBackBlackPawn() {
         //given
-        final ChessBoard chessBoard = ChessBoard.setupStartingPosition();
+        final ChessGame chessGame = ChessGame.setupStartingPosition();
 
         //when
-        chessBoard.move(new Moving(H2, H4));
-        chessBoard.move(new Moving(D7, D5));
-        chessBoard.move(new Moving(H4, H5));
+        chessGame.move(new Moving(H2, H4));
+        chessGame.move(new Moving(D7, D5));
+        chessGame.move(new Moving(H4, H5));
 
         final Moving blackBackMoving = new Moving(D5, D6);
 
         //then
-        assertThatThrownBy(() -> chessBoard.move(blackBackMoving))
+        assertThatThrownBy(() -> chessGame.move(blackBackMoving))
                 .isInstanceOf(InvalidMovingException.class);
     }
 }
