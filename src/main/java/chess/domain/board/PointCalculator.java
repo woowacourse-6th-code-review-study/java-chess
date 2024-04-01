@@ -1,4 +1,4 @@
-package chess.domain.game;
+package chess.domain.board;
 
 import chess.domain.piece.Piece;
 import chess.domain.piece.PieceType;
@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class PointCalculator {
-    public static double calculatePoint(Team team, List<Piece> piecesOnBoard) {
+class PointCalculator {
+    static double calculatePoint(Team team, List<Piece> piecesOnBoard) {
         piecesOnBoard = Collections.unmodifiableList(piecesOnBoard);
         double totalPoint = calculateWithOutSameColumnPawn(team, piecesOnBoard);
         Map<Integer, List<Piece>> pawnsAtSameColumn = pawnGroupingByColumn(team, piecesOnBoard);
