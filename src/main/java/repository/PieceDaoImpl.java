@@ -10,7 +10,7 @@ import java.util.List;
 public class PieceDaoImpl implements PieceDao {
     private static final String TABLE_NAME = "pieces";
 
-    private final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
     private final RowMapper<PieceDto> rowMapper = (resultSet) -> new PieceDto(
             resultSet.getString("board_file"),
             resultSet.getString("board_rank"),
@@ -18,12 +18,7 @@ public class PieceDaoImpl implements PieceDao {
             resultSet.getString("type")
     );
 
-    PieceDaoImpl() {
-        this(new JdbcTemplate());
-    }
-
-    public PieceDaoImpl(final JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public PieceDaoImpl() {
     }
 
     public void add(final RoomDto room, final PieceDto piece) {

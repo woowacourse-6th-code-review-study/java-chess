@@ -1,9 +1,7 @@
 package service;
 
-import db.JdbcTemplate;
 import dto.RoomDto;
 import repository.RoomDao;
-import repository.RoomDaoImpl;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,13 +9,8 @@ import java.util.Optional;
 public class GameRoomService {
     private final RoomDao roomDao;
 
-    GameRoomService(final RoomDao roomDao) {
+    public GameRoomService(final RoomDao roomDao) {
         this.roomDao = roomDao;
-    }
-
-    public GameRoomService() {
-        final JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        this.roomDao = new RoomDaoImpl(jdbcTemplate);
     }
 
     public List<RoomDto> loadActiveRoomAll() {

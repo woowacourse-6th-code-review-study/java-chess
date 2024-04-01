@@ -10,15 +10,11 @@ import java.util.Optional;
 public class GameStateDaoImpl implements GameStateDao {
     private static final String TABLE_NAME = "game_states";
 
-    private final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
     private final RowMapper<StateDto> rowMapper = (resultSet) -> new StateDto(
             resultSet.getString("state"),
             resultSet.getInt("game_id")
     );
-
-    public GameStateDaoImpl(final JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     public void add(final StateDto stateDto) {
         final String query = "INSERT INTO " + TABLE_NAME + " VALUES (?, ?)";

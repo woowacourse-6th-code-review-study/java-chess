@@ -11,14 +11,10 @@ public class RoomDaoImpl implements RoomDao {
     private static final String TABLE_NAME = "rooms";
     private static final String GAME_STATUES_TABLE_NAME = "game_states";
 
-    private final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
     private final RowMapper<RoomDto> rowMapper = (resultSet) -> new RoomDto(
             resultSet.getInt("room_id")
     );
-
-    public RoomDaoImpl(final JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     public void add(final RoomDto roomDto) {
         final String insertQuery = "INSERT INTO " + TABLE_NAME + " VALUES (?)";
