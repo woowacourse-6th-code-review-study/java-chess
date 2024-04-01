@@ -13,5 +13,5 @@ public interface RoomDao {
 
     Optional<RoomDto> find(String roomId);
 
-    List<RoomDto> findActiveRoomAll(final UserDto user);
+    List<RoomDto> findActiveRoomAll(UserDto user);
 }
