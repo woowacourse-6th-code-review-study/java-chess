@@ -43,7 +43,7 @@ public class ChessGame {
     }
 
     private void showCurrentTeam() {
-        Team turn = chessService.findCurrentTeam();
+        Team turn = chessService.findCurrentTurn();
         outputView.printCurrentTurn(turn);
     }
 

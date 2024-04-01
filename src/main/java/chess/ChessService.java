@@ -56,7 +56,7 @@ public class ChessService {
 
     private void saveBoard() {
         List<PieceEntity> entities = findEntities();
-        TurnType turn = TurnType.from(board.getTurn());
+        TurnType turn = TurnType.from(board.findCurrentTurn());
         chessDao.saveBoard(entities, turn);
     }
 
@@ -79,7 +79,7 @@ public class ChessService {
 
     private void saveMoving(Position start, Position end) {
         PieceEntity movedPiece = findPieceToEntity(end);
-        TurnType turnType = TurnType.from(board.getTurn());
+        TurnType turnType = TurnType.from(board.findCurrentTurn());
         chessDao.saveMoving(movedPiece, start, turnType);
     }
 
@@ -115,7 +115,7 @@ public class ChessService {
                 ));
     }
 
-    public Team findCurrentTeam() {
-        return board.getTurn();
+    public Team findCurrentTurn() {
+        return board.findCurrentTurn();
     }
 }

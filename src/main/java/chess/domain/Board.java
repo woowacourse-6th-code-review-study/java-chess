@@ -148,7 +148,7 @@ public class Board {
                 .count() >= 2;
     }
 
-    public Team getTurn() {
+    public Team findCurrentTurn() {
         return turn;
     }
 }
