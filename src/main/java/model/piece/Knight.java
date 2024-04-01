@@ -6,7 +6,6 @@ import java.util.Set;
 import model.Camp;
 import model.position.Moving;
 import model.position.Position;
-import view.message.PieceType;
 
 public class Knight extends Piece {
 
@@ -19,7 +18,7 @@ public class Knight extends Piece {
         if (canMovable(moving)) {
             return Set.of();
         }
-        throw new InvalidMovingException(ErrorCode.INVALID_MOVEMENT_RULE);
+        throw new InvalidMovingException(ErrorCode.INVALID_KNIGHT_MOVEMENT);
     }
 
     @Override
@@ -28,10 +27,5 @@ public class Knight extends Piece {
             return false;
         }
         return moving.isShapeCapitalL();
-    }
-
-    @Override
-    public String toString() {
-        return PieceType.from(this).getValue();
     }
 }

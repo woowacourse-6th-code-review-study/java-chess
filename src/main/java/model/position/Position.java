@@ -60,4 +60,5 @@ public class Position {
     public String toString() {
         return file.getValue() + rank.getValue();
     }
+
 }

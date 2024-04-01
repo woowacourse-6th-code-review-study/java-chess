@@ -6,7 +6,6 @@ import java.util.Set;
 import model.Camp;
 import model.position.Moving;
 import model.position.Position;
-import view.message.PieceType;
 
 public class Bishop extends Piece {
 
@@ -19,7 +18,7 @@ public class Bishop extends Piece {
         if (canMovable(moving)) {
             return moving.route();
         }
-        throw new InvalidMovingException(ErrorCode.INVALID_MOVEMENT_RULE);
+        throw new InvalidMovingException(ErrorCode.INVALID_BISHOP_MOVEMENT);
     }
 
     @Override
@@ -28,10 +27,5 @@ public class Bishop extends Piece {
             return false;
         }
         return moving.isDiagonal();
-    }
-
-    @Override
-    public String toString() {
-        return PieceType.from(this).getValue();
     }
 }

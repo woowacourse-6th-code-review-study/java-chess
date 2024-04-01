@@ -8,7 +8,7 @@ import model.position.Position;
 
 public abstract class Piece {
 
-    protected final Camp camp;
+    private final Camp camp;
 
     protected Piece(final Camp camp) {
         this.camp = camp;
