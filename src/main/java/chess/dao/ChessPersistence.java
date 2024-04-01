@@ -93,14 +93,14 @@ public class ChessPersistence {
         Position to = positions.get(1);
         startTransaction(connection);
         boolean deleteFromSuccess = piecesOnChessBoardDAO.delete(from, connection);
-        boolean deleteToSuccess = piecesOnChessBoardDAO.delete(to, connection);
+        piecesOnChessBoardDAO.delete(to, connection);
         Piece movedPiece = findMovedPiece(chessGame, to);
         boolean saveMovedPieceSuccess = piecesOnChessBoardDAO.save(movedPiece, connection);
         Team team = turnDAO.select(connection)
                 .orElseThrow(() -> new DBException("데이터가 잘못되었습니다.", null));
         boolean updateTurnSuccess = turnDAO.update(team, team.otherTeam(), connection);
         commitTransaction(connection);
-        return deleteFromSuccess && deleteToSuccess && saveMovedPieceSuccess && updateTurnSuccess;
+        return deleteFromSuccess && saveMovedPieceSuccess && updateTurnSuccess;
     }
 
     private Piece findMovedPiece(ChessGame chessGame, Position to) {

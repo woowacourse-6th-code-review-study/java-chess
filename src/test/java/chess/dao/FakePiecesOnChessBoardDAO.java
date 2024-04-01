@@ -1,7 +1,14 @@
 package chess.dao;
 
 import chess.domain.Position;
+import chess.domain.piece.Bishop;
+import chess.domain.piece.King;
+import chess.domain.piece.Knight;
+import chess.domain.piece.Pawn;
 import chess.domain.piece.Piece;
+import chess.domain.piece.Queen;
+import chess.domain.piece.Rook;
+import chess.domain.piece.Team;
 import java.sql.Connection;
 import java.util.HashSet;
 import java.util.List;
@@ -12,7 +19,22 @@ public class FakePiecesOnChessBoardDAO implements PiecesOnChessBoardDAO {
 
     @Override
     public boolean save(Piece piece, Connection connection) {
-        return pieces.add(piece);
+        return pieces.add(copy(piece));
+    }
+
+    private Piece copy(Piece piece) {
+        int row = piece.getRow();
+        int column = piece.getColumn();
+        Position position = Position.getInstance(row, column);
+        Team team = piece.getTeam();
+        return switch (piece.getPieceType()) {
+            case ROOK -> new Rook(position, team);
+            case BISHOP -> new Bishop(position, team);
+            case KING -> new King(position, team);
+            case PAWN -> new Pawn(position, team);
+            case KNIGHT -> new Knight(position, team);
+            case QUEEN -> new Queen(position, team);
+        };
     }
 
     @Override
