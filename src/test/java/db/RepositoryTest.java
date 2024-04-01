@@ -43,7 +43,6 @@ class RepositoryTest {
     void createNewChessGame() {
         final ChessGame game = repository.findGame();
         final ChessGame expected = ChessGame.setupStartingPosition();
-        // TODO 이 때 chessgame객체 equal 재정의 안하고 이렇게 꺼내서 비교하는 방법 괜춘?
         assertAll(
                 () -> assertThat(game.getPieces()).isEqualTo(expected.getPieces()),
                 () -> assertThat(game.getCamp()).isEqualTo(expected.getCamp()),
