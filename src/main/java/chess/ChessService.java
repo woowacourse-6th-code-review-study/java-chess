@@ -14,7 +14,6 @@ import chess.dto.TurnType;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ChessService {
@@ -86,16 +85,14 @@ public class ChessService {
 
     public Map<Position, PieceDto> findTotalBoard() {
         return Position.ALL_POSITIONS.stream()
-                .map(this::toEntry)
+                .map(this::toResultEntry)
                 .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
-    private Entry<Position, PieceDto> toEntry(Position position) {
-        Optional<Piece> optionalPiece = board.find(position);
-        if (optionalPiece.isEmpty()) {
-            return Map.entry(position, PieceDto.createEmptyPiece());
-        }
-        PieceDto pieceDto = PieceDto.from(optionalPiece.get());
+    private Entry<Position, PieceDto> toResultEntry(Position position) {
+        PieceDto pieceDto = board.find(position)
+                .map(PieceDto::from)
+                .orElse(PieceDto.createEmptyPiece());
         return Map.entry(position, pieceDto);
     }
 
