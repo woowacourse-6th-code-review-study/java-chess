@@ -44,7 +44,7 @@ public class MysqlChessGameRepository implements ChessGameRepository {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            String turn = resultSet.getString(1);
+            String turn = resultSet.getString("turn");
             return STRING_TO_TURN.get(turn);
         } catch (SQLException e) {
             throw new IllegalStateException(e);

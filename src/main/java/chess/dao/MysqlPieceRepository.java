@@ -66,10 +66,10 @@ public class MysqlPieceRepository implements PieceRepository {
     }
 
     private PieceEntity toPieceEntity(ResultSet resultSet) throws SQLException {
-        String fileString = resultSet.getString(1);
-        String rankString = resultSet.getString(2);
-        String pieceString = resultSet.getString(3);
-        String teamString = resultSet.getString(4);
+        String fileString = resultSet.getString("board_file");
+        String rankString = resultSet.getString("board_rank");
+        String pieceString = resultSet.getString("type");
+        String teamString = resultSet.getString("team");
 
         File file = STRING_TO_FILE.get(fileString);
         Rank rank = STRING_TO_RANK.get(rankString);
