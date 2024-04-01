@@ -1,7 +1,7 @@
 package service;
 
 import dto.RoomDto;
-import repository.RoomDao;
+import database.dao.RoomDao;
 
 import java.util.List;
 import java.util.Optional;

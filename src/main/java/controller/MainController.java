@@ -3,9 +3,9 @@ package controller;
 import controller.game.ChessGameController;
 import controller.room.GameRoomController;
 import dto.RoomDto;
-import repository.GameStateDaoImpl;
-import repository.PieceDaoImpl;
-import repository.RoomDaoImpl;
+import database.dao.GameStateDaoImpl;
+import database.dao.PieceDaoImpl;
+import database.dao.RoomDaoImpl;
 import service.ChessGameService;
 import service.GameRoomService;
 

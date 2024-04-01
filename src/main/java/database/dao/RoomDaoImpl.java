@@ -1,7 +1,7 @@
-package repository;
+package database.dao;
 
-import db.JdbcTemplate;
-import db.RowMapper;
+import database.JdbcTemplate;
+import database.RowMapper;
 import dto.RoomDto;
 
 import java.util.List;

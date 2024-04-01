@@ -5,8 +5,8 @@ import domain.board.ChessBoardFactory;
 import dto.PieceDto;
 import dto.RoomDto;
 import dto.StateDto;
-import repository.GameStateDao;
-import repository.PieceDao;
+import database.dao.GameStateDao;
+import database.dao.PieceDao;
 
 import java.util.List;
 import java.util.NoSuchElementException;

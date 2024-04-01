@@ -1,5 +1,6 @@
 package repository;
 
+import database.dao.GameStateDao;
 import dto.StateDto;
 
 import java.util.HashMap;

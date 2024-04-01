@@ -1,4 +1,4 @@
-package repository;
+package database.dao;
 
 import dto.StateDto;
 

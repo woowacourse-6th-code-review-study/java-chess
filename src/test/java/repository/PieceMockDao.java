@@ -1,5 +1,6 @@
 package repository;
 
+import database.dao.PieceDao;
 import dto.PieceDto;
 import dto.RoomDto;
 

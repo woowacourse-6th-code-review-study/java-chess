@@ -15,9 +15,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-import repository.GameStateDao;
+import database.dao.GameStateDao;
 import repository.GameStateMockDao;
-import repository.PieceDao;
+import database.dao.PieceDao;
 import repository.PieceMockDao;
 
 import java.util.Map;

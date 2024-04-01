@@ -1,5 +1,6 @@
 package db;
 
+import database.ConnectionManager;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;

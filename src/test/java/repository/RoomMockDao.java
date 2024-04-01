@@ -1,5 +1,6 @@
 package repository;
 
+import database.dao.RoomDao;
 import dto.RoomDto;
 import dto.StateDto;
 
