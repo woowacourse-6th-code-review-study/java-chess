@@ -67,12 +67,19 @@ public class Application {
         } while (!isEndCommand(endOrMoveOrStatus) && !pieceMoveResult.isEnd());
     }
 
-    private static PieceMoveResult playGameOrPrintStatus(Command moveOrStatus, ChessGame chessGame) {
-        if (moveOrStatus.equals(StatusCommand.STATUS_COMMAND)) {
+    private static PieceMoveResult playGameOrPrintStatus(Command endOrMoveOrStatus, ChessGame chessGame) {
+        if (isStatusCommand(endOrMoveOrStatus)) {
             printStatus(chessGame);
             return FAILURE;
         }
-        return playGame((MoveCommand) moveOrStatus, chessGame);
+        if (isEndCommand(endOrMoveOrStatus)) {
+            return FAILURE;
+        }
+        return playGame((MoveCommand) endOrMoveOrStatus, chessGame);
+    }
+
+    private static boolean isStatusCommand(Command endOrMoveOrStatus) {
+        return endOrMoveOrStatus.equals(StatusCommand.STATUS_COMMAND);
     }
 
     private static void printStatus(ChessGame chessGame) {
