@@ -11,15 +11,6 @@ class PieceTest {
 
     @ParameterizedTest
     @CsvSource({"BLACK, true", "WHITE, false"})
-    @DisplayName("해당 팀이 검정 팀인지 확인한다.")
-    void isBlackTeamTest(Team team, boolean expected) {
-        Piece piece = new Pawn(team);
-
-        assertThat(piece.isBlackTeam()).isEqualTo(expected);
-    }
-
-    @ParameterizedTest
-    @CsvSource({"BLACK, true", "WHITE, false"})
     @DisplayName("기물이 해당 팀인지 확인한다.")
     void isSameTeamTest_whenOnePiece(Team pieceTeam, boolean expected) {
         Piece piece = new Pawn(pieceTeam);

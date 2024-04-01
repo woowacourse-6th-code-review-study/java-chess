@@ -30,4 +30,8 @@ public enum TeamType {
     public Team getTeam() {
         return team;
     }
+
+    public boolean isBlackTeam() {
+        return this == BLACK;
+    }
 }

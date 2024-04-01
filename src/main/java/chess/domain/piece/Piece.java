@@ -24,10 +24,6 @@ public abstract sealed class Piece permits King, Queen, Rook, Bishop, Knight, Pa
                 .orElseThrow(() -> new IllegalArgumentException("불가능한 경로입니다."));
     }
 
-    public final boolean isBlackTeam() {
-        return team.isBlack();
-    }
-
     public final boolean isSameTeam(Piece other) {
         return isSameTeam(other.team);
     }

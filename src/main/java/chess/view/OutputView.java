@@ -58,10 +58,10 @@ public class OutputView {
 
     private void printPiece(PieceDto piece) {
         if (piece.isBlack()) {
-            printBlackPiece(piece.type());
+            printBlackPiece(piece.pieceType());
             return;
         }
-        printWhitePiece(piece.type());
+        printWhitePiece(piece.pieceType());
     }
 
     private void printBlackPiece(PieceType type) {
