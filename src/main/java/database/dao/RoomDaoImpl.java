@@ -3,6 +3,7 @@ package database.dao;
 import database.JdbcTemplate;
 import database.RowMapper;
 import dto.RoomDto;
+import dto.UserDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,23 +17,17 @@ public class RoomDaoImpl implements RoomDao {
             resultSet.getInt("room_id")
     );
 
-    public void add(final RoomDto roomDto) {
-        final String insertQuery = "INSERT INTO " + TABLE_NAME + " VALUES (?)";
-        jdbcTemplate.execute(insertQuery, "" + roomDto.room_id());
+    public void add(final UserDto userDto, final RoomDto roomDto) {
+        final String insertQuery = "INSERT INTO " + TABLE_NAME + " VALUES (?, ?)";
+        jdbcTemplate.execute(insertQuery, userDto.username(), "" + roomDto.room_id());
     }
 
-    public Optional<RoomDto> addNewRoom() {
+    public Optional<RoomDto> addNewRoom(final UserDto userDto) {
         final String selectQuery = "SELECT MAX(room_id) AS room_id FROM " + TABLE_NAME;
         List<RoomDto> roomDtos = jdbcTemplate.executeAndGet(selectQuery, rowMapper);
-        if (roomDtos.isEmpty()) {
-            final String insertQuery = "INSERT INTO " + TABLE_NAME + " VALUES (1)";
-            int newRoomId = roomDtos.get(0).room_id() + 1;
-            jdbcTemplate.execute(insertQuery, String.valueOf(newRoomId));
-            return Optional.of(new RoomDto(newRoomId));
-        }
-        final String insertQuery = "INSERT INTO " + TABLE_NAME + " VALUES (?)";
+        final String insertQuery = "INSERT INTO " + TABLE_NAME + " VALUES (?, ?)";
         int newRoomId = roomDtos.get(0).room_id() + 1;
-        jdbcTemplate.execute(insertQuery, String.valueOf(newRoomId));
+        jdbcTemplate.execute(insertQuery, userDto.username(), "" + newRoomId);
         return Optional.of(new RoomDto(newRoomId));
     }
 
@@ -45,9 +40,9 @@ public class RoomDaoImpl implements RoomDao {
         return Optional.of(roomDtos.get(0));
     }
 
-    public List<RoomDto> findActiveRoomAll() {
+    public List<RoomDto> findActiveRoomAll(final UserDto user) {
         final String query = "SELECT * FROM " + TABLE_NAME + " AS r JOIN "
-                + GAME_STATUES_TABLE_NAME + " AS s ON r.room_id = s.game_id WHERE s.state != 'GAMEOVER'";
-        return jdbcTemplate.executeAndGet(query, rowMapper);
+                + GAME_STATUES_TABLE_NAME + " AS s ON r.room_id = s.game_id WHERE r.user = ? and s.state != 'GAMEOVER'";
+        return jdbcTemplate.executeAndGet(query, rowMapper, user.username());
     }
 }

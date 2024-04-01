@@ -36,7 +36,7 @@ class GameRoomServiceTest {
         RoomDao roomDao = new RoomMockDao(roomRepository, turnRepository);
         GameRoomService gameRoomService = new GameRoomService(roomDao);
 
-        assertThat(gameRoomService.loadActiveRoomAll())
+        assertThat(gameRoomService.loadActiveRoomAll(user))
                 .containsExactlyInAnyOrder(room2, room3);
     }
 

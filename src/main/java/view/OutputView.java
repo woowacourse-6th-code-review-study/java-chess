@@ -41,15 +41,15 @@ public class OutputView {
         printWithLineSeparator(messageResolver.resolveEnteringRoomMessage(roomDto));
     }
 
-    private static void printWithLineSeparator(String message) {
-        System.out.println(message + LINE_SEPARATOR);
-    }
-
     public static void printUserNameInputMessage() {
-        System.out.println(messageResolver.resolveUserNameInputMessage());
+        printWithLineSeparator(messageResolver.resolveUserNameInputMessage());
     }
 
     public static void printUserNameMessage(final UserDto user) {
-        System.out.println(messageResolver.resolveUserNameMessage(user));
+        printWithLineSeparator(messageResolver.resolveUserNameMessage(user));
+    }
+
+    private static void printWithLineSeparator(String message) {
+        System.out.println(LINE_SEPARATOR + message);
     }
 }

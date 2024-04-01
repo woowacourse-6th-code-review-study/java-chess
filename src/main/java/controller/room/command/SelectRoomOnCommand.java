@@ -1,6 +1,7 @@
 package controller.room.command;
 
 import dto.RoomDto;
+import dto.UserDto;
 import service.GameRoomService;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public class SelectRoomOnCommand implements Command {
     }
 
     @Override
-    public RoomDto execute(final GameRoomService gameRoomService) {
+    public RoomDto execute(final GameRoomService gameRoomService, UserDto user) {
         return gameRoomService.findRoomById(roomId);
     }
 }

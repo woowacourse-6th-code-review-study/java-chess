@@ -2,6 +2,7 @@ package service;
 
 import dto.RoomDto;
 import database.dao.RoomDao;
+import dto.UserDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,12 +14,12 @@ public class GameRoomService {
         this.roomDao = roomDao;
     }
 
-    public List<RoomDto> loadActiveRoomAll() {
-        return roomDao.findActiveRoomAll();
+    public List<RoomDto> loadActiveRoomAll(final UserDto user) {
+        return roomDao.findActiveRoomAll(user);
     }
 
-    public RoomDto createNewRoom() {
-        Optional<RoomDto> room = roomDao.addNewRoom();
+    public RoomDto createNewRoom(final UserDto user) {
+        Optional<RoomDto> room = roomDao.addNewRoom(user);
         return room.orElseThrow(IllegalStateException::new);
     }
 

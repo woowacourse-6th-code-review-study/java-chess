@@ -1,6 +1,7 @@
 package controller.room.command;
 
 import dto.RoomDto;
+import dto.UserDto;
 import service.GameRoomService;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class NewRoomOnCommand implements Command {
     }
 
     @Override
-    public RoomDto execute(final GameRoomService gameRoomService) {
-        return gameRoomService.createNewRoom();
+    public RoomDto execute(final GameRoomService gameRoomService, final UserDto user) {
+        return gameRoomService.createNewRoom(user);
     }
 }

@@ -1,7 +1,15 @@
+create table users
+(
+    username varchar(16),
+    primary key (username)
+);
+
 create table rooms
 (
+    user varchar(16),
     room_id int,
-    primary key (room_id)
+    primary key (room_id),
+    foreign key (user) references users (username)
 );
 
 create table game_states
