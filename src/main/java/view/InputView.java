@@ -4,6 +4,7 @@ import dto.RoomDto;
 import view.command.CommandInput;
 import view.command.GameCommandType;
 import view.command.RoomCommandType;
+import view.command.UserCommandType;
 
 import java.util.List;
 import java.util.Scanner;
@@ -25,6 +26,15 @@ public class InputView {
         try {
             CommandInput input = readCommandInput();
             return RoomCommandType.getCommand(input, rooms);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(WRONG_COMMAND_ERROR_MESSAGE);
+        }
+    }
+
+    public static controller.user.command.Command readUserCommand() {
+        try {
+            CommandInput input = readCommandInput();
+            return UserCommandType.getCommand(input);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(WRONG_COMMAND_ERROR_MESSAGE);
         }

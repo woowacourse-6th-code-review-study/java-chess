@@ -8,6 +8,7 @@ import domain.position.File;
 import domain.position.Position;
 import domain.position.Rank;
 import dto.RoomDto;
+import dto.UserDto;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +21,7 @@ import static view.command.GameCommandType.MOVE;
 import static view.command.GameCommandType.START;
 import static view.command.RoomCommandType.NEW_ROOM;
 import static view.command.RoomCommandType.ROOM_SELECTION;
+import static view.command.UserCommandType.FIND_USER;
 
 public class MessageResolver {
     private static final String LINE_SEPARATOR = System.lineSeparator();
@@ -110,5 +112,13 @@ public class MessageResolver {
 
     public String resolveEnteringRoomMessage(final RoomDto roomDto) {
         return roomDto.room_id() + "번 방에 입장합니다.";
+    }
+
+    public String resolveUserNameInputMessage() {
+        return String.format("> 사용자명을 입력해 주세요 : %s 사용자명 - 예 %s mangcho", FIND_USER.message(), FIND_USER.message());
+    }
+
+    public String resolveUserNameMessage(final UserDto user) {
+        return String.format("%s님 반갑습니다.", user.username());
     }
 }
