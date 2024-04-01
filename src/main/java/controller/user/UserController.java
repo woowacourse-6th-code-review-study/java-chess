@@ -1,6 +1,7 @@
 package controller.user;
 
 import dto.UserDto;
+import service.UserService;
 import view.InputView;
 import view.OutputView;
 

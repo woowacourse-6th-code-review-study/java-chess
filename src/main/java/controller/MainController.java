@@ -6,10 +6,12 @@ import controller.user.UserController;
 import database.dao.GameStateDaoImpl;
 import database.dao.PieceDaoImpl;
 import database.dao.RoomDaoImpl;
+import database.dao.UserDaoImpl;
 import dto.RoomDto;
 import dto.UserDto;
 import service.ChessGameService;
 import service.GameRoomService;
+import service.UserService;
 
 public class MainController {
     private final GameRoomController gameRoomController = new GameRoomController(new GameRoomService(new RoomDaoImpl()));
@@ -20,8 +22,8 @@ public class MainController {
     public void run() {
         UserDto user = userController.run();
         while (true) {
-            RoomDto roomDto = gameRoomController.run(user);
-            chessGameController.run(roomDto);
+            RoomDto room = gameRoomController.run(user);
+            chessGameController.run(room);
         }
     }
 }

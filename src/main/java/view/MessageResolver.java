@@ -115,7 +115,7 @@ public class MessageResolver {
     }
 
     public String resolveUserNameInputMessage() {
-        return String.format("> 사용자명을 입력해 주세요 : %s 사용자명 - 예 %s mangcho", FIND_USER.message(), FIND_USER.message());
+        return String.format("> 사용자명을 입력해 주세요 (4~10자) : %s 사용자명 - 예 %s mangcho", FIND_USER.message(), FIND_USER.message());
     }
 
     public String resolveUserNameMessage(final UserDto user) {
