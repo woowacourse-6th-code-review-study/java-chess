@@ -1,9 +1,10 @@
 # java-chess
 
-## 페어와 지킬 컨벤션
-1. 클래스 정의 다음 줄은 공백으로 한다.
-2. test code에 사용하는 메서드는 `static import`한다.
-3. `this`는 같은 클래스의 객체가 파라미터로 넘어왔을 때, 파라미터 변수 명이 필드의 변수 명과 겹칠 때 사용한다.
+## 실행 방법
+1. [database](./database) 폴더로 이동한다.
+2. [docker-compose.yml](./database/docker-compose.yml)를 통하여 docker를 실행한다.
+3. [init.sql](./database/init.sql)의 명령어를 docker 내부에서 차례로 실행한다.
+4. IDE를 통해 ChessApplication를 실행한다.
 
 ## 기능 요구 사항
 
