@@ -12,7 +12,7 @@ import model.Turn;
 import model.position.Moving;
 import model.position.Position;
 
-public class Repository { //TODO 이름 변경
+public class Repository {
 
     private final MovingDao movingDao;
     private final TurnDao turnDao;
