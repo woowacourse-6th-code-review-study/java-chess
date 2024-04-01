@@ -5,12 +5,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import chess.domain.piece.King;
+import chess.domain.piece.Pawn;
 import chess.domain.piece.Piece;
 import chess.domain.piece.Queen;
 import chess.domain.piece.Rook;
 import chess.domain.position.File;
 import chess.domain.position.Position;
 import chess.domain.position.Rank;
+import chess.dto.ProgressStatus;
 import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,17 +42,19 @@ class BoardTest {
         Position notExistPosition = new Position(File.D, Rank.TWO);
         Board board = new Board(map);
 
-        assertThat(board.find(notExistPosition)).isEqualTo(Optional.empty());
+        assertThat(board.find(notExistPosition)).isEmpty();
     }
 
     /*
-     * .R......
-     * ........
-     * ........
-     * .q.k....
-     * ........
-     * ........
-     * ........
+     * ........ 8
+     * ........ 7
+     * ........ 6
+     * ........ 5
+     * ....k... 4
+     * ........ 3
+     * K...q..R 2
+     * ........ 1
+     * abcdefgh
      * */
     @Nested
     @DisplayName("말 이동 테스트")
@@ -62,8 +66,10 @@ class BoardTest {
         private static final Queen QUEEN = new Queen(Team.WHITE);
         private static final Rook ENEMY_ROOK = new Rook(Team.BLACK);
         private static final Position START_ENEMY_ROOK = new Position(File.H, Rank.TWO);
+        private static final King ENEMY_KING = new King(Team.BLACK);
+        private static final Position START_ENEMY_KING = new Position(File.A, Rank.TWO);
         private static final Map<Position, Piece> MAP = Map.of(
-                START_KING, KING, START_QUEEN, QUEEN, START_ENEMY_ROOK, ENEMY_ROOK);
+                START_KING, KING, START_QUEEN, QUEEN, START_ENEMY_ROOK, ENEMY_ROOK, START_ENEMY_KING, ENEMY_KING);
         private Board board;
 
         @BeforeEach
@@ -80,7 +86,7 @@ class BoardTest {
 
             assertAll(
                     () -> assertThat(board.find(possibleEnd)).isEqualTo(Optional.of(KING)),
-                    () -> assertThat(board.find(START_KING)).isEqualTo(Optional.empty())
+                    () -> assertThat(board.find(START_KING)).isEmpty()
             );
         }
 
@@ -129,7 +135,7 @@ class BoardTest {
             board.move(START_QUEEN, START_ENEMY_ROOK);
 
             assertAll(
-                    () -> assertThat(board.find(START_QUEEN)).isEqualTo(Optional.empty()),
+                    () -> assertThat(board.find(START_QUEEN)).isEmpty(),
                     () -> assertThat(board.find(START_ENEMY_ROOK)).isEqualTo(Optional.of(QUEEN))
             );
         }
@@ -143,5 +149,96 @@ class BoardTest {
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("해당 팀의 차례가 아닙니다.");
         }
+
+        @Test
+        @DisplayName("상대편 왕을 잡을 경우, 해당 팀이 이긴다.")
+        void moveTest_whenCaptureKing_winGame() {
+            assertThat(board.move(START_QUEEN, START_ENEMY_KING)).isEqualTo(ProgressStatus.WHITE_WIN);
+        }
+
+        @Test
+        @DisplayName("상대편 왕을 잡지 않은 경우, 게임이 진행된다.")
+        void moveTest_whenNotCaptureKing_progressGame() {
+            Position possiblePosition = new Position(File.E, Rank.THREE);
+
+            assertThat(board.move(START_QUEEN, possiblePosition)).isEqualTo(ProgressStatus.PROGRESS);
+        }
+    }
+
+    @Nested
+    @DisplayName("보드판에 있는 기물 점수를 계산할 수 있다.")
+    class CalculatingPointTest {
+
+        /*
+         * ........ 8
+         * ........ 7
+         * ........ 6
+         * ........ 5
+         * ........ 4
+         * ........ 3
+         * ........ 2
+         * r..q.... 1
+         * abcdefgh
+         * */
+        @Test
+        @DisplayName("팀 별로 각 기물의 점수를 더하여 계산한다.")
+        void calculatePointTest_whenNotExistPawn_addAll() {
+            Board board = new Board(Map.of(
+                    new Position(File.A, Rank.ONE), new Rook(Team.WHITE),
+                    new Position(File.D, Rank.ONE), new Queen(Team.WHITE)));
+
+            assertThat(board.calculateTotalPoints()).containsOnly(
+                    Map.entry(Team.WHITE, new Point(5.0 + 9.0)),
+                    Map.entry(Team.BLACK, Point.ZERO));
+        }
+
+        /*
+         * ........ 8
+         * ....P... 7
+         * ........ 6
+         * ........ 5
+         * ........ 4
+         * ........ 3
+         * ....pp.. 2
+         * ........ 1
+         * abcdefgh
+         * */
+        @Test
+        @DisplayName("각 폰은 한 파일에 같이 없을 경우, 높은 점수로 계산한다.")
+        void calculatePointTest_whenExistPawnSameTeamAndDifferentFile_addHighPoint() {
+            Board board = new Board(Map.of(
+                    new Position(File.E, Rank.TWO), new Pawn(Team.WHITE),
+                    new Position(File.F, Rank.TWO), new Pawn(Team.WHITE),
+                    new Position(File.E, Rank.SEVEN), new Pawn(Team.BLACK)));
+
+            assertThat(board.calculateTotalPoints()).containsOnly(
+                    Map.entry(Team.WHITE, new Point(1.0 + 1.0)),
+                    Map.entry(Team.BLACK, new Point(1.0)));
+        }
+
+        /*
+         * ........ 8
+         * ........ 7
+         * ........ 6
+         * ........ 5
+         * ........ 4
+         * ....p... 3
+         * ....p... 2
+         * ........ 1
+         * abcdefgh
+         * */
+        @Test
+        @DisplayName("각 폰은 한 줄에 같이 있을 경우, 낮은 점수로 계산한다.")
+        void calculatePointTest_whenExistPawnSameTeamAndFile_addLowPoint() {
+            Board board = new Board(Map.of(
+                    new Position(File.E, Rank.TWO), new Pawn(Team.WHITE),
+                    new Position(File.E, Rank.THREE), new Pawn(Team.WHITE)));
+
+            assertThat(board.calculateTotalPoints()).containsOnly(
+                    Map.entry(Team.WHITE, new Point(0.5 + 0.5)),
+                    Map.entry(Team.BLACK, Point.ZERO));
+        }
+
+
     }
 }

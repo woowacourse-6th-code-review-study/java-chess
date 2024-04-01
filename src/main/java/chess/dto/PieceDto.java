@@ -2,12 +2,20 @@ package chess.dto;
 
 import chess.domain.piece.Piece;
 
-public record PieceDto(PieceType type, boolean isBlack) {
+public record PieceDto(PieceType pieceType, TeamType teamType) {
 
     public static PieceDto from(Piece piece) {
-        PieceType type = PieceType.from(piece);
-        boolean isBlackTeam = piece.isBlackTeam();
+        PieceType pieceType = PieceType.from(piece);
+        TeamType teamType = TeamType.from(piece.getTeam());
 
-        return new PieceDto(type, isBlackTeam);
+        return new PieceDto(pieceType, teamType);
+    }
+
+    public static PieceDto createEmptyPiece() {
+        return new PieceDto(PieceType.getEmptyType(), TeamType.EMPTY);
+    }
+
+    public boolean isBlack() {
+        return teamType.isBlackTeam();
     }
 }
