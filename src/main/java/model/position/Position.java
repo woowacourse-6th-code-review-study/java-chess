@@ -40,10 +40,6 @@ public class Position {
         return file;
     }
 
-    public Rank getRank() {
-        return rank;
-    }
-
     @Override
     public int hashCode() {
         return Objects.hash(rank, file);

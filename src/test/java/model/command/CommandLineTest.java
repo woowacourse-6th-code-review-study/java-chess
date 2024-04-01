@@ -23,6 +23,7 @@ class CommandLineTest {
 
     static Stream<Arguments> invalidInputParameterProvider() {
         return Stream.of(
+                Arguments.of(List.of()),
                 Arguments.of(List.of("start", "a2", "a3")),
                 Arguments.of(List.of("start", "end")),
                 Arguments.of(List.of("move", "a2")),
