@@ -2,13 +2,13 @@ package chess.domain.piece;
 
 import chess.domain.Point;
 import chess.domain.Team;
-import chess.domain.movement.BlackPawnDefaultMovement;
-import chess.domain.movement.BlackPawnDiagonalMovement;
-import chess.domain.movement.BlackPawnFirstMovement;
 import chess.domain.movement.MovementRule;
-import chess.domain.movement.WhitePawnDefaultMovement;
-import chess.domain.movement.WhitePawnDiagonalMovement;
-import chess.domain.movement.WhitePawnFirstMovement;
+import chess.domain.movement.pawn.BlackPawnDefaultMovement;
+import chess.domain.movement.pawn.BlackPawnDiagonalMovement;
+import chess.domain.movement.pawn.BlackPawnFirstMovement;
+import chess.domain.movement.pawn.WhitePawnDefaultMovement;
+import chess.domain.movement.pawn.WhitePawnDiagonalMovement;
+import chess.domain.movement.pawn.WhitePawnFirstMovement;
 import java.util.List;
 
 public final class Pawn extends Piece {

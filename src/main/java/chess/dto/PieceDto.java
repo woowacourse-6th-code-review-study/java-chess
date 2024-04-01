@@ -14,8 +14,4 @@ public record PieceDto(PieceType type, boolean isBlack) {
     public static PieceDto createEmptyPiece() {
         return new PieceDto(PieceType.getEmptyType(), true);
     }
-
-    public boolean isEmpty() {
-        return type.isEmpty();
-    }
 }
