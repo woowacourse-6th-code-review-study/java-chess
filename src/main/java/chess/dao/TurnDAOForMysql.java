@@ -26,6 +26,18 @@ public class TurnDAOForMysql implements TurnDAO {
     }
 
     @Override
+    public boolean isNotEmpty(Connection connection) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "select 1 from game where exists(select 1 from game) limit 1");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public boolean save(Team team, Connection connection) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(

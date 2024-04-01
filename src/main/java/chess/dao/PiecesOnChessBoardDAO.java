@@ -12,8 +12,9 @@ public interface PiecesOnChessBoardDAO {
 
     List<Piece> selectAll(Connection connection);
 
+    boolean isNotEmpty(Connection connection);
+
     boolean delete(Position targetPosition, Connection connection);
 
     void deleteAll(Connection connection);
-
 }

@@ -34,6 +34,11 @@ public class FakePiecesOnChessBoardDAO implements PiecesOnChessBoardDAO {
     }
 
     @Override
+    public boolean isNotEmpty(Connection connection) {
+        return !selectAll(connection).isEmpty();
+    }
+
+    @Override
     public boolean delete(Position targetPosition, Connection connection) {
         return pieces.removeIf(piece -> piece.isOn(targetPosition));
     }

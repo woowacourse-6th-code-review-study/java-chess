@@ -7,6 +7,8 @@ import java.util.Optional;
 public interface TurnDAO {
     Optional<Team> select(Connection connection);
 
+    boolean isNotEmpty(Connection connection);
+
     boolean save(Team team, Connection connection);
 
     boolean update(Team targetTeam, Team updatedTeam, Connection connection);

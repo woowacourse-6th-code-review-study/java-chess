@@ -59,6 +59,40 @@ public class PiecesOnChessBoardDAOForMysql implements PiecesOnChessBoardDAO {
         }
     }
 
+    @Override
+    public boolean isNotEmpty(Connection connection) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "select 1 from pieces_on_board where exists(select 1 from pieces_on_board) limit 1");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean delete(Position targetPosition, Connection connection) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "delete from pieces_on_board where position_name = ?");
+            preparedStatement.setString(1, targetPosition.name());
+            return preparedStatement.executeUpdate() == 1;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void deleteAll(Connection connection) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("delete from pieces_on_board");
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private List<Piece> parsingResultSet(ResultSet resultSet) throws SQLException {
         List<Piece> selected = new ArrayList<>();
         while (resultSet.next()) {
@@ -83,28 +117,6 @@ public class PiecesOnChessBoardDAOForMysql implements PiecesOnChessBoardDAO {
             case QUEEN -> new Queen(position, team);
             case ROOK -> new Rook(position, team);
         };
-    }
-
-    @Override
-    public boolean delete(Position targetPosition, Connection connection) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "delete from pieces_on_board where position_name = ?");
-            preparedStatement.setString(1, targetPosition.name());
-            return preparedStatement.executeUpdate() == 1;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void deleteAll(Connection connection) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("delete from pieces_on_board");
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private static void setPieceToPreparedStatement(List<Piece> pieces, PreparedStatement preparedStatement)

@@ -9,7 +9,6 @@ import chess.domain.piece.Team;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 public class ChessPersistence {
     private final PiecesOnChessBoardDAO piecesOnChessBoardDAO;
@@ -32,7 +31,7 @@ public class ChessPersistence {
         startTransaction(connection);
         if (isSaveDataExist()) {
             List<Piece> pieces = piecesOnChessBoardDAO.selectAll(connection);
-            Team currentTeam = turnDAO.select(connection).orElseThrow();
+            Team currentTeam = turnDAO.select(connection).get();
             return new ChessGame(pieces, currentTeam);
         }
         piecesOnChessBoardDAO.deleteAll(connection);
@@ -52,10 +51,10 @@ public class ChessPersistence {
     public boolean isSaveDataExist() {
         Connection connection = dbConnectionCache.getConnection();
         startTransaction(connection);
-        Optional<Team> selected = turnDAO.select(connection);
-        List<Piece> pieces = piecesOnChessBoardDAO.selectAll(connection);
+        boolean turnNotEmpty = turnDAO.isNotEmpty(connection);
+        boolean piecesNotEmpty = piecesOnChessBoardDAO.isNotEmpty(connection);
         commitTransaction(connection);
-        return selected.isPresent() && !pieces.isEmpty();
+        return turnNotEmpty && piecesNotEmpty;
     }
 
     private void commitTransaction(Connection connection) {
@@ -71,7 +70,7 @@ public class ChessPersistence {
         Connection connection = dbConnectionCache.getConnection();
         List<Piece> piecesOnBoard = chessGame.getPiecesOnBoard();
         startTransaction(connection);
-        if (!piecesOnChessBoardDAO.selectAll(connection).isEmpty() && turnDAO.select(connection).isPresent()) {
+        if (canNotSave(connection)) {
             return false;
         }
         boolean saveAllPiecesSuccess = piecesOnChessBoardDAO.saveAll(piecesOnBoard, connection);
@@ -79,6 +78,12 @@ public class ChessPersistence {
         boolean saveTurnSuccess = turnDAO.save(currentTeam, connection);
         commitTransaction(connection);
         return saveAllPiecesSuccess && saveTurnSuccess;
+    }
+
+    private boolean canNotSave(Connection connection) {
+        boolean piecesNotEmpty = piecesOnChessBoardDAO.isNotEmpty(connection);
+        boolean turnNotEmpty = turnDAO.isNotEmpty(connection);
+        return piecesNotEmpty && turnNotEmpty;
     }
 
     public boolean updateChessGame(ChessGame chessGame, MoveCommand moveCommand) {
@@ -91,10 +96,11 @@ public class ChessPersistence {
         boolean deleteToSuccess = piecesOnChessBoardDAO.delete(to, connection);
         Piece movedPiece = findMovedPiece(chessGame, to);
         boolean saveMovedPieceSuccess = piecesOnChessBoardDAO.save(movedPiece, connection);
-        Team team = turnDAO.select(connection).orElseThrow();
+        Team team = turnDAO.select(connection)
+                .orElseThrow(() -> new DBException("데이터가 잘못되었습니다.", null));
         boolean updateTurnSuccess = turnDAO.update(team, team.otherTeam(), connection);
         commitTransaction(connection);
-        return !deleteFromSuccess && deleteToSuccess && saveMovedPieceSuccess && updateTurnSuccess;
+        return deleteFromSuccess && deleteToSuccess && saveMovedPieceSuccess && updateTurnSuccess;
     }
 
     private Piece findMovedPiece(ChessGame chessGame, Position to) {

@@ -13,6 +13,11 @@ public class FakeTurnDAO implements TurnDAO {
     }
 
     @Override
+    public boolean isNotEmpty(Connection connection) {
+        return select(connection).isPresent();
+    }
+
+    @Override
     public boolean save(Team team, Connection connection) {
         if (this.team == null) {
             this.team = team;
