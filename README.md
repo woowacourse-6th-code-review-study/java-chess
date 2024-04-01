@@ -1,5 +1,8 @@
 # java-chess
 
+## 실행 방법
+`java-chess`에서 `docker-compose -p chess up -d` 명령어 입력
+
 ## 페어와 지킬 컨벤션
 1. 클래스 정의 다음 줄은 공백으로 한다.
 2. test code에 사용하는 메서드는 `static import`한다.
