@@ -1,6 +1,12 @@
 package service;
 
+import domain.ChessGame;
+import domain.board.ChessBoard;
 import domain.piece.Color;
+import domain.piece.Piece;
+import domain.piece.nonpawn.King;
+import domain.piece.pawn.WhitePawn;
+import domain.position.Position;
 import dto.PieceDto;
 import dto.RoomDto;
 import dto.StateDto;
@@ -14,7 +20,7 @@ import repository.GameStateMockDao;
 import repository.PieceDao;
 import repository.PieceMockDao;
 
-import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,8 +30,6 @@ class ChessGameServiceTest {
     private static final PieceDto A2WhitePawn = new PieceDto("A", "2", "WHITE", "PAWN");
     private static final PieceDto B2WhitePawn = new PieceDto("B", "2", "WHITE", "PAWN");
     private static final PieceDto C2WhitePawn = new PieceDto("C", "2", "WHITE", "PAWN");
-    private static final StateDto whiteTurn = new StateDto("WHITE", 1);
-    private static final StateDto blackTurn = new StateDto("BLACK", 2);
     private static final RoomDto room1 = new RoomDto(1);
 
     private final PieceDao pieceDao = new PieceMockDao();
@@ -37,7 +41,7 @@ class ChessGameServiceTest {
         pieceDao.add(room1, A2WhitePawn);
         pieceDao.add(room1, B2WhitePawn);
         pieceDao.add(room1, C2WhitePawn);
-        gameStateDao.add(whiteTurn);
+        gameStateDao.add(new StateDto("WHITE", 1));
     }
 
     @AfterEach
@@ -48,36 +52,41 @@ class ChessGameServiceTest {
 
     @Test
     void 이전_게임의_피스_데이터를_불러온다() {
-        assertThat(chessGameService.loadPreviousPieces(room1))
+        ChessGame chessGame = chessGameService.initializeChessGame(room1);
+
+        assertThat(chessGame.getBoard().getPieces())
                 .containsExactlyInAnyOrder(A2WhitePawn, B2WhitePawn, C2WhitePawn);
     }
 
     @Test
     void 이전_게임의_턴_데이터를_불러온다() {
-        assertThat(chessGameService.loadPreviousState(room1).getState())
+        ChessGame chessGame = chessGameService.initializeChessGame(room1);
+
+        assertThat(chessGame.getTurn())
                 .isEqualTo(Color.WHITE);
     }
 
     @Test
-    void 피스_데이터를_갱신한다() {
+    void 게임_데이터를_갱신한다() {
         RoomDto roomDto = room1;
-        PieceDto A3WhitePawn = new PieceDto("A", "3", "WHITE", "PAWN");
-        PieceDto B3WhitePawn = new PieceDto("B", "3", "WHITE", "PAWN");
-        PieceDto C3WhitePawn = new PieceDto("C", "3", "WHITE", "PAWN");
+        Position A3 = new Position("A3");
+        Position B3 = new Position("B3");
+        Position C3 = new Position("C3");
+        Map<Position, Piece> pawnMap = Map.of(
+                A3, new King(Color.WHITE),
+                B3, new King(Color.BLACK),
+                C3, new WhitePawn());
+        ChessGame chessGame = new ChessGame(new ChessBoard(pawnMap));
 
-        chessGameService.updatePieces(roomDto, List.of(A3WhitePawn, B3WhitePawn, C3WhitePawn));
+        chessGameService.saveChessGame(chessGame, roomDto);
+        chessGame = chessGameService.initializeChessGame(roomDto);
 
-        assertThat(chessGameService.loadPreviousPieces(roomDto))
-                .containsExactlyInAnyOrder(A3WhitePawn, B3WhitePawn, C3WhitePawn);
-    }
-
-    @Test
-    void 턴_데이터를_갱신한다() {
-        RoomDto room = new RoomDto(blackTurn.gameId());
-
-        chessGameService.updateState(blackTurn);
-
-        assertThat(chessGameService.loadPreviousState(room).getState())
-                .isEqualTo(Color.BLACK);
+        assertThat(chessGame.getBoard().getPieces())
+                .containsExactlyInAnyOrder(
+                        PieceDto.of(A3, new King(Color.WHITE)),
+                        PieceDto.of(B3, new King(Color.BLACK)),
+                        PieceDto.of(C3, new WhitePawn()));
+        assertThat(chessGame.getBoard().getTurn())
+                .isEqualTo(Color.WHITE);
     }
 }
