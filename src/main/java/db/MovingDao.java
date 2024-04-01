@@ -24,8 +24,7 @@ public class MovingDao {
         final String query = "INSERT INTO moving VALUES(?, ?, ?, ?)";
         try (final Connection connection = DBConnectionUtil.getConnection(database);
              final PreparedStatement preparedStatement = connection.prepareStatement(query,
-                     Statement.RETURN_GENERATED_KEYS)
-        ) {
+                     Statement.RETURN_GENERATED_KEYS)) {
             preparedStatementSet(moving, preparedStatement);
             preparedStatement.executeUpdate();
             return increaseKey(preparedStatement.getGeneratedKeys());
@@ -76,13 +75,17 @@ public class MovingDao {
         try (final Connection connection = DBConnectionUtil.getConnection(database);
              final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             final ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt("count");
-            }
-            throw new DaoException(ErrorCode.FAIL_FIND);
+            return convertToCount(resultSet);
         } catch (final SQLException exception) {
             throw new DaoException(ErrorCode.FAIL_FIND);
         }
+    }
+
+    private int convertToCount(final ResultSet resultSet) throws SQLException {
+        if (resultSet.next()) {
+            return resultSet.getInt("count");
+        }
+        throw new DaoException(ErrorCode.FAIL_FIND);
     }
 
     public MovingDto findByMovementId(final long movementId) {
@@ -91,25 +94,27 @@ public class MovingDao {
              final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, movementId);
             final ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                return new MovingDto(
-                        resultSet.getString("camp"),
-                        resultSet.getString("start"),
-                        resultSet.getString("destination")
-                );
-            }
-            throw new DaoException(ErrorCode.FAIL_FIND);
+            return convertToMoving(resultSet);
         } catch (final SQLException exception) {
             throw new DaoException(ErrorCode.FAIL_FIND);
         }
     }
 
+    private MovingDto convertToMoving(final ResultSet resultSet) throws SQLException {
+        if (resultSet.next()) {
+            return new MovingDto(
+                    resultSet.getString("camp"),
+                    resultSet.getString("start"),
+                    resultSet.getString("destination")
+            );
+        }
+        throw new DaoException(ErrorCode.FAIL_FIND);
+    }
+
     public void remove() {
         final String query = "TRUNCATE TABLE moving";
         try (final Connection connection = DBConnectionUtil.getConnection(database);
-             final PreparedStatement preparedStatement = connection.prepareStatement(query)
-        ) {
+             final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.executeUpdate();
         } catch (final SQLException exception) {
             throw new DaoException(ErrorCode.FAIL_DELETE);
