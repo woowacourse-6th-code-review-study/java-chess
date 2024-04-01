@@ -69,18 +69,18 @@ public class ChessGame {
         return ProgressStatus.END_GAME;
     }
 
-    private ProgressStatus executeStatus() {
-        Map<Team, Double> statusDto = chessService.calculatePiecePoints();
-        outputView.printStatus(statusDto);
-        return ProgressStatus.PROGRESS;
-    }
-
     private ProgressStatus executeMove() {
         Position start = inputView.readPosition();
         Position end = inputView.readPosition();
         ProgressStatus status = chessService.moveTo(start, end);
         showBoard();
         return status;
+    }
+
+    private ProgressStatus executeStatus() {
+        Map<Team, Double> statusDto = chessService.calculatePiecePoints();
+        outputView.printStatus(statusDto);
+        return ProgressStatus.PROGRESS;
     }
 
     private void showResult(ProgressStatus status) {

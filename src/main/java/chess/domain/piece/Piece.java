@@ -44,5 +44,5 @@ public abstract sealed class Piece permits King, Queen, Rook, Bishop, Knight, Pa
         return team;
     }
 
-    public abstract Point getPoint(boolean isOverlapped);
+    public abstract Point getPoint(boolean isPawnOverlappedInFile);
 }

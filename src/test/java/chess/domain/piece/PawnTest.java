@@ -122,17 +122,17 @@ class PawnTest {
     @DisplayName("폰의 기물 점수는 1점이다.")
     void getPointTest() {
         Pawn pawn = new Pawn(Team.WHITE);
-        boolean isOverlapped = false;
+        boolean isPawnOverlappedInFile = false;
 
-        assertThat(pawn.getPoint(isOverlapped)).isEqualTo(new Point(1.0));
+        assertThat(pawn.getPoint(isPawnOverlappedInFile)).isEqualTo(new Point(1.0));
     }
 
     @Test
     @DisplayName("같은 줄에 폰이 있을 경우, 폰의 기물 점수는 0.5점이다.")
-    void getPointTest_whenPawnIsOverlappedInSameFile() {
+    void getPointTest_whenPawnisPawnOverlappedInFileInSameFile() {
         Pawn pawn = new Pawn(Team.WHITE);
-        boolean isOverlapped = true;
+        boolean isPawnOverlappedInFile = true;
 
-        assertThat(pawn.getPoint(isOverlapped)).isEqualTo(new Point(0.5));
+        assertThat(pawn.getPoint(isPawnOverlappedInFile)).isEqualTo(new Point(0.5));
     }
 }

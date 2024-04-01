@@ -44,9 +44,9 @@ class KnightTest {
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     @DisplayName("나이트의 기물 점수는 2.5점이다.")
-    void getPointTest(boolean isOverlapped) {
+    void getPointTest(boolean isPawnOverlappedInFile) {
         Knight knight = new Knight(Team.WHITE);
 
-        assertThat(knight.getPoint(isOverlapped)).isEqualTo(new Point(2.5));
+        assertThat(knight.getPoint(isPawnOverlappedInFile)).isEqualTo(new Point(2.5));
     }
 }

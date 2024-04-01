@@ -136,9 +136,9 @@ public class Board {
     }
 
     private Point calculatePoints(List<Piece> teamPieces) {
-        boolean isOverlappedPawn = isOverlappedPawn(teamPieces);
+        boolean isPawnOverlappedInFilePawn = isOverlappedPawn(teamPieces);
         return teamPieces.stream()
-                .map(piece -> piece.getPoint(isOverlappedPawn))
+                .map(piece -> piece.getPoint(isPawnOverlappedInFilePawn))
                 .reduce(Point.ZERO, Point::add);
     }
 

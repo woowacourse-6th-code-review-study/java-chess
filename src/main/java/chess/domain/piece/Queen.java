@@ -26,7 +26,7 @@ public final class Queen extends Piece {
     }
 
     @Override
-    public Point getPoint(boolean isOverlapped) {
+    public Point getPoint(boolean isPawnOverlappedInFile) {
         return PIECE_POINT;
     }
 }

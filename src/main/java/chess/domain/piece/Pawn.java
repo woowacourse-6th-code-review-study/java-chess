@@ -33,8 +33,8 @@ public final class Pawn extends Piece {
     }
 
     @Override
-    public Point getPoint(boolean isOverlapped) {
-        if (isOverlapped) {
+    public Point getPoint(boolean isPawnOverlappedInFile) {
+        if (isPawnOverlappedInFile) {
             return PIECE_OVERLAPPED_POINT;
         }
         return PIECE_BASIC_POINT;

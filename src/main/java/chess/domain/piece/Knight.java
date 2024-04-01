@@ -16,7 +16,7 @@ public final class Knight extends Piece {
     }
 
     @Override
-    public Point getPoint(boolean isOverlapped) {
+    public Point getPoint(boolean isPawnOverlappedIn) {
         return PIECE_POINT;
     }
 }

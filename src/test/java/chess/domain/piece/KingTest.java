@@ -44,9 +44,9 @@ class KingTest {
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     @DisplayName("킹의 기물 점수는 0점이다.")
-    void getPointTest(boolean isOverlapped) {
+    void getPointTest(boolean isPawnOverlappedInFile) {
         King king = new King(Team.WHITE);
 
-        assertThat(king.getPoint(isOverlapped)).isEqualTo(Point.ZERO);
+        assertThat(king.getPoint(isPawnOverlappedInFile)).isEqualTo(Point.ZERO);
     }
 }

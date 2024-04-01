@@ -61,9 +61,9 @@ class RookTest {
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     @DisplayName("룩의 기물 점수는 5점이다.")
-    void getPointTest(boolean isOverlapped) {
+    void getPointTest(boolean isPawnOverlappedInFile) {
         Rook rook = new Rook(Team.WHITE);
 
-        assertThat(rook.getPoint(isOverlapped)).isEqualTo(new Point(5.0));
+        assertThat(rook.getPoint(isPawnOverlappedInFile)).isEqualTo(new Point(5.0));
     }
 }
