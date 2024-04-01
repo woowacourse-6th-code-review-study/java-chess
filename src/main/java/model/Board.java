@@ -39,6 +39,8 @@ public class Board {
             File.G, Knight::new,
             File.H, Rook::new
     );
+    private static final Set<Piece> KINGS = Set.of(new King(Camp.WHITE), new King(Camp.BLACK));
+    private static final Set<Piece> PAWNS = Set.of(new WhitePawn(), new BlackPawn());
     private static final Score SAME_FILE_PAWN_SCORE = new Score(0.5F);
 
     private final Map<Position, Piece> pieces;
@@ -82,7 +84,11 @@ public class Board {
     }
 
     private void validateIsKing(final Position nextPosition) {
-        if (pieces.containsKey(nextPosition) && pieces.get(nextPosition).isKing()) {
+        if (!pieces.containsKey(nextPosition)) {
+            return;
+        }
+        final Piece piece = pieces.get(nextPosition);
+        if (KINGS.contains(piece)) {
             throw new KingDeadException(ErrorCode.KING_DEAD);
         }
     }
@@ -164,7 +170,7 @@ public class Board {
 
     private void checkPawn(final Entry<Position, Piece> entry, final Map<File, Integer> count) {
         final Piece piece = entry.getValue();
-        if (piece.isPawn()) {
+        if (PAWNS.contains(piece)) {
             final Position position = entry.getKey();
             final File file = position.getFile();
             count.put(file, count.getOrDefault(file, 0) + 1);

@@ -30,14 +30,6 @@ public abstract class Piece {
         return camp == target;
     }
 
-    public boolean isPawn() {
-        return Objects.equals(getClass(), WhitePawn.class) || Objects.equals(getClass(), BlackPawn.class);
-    }
-
-    public boolean isKing() {
-        return Objects.equals(getClass(), King.class);
-    }
-
     @Override
     public boolean equals(final Object target) {
         if (this == target) {
