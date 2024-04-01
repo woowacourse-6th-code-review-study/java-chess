@@ -1,7 +1,8 @@
 package chess.controller.command;
 
-import chess.domain.ChessGame;
 import chess.domain.position.Position;
+import chess.dto.BoardDto;
+import chess.service.ChessGameService;
 import chess.view.OutputView;
 
 public class MoveCommand implements Command {
@@ -14,18 +15,9 @@ public class MoveCommand implements Command {
     }
 
     @Override
-    public void execute(ChessGame chessGame, OutputView outputView) {
-        chessGame.move(start, destination);
-        outputView.printChessBoardMessage(chessGame.getChessBoard());
-    }
-
-    @Override
-    public boolean isNotEndCommand() {
-        return true;
-    }
-
-    @Override
-    public boolean isNotStartCommand() {
-        return true;
+    public ExecuteResult execute(ChessGameService chessGameService, OutputView outputView) {
+        BoardDto boardDto = chessGameService.movePiece(start, destination);
+        outputView.printChessBoardMessage(boardDto);
+        return new ExecuteResult(true, true);
     }
 }

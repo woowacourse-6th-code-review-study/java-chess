@@ -41,4 +41,8 @@ public enum File {
     public File move(int weight) {
         return from(columnNumber + weight);
     }
+
+    public int getColumnNumber() {
+        return columnNumber;
+    }
 }

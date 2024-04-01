@@ -1,38 +1,31 @@
 package chess.controller;
 
 import chess.controller.command.Command;
-import chess.domain.ChessGame;
-import chess.domain.board.ChessBoard;
-import chess.domain.board.ChessBoardCreator;
+import chess.controller.command.ExecuteResult;
+import chess.service.ChessGameService;
 import chess.view.InputView;
 import chess.view.OutputView;
 
 public class ChessGameController {
     private final InputView inputView;
     private final OutputView outputView;
+    private final ChessGameService chessGameService;
 
-    public ChessGameController(InputView inputView, OutputView outputView) {
+    public ChessGameController(InputView inputView, OutputView outputView, ChessGameService chessGameService) {
         this.inputView = inputView;
         this.outputView = outputView;
+        this.chessGameService = chessGameService;
     }
 
     public void run() {
         outputView.printStartMessage();
-        Command command = inputView.readCommand();
-        if (command.isNotStartCommand()) {
-            return;
-        }
+        chessGameService.startChessGame();
 
-        ChessGame chessGame = initializeChessGame();
-        while (command.isNotEndCommand()) {
-            command.execute(chessGame, outputView);
-            command = inputView.readCommand();
+        ExecuteResult result;
+        do {
+            Command command = inputView.readCommand();
+            result = command.execute(chessGameService, outputView);
         }
-    }
-
-    private ChessGame initializeChessGame() {
-        ChessBoardCreator chessBoardCreator = new ChessBoardCreator();
-        ChessBoard chessBoard = chessBoardCreator.create();
-        return new ChessGame(chessBoard);
+        while (result.isSuccess() && result.isNeedNextCommand() && chessGameService.isChessGameNotEnd());
     }
 }

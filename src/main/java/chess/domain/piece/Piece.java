@@ -10,6 +10,12 @@ public abstract class Piece {
         this.team = team;
     }
 
+    public abstract boolean isPawn();
+
+    public abstract boolean isKing();
+
+    public abstract Score score();
+
     abstract boolean canNotMoveByItsOwnInPassing(Position start, Position destination);
 
     abstract boolean canNotMoveByBoardStatus(Position start, Position destination, ChessBoard chessBoard);
@@ -46,5 +52,9 @@ public abstract class Piece {
 
     public boolean isOtherTeam(Team other) {
         return this.team != other;
+    }
+
+    public Team getTeam() {
+        return team;
     }
 }

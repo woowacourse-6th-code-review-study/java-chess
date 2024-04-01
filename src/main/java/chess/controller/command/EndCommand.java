@@ -1,20 +1,11 @@
 package chess.controller.command;
 
-import chess.domain.ChessGame;
+import chess.service.ChessGameService;
 import chess.view.OutputView;
 
 public class EndCommand implements Command {
     @Override
-    public void execute(ChessGame chessGame, OutputView outputView) {
-    }
-
-    @Override
-    public boolean isNotEndCommand() {
-        return false;
-    }
-
-    @Override
-    public boolean isNotStartCommand() {
-        return true;
+    public ExecuteResult execute(ChessGameService chessGameService, OutputView outputView) {
+        return new ExecuteResult(true, false);
     }
 }

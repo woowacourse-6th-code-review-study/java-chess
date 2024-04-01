@@ -95,6 +95,14 @@ public class Position {
         return new Position(movedFile, movedRank);
     }
 
+    public File getFile() {
+        return file;
+    }
+
+    public Rank getRank() {
+        return rank;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

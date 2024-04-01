@@ -4,20 +4,22 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 public enum Rank {
-    EIGHT(0),
-    SEVEN(1),
-    SIX(2),
-    FIVE(3),
-    FOUR(4),
-    THREE(5),
-    TWO(6),
-    ONE(7);
+    EIGHT(0, 8),
+    SEVEN(1, 7),
+    SIX(2, 6),
+    FIVE(3, 5),
+    FOUR(4, 4),
+    THREE(5, 3),
+    TWO(6, 2),
+    ONE(7, 1);
 
 
     private final int rowNumber;
+    private final int rankNumber;
 
-    Rank(int rowNumber) {
+    Rank(int rowNumber, int rankNumber) {
         this.rowNumber = rowNumber;
+        this.rankNumber = rankNumber;
     }
 
     public static Rank from(int rowNumber) {
@@ -45,5 +47,9 @@ public enum Rank {
 
     public Rank move(int weight) {
         return from(rowNumber + weight);
+    }
+
+    public int getRankNumber() {
+        return rankNumber;
     }
 }
