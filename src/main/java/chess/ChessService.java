@@ -45,7 +45,7 @@ public class ChessService {
 
     private Board toBoard(List<PieceEntity> pieceEntities, TurnType turnType) {
         Map<Position, Piece> board = pieceEntities.stream()
-                .filter(piece -> !piece.getPieceType().isEmpty())
+                .filter(PieceEntity::isExistPiece)
                 .collect(Collectors.toMap(
                         PieceEntity::getPosition,
                         PieceEntity::toPiece

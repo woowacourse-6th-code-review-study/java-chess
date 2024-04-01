@@ -36,6 +36,10 @@ public class PieceEntity {
         return pieceType.createPiece(team);
     }
 
+    public boolean isExistPiece() {
+        return !pieceType.isEmpty();
+    }
+
     public Rank getRank() {
         return position.getRank();
     }
