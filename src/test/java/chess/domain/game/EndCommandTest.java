@@ -1,6 +1,6 @@
 package chess.domain.game;
 
-import static chess.domain.game.EndCommand.END_COMMAND;
+import static chess.domain.game.command.EndCommand.END_COMMAND;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

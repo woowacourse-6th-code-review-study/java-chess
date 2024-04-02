@@ -1,23 +1,38 @@
 package chess.domain.game;
 
-import chess.domain.Position;
 import chess.domain.board.ChessBoard;
-import chess.domain.board.ChessBoardWrapper;
+import chess.domain.board.ChessBoardAdaptor;
+import chess.domain.game.command.MoveCommand;
 import chess.domain.piece.Piece;
+import chess.domain.piece.PieceMoveResult;
+import chess.domain.piece.Team;
 import java.util.List;
+import java.util.Map;
 
 public class ChessGame {
-    private final ChessBoardWrapper chessBoardWrapper;
+    private final ChessBoardForChessGame chessBoard;
 
-    public ChessGame() {
-        this.chessBoardWrapper = new ChessBoardWrapper(new ChessBoard());
+    public ChessGame(List<Piece> pieces, Team currentTeam) {
+        this.chessBoard = new ChessBoardAdaptor(new ChessBoard(pieces, currentTeam));
     }
 
-    public boolean move(Position from, Position to) {
-        return chessBoardWrapper.move(from, to);
+    public ChessGame() {
+        this.chessBoard = new ChessBoardAdaptor(new ChessBoard());
+    }
+
+    public PieceMoveResult move(MoveCommand moveCommand) {
+        return chessBoard.move(moveCommand);
+    }
+
+    public Map<Team, Double> calculateScores() {
+        return chessBoard.calculateScores();
     }
 
     public List<Piece> getPiecesOnBoard() {
-        return chessBoardWrapper.getPiecesOnBoard();
+        return chessBoard.getPiecesOnBoard();
+    }
+
+    public Team currentTeam() {
+        return chessBoard.getCurrentTeam();
     }
 }

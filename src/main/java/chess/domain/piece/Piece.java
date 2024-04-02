@@ -15,4 +15,8 @@ public interface Piece {
     int getColumn();
 
     int getRow();
+
+    double getPoint();
+
+    boolean isTeamWith(Team team);
 }

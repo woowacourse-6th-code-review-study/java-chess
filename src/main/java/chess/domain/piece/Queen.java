@@ -28,4 +28,9 @@ public final class Queen extends AbstractStraightMovePiece {
     public PieceType getPieceType() {
         return QUEEN;
     }
+
+    @Override
+    public double getPoint() {
+        return 9.0;
+    }
 }

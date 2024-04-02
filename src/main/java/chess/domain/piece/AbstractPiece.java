@@ -46,7 +46,36 @@ abstract class AbstractPiece implements Piece {
         return position.getRow();
     }
 
+    @Override
+    public boolean isTeamWith(Team team) {
+        return this.team.equals(team);
+    }
+
     protected Position getPosition() {
         return position;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = team != null ? team.hashCode() : 0;
+        result = 31 * result + (position != null ? position.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        AbstractPiece that = (AbstractPiece) o;
+
+        if (team != that.team) {
+            return false;
+        }
+        return position == that.position;
     }
 }

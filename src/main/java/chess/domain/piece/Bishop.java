@@ -24,4 +24,9 @@ public final class Bishop extends AbstractStraightMovePiece {
     public PieceType getPieceType() {
         return PieceType.BISHOP;
     }
+
+    @Override
+    public double getPoint() {
+        return 3.0;
+    }
 }

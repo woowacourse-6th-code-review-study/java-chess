@@ -1,4 +1,4 @@
-package chess.domain.game;
+package chess.domain.game.command;
 
 import java.util.List;
 

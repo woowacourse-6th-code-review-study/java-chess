@@ -1,10 +1,12 @@
 package chess.domain.board;
 
 import static chess.domain.board.InitialPieces.INITIAL_PIECES;
+import static chess.domain.piece.Team.WHITE;
 
 import chess.domain.Position;
 import chess.domain.piece.Piece;
 import chess.domain.piece.PieceMoveResult;
+import chess.domain.piece.PieceType;
 import chess.domain.piece.Team;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,34 +15,62 @@ import java.util.Optional;
 
 public class ChessBoard {
     private final List<Piece> piecesOnBoard;
-    private Team currentTeam = Team.WHITE;
+    private Team currentTeam;
 
     public ChessBoard() {
         this(INITIAL_PIECES);
     }
 
     public ChessBoard(List<Piece> pieces) {
-        piecesOnBoard = new ArrayList<>(pieces);
+        this(pieces, WHITE);
+    }
+
+    public ChessBoard(List<Piece> pieces, Team currentTeam) {
+        this.piecesOnBoard = new ArrayList<>(pieces);
+        this.currentTeam = currentTeam;
     }
 
     public ChessBoard(Piece... pieces) {
-        this(List.of(pieces));
+        this(List.of(pieces), WHITE);
     }
 
-    boolean move(Position from, Position to) {
+    PieceMoveResult move(Position from, Position to) {
         if (isEmptyPosition(from) || isOtherTeamTurn(from)) {
-            return false;
+            return PieceMoveResult.FAILURE;
         }
         Piece piece = findPiece(from);
         PieceMoveResult moveResult = piece.move(to, this);
         removePieceIfCaught(to, moveResult);
+        moveResult = fixMoveResultWhenGameEnd(to, moveResult);
         changeCurrentTeamIfNotFail(moveResult);
-        return moveResult.toBoolean();
+        return moveResult;
+    }
+
+    private PieceMoveResult fixMoveResultWhenGameEnd(Position to, PieceMoveResult moveResult) {
+        boolean gameEnd = isGameEnd(to);
+        if (gameEnd && currentTeam.equals(WHITE)) {
+            return PieceMoveResult.WHITE_WIN;
+        }
+        if (gameEnd && currentTeam.equals(Team.BLACK)) {
+            return PieceMoveResult.BLACK_WIN;
+        }
+        return moveResult;
+    }
+
+    private boolean isGameEnd(Position to) {
+        return piecesOnBoard.stream()
+                .filter(this::isKing)
+                .filter(this::isOtherTeam)
+                .allMatch(piece -> piece.isOn(to));
+    }
+
+    private boolean isKing(Piece piece) {
+        return piece.getPieceType().equals(PieceType.KING);
     }
 
     private boolean isEmptyPosition(Position from) {
         Optional<Piece> optionalPiece = piecesOnBoard.stream()
-                .filter(piece1 -> piece1.isOn(from))
+                .filter(piece -> piece.isOn(from))
                 .findFirst();
         return optionalPiece.isEmpty();
     }
@@ -67,13 +97,13 @@ public class ChessBoard {
     private void removeDeadPiece(Position to) {
         Piece needToRemovePiece = piecesOnBoard.stream()
                 .filter(piece -> piece.isOn(to))
-                .filter(piece -> {
-                    Team pieceTeam = piece.getTeam();
-                    Team otherTeam = currentTeam.otherTeam();
-                    return pieceTeam.equals(otherTeam);
-                })
+                .filter(this::isOtherTeam)
                 .findFirst().orElseThrow();
         piecesOnBoard.remove(needToRemovePiece);
+    }
+
+    private boolean isOtherTeam(Piece piece) {
+        return piece.isTeamWith(currentTeam.otherTeam());
     }
 
     private void changeCurrentTeamIfNotFail(PieceMoveResult moveResult) {
@@ -90,5 +120,13 @@ public class ChessBoard {
 
     List<Piece> getPiecesOnBoard() {
         return Collections.unmodifiableList(piecesOnBoard);
+    }
+
+    double calculatePoint(Team team) {
+        return PointCalculator.calculatePoint(team, piecesOnBoard);
+    }
+
+    Team getCurrentTeam() {
+        return currentTeam;
     }
 }
