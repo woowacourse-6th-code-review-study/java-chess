@@ -7,6 +7,7 @@ import view.command.RoomCommandType;
 import view.command.UserCommandType;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class InputView {
@@ -26,7 +27,7 @@ public class InputView {
         try {
             CommandInput input = readCommandInput();
             return RoomCommandType.getCommand(input, rooms);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NoSuchElementException e) {
             throw new IllegalArgumentException(WRONG_COMMAND_ERROR_MESSAGE);
         }
     }
@@ -35,12 +36,12 @@ public class InputView {
         try {
             CommandInput input = readCommandInput();
             return UserCommandType.getCommand(input);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NoSuchElementException e) {
             throw new IllegalArgumentException(WRONG_COMMAND_ERROR_MESSAGE);
         }
     }
 
     private static CommandInput readCommandInput() {
-        return new CommandInput(SCANNER.nextLine());
+        return new CommandInput(SCANNER.nextLine().strip());
     }
 }
