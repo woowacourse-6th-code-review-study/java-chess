@@ -23,21 +23,29 @@ public class RoomDaoImpl implements RoomDao {
     }
 
     public Optional<RoomDto> addNewRoom(final UserDto userDto) {
+        final int newRoomId = getRoomIdMax() + 1;
+        return Optional.of(insertNewRoom(userDto, newRoomId));
+    }
+
+    private int getRoomIdMax() {
         final String selectQuery = "SELECT MAX(room_id) AS room_id FROM " + TABLE_NAME;
-        List<RoomDto> roomDtos = jdbcTemplate.executeAndGet(selectQuery, rowMapper);
+        final List<RoomDto> rooms = jdbcTemplate.executeAndGet(selectQuery, rowMapper);
+        return rooms.get(0).room_id();
+    }
+
+    private RoomDto insertNewRoom(final UserDto userDto, final int newRoomId) {
         final String insertQuery = "INSERT INTO " + TABLE_NAME + " VALUES (?, ?)";
-        int newRoomId = roomDtos.get(0).room_id() + 1;
         jdbcTemplate.execute(insertQuery, userDto.username(), "" + newRoomId);
-        return Optional.of(new RoomDto(newRoomId));
+        return new RoomDto(newRoomId);
     }
 
     public Optional<RoomDto> find(final String roomId) {
         final String query = "SELECT * FROM " + TABLE_NAME + " WHERE room_id = ?";
-        final List<RoomDto> roomDtos = jdbcTemplate.executeAndGet(query, rowMapper, roomId);
-        if (roomDtos.isEmpty()) {
+        final List<RoomDto> rooms = jdbcTemplate.executeAndGet(query, rowMapper, roomId);
+        if (rooms.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(roomDtos.get(0));
+        return Optional.of(rooms.get(0));
     }
 
     public List<RoomDto> findActiveRoomAll(final UserDto user) {

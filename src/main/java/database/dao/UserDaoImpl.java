@@ -18,11 +18,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<UserDto> find(final String username) {
         final String query = "SELECT * FROM " + TABLE_NAME + " WHERE username = ? LIMIT 1";
-        List<UserDto> userDtos = jdbcTemplate.executeAndGet(query, rowMapper, username);
-        if (userDtos.isEmpty()) {
+        List<UserDto> users = jdbcTemplate.executeAndGet(query, rowMapper, username);
+        if (users.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(userDtos.get(0));
+        return Optional.of(users.get(0));
     }
 
     @Override

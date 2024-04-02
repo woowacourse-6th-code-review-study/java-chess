@@ -41,7 +41,7 @@ public class SelectRoomOnCommand implements Command {
     }
 
     @Override
-    public RoomDto execute(final GameRoomService gameRoomService, UserDto user) {
+    public RoomDto execute(final GameRoomService gameRoomService, final UserDto user) {
         return gameRoomService.findRoomById(roomId);
     }
 }

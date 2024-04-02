@@ -45,7 +45,7 @@ public class MessageResolver {
                 gameEndCommandMessage, gameMoveCommandMessage);
     }
 
-    public String resolveBoard(ChessBoard board) {
+    public String resolveBoardMessage(ChessBoard board) {
         List<String> boardMessage = IntStream.rangeClosed(1, 8)
                 .mapToObj(rank -> resolveOneRank(board, Rank.fromNumber(rank)))
                 .collect(Collectors.toList());
@@ -84,41 +84,46 @@ public class MessageResolver {
         return pieceName;
     }
 
-    public String resolveScore(Score score) {
+    public String resolveScoreMessage(Score score) {
         String whiteScoreMessage = String.format("WHITE 점수: %.1f", score.getWhiteScore());
         String blackScoreMessage = String.format("BLACK 점수: %.1f", score.getBlackScore());
         return String.join(LINE_SEPARATOR, whiteScoreMessage, blackScoreMessage);
     }
 
-    public String resolveWinner(final Score score) {
+    public String resolveWinnerMessage(Score score) {
         if (score.getWhiteScore() > score.getBlackScore()) {
             return "우승자는 WHITE입니다!";
         }
         return "우승자는 BLACK입니다!";
     }
 
-    public String resolveRoomList(final List<RoomDto> rooms) {
+    public String resolveRoomGuideMessage(List<RoomDto> rooms) {
         String newRoomMessage = String.format("> 새로운 방 생성 : %s", NEW_ROOM.message());
         if (rooms.isEmpty()) {
             return newRoomMessage;
         }
+        return String.join(LINE_SEPARATOR, newRoomMessage, resolveRooms(rooms));
+    }
 
-        String roomGuideHeaderMessage = String.format("> 입장할 방 선택 : %s 방번호 - 예 %s 1", ROOM_SELECTION.message(), ROOM_SELECTION.message());
+    private String resolveRooms(List<RoomDto> rooms) {
+        String roomGuideHeaderMessage = String.format("> 입장할 방 선택 : %s 방번호 - 예 %s 1",
+                ROOM_SELECTION.message(), ROOM_SELECTION.message());
         String roomListMessage = "> 방 목록 : " + rooms.stream()
                 .map(room -> String.valueOf(room.room_id()))
                 .collect(Collectors.joining(", "));
-        return String.join(LINE_SEPARATOR, newRoomMessage, roomGuideHeaderMessage, roomListMessage);
+        return String.join(LINE_SEPARATOR, roomGuideHeaderMessage, roomListMessage);
     }
 
-    public String resolveEnteringRoomMessage(final RoomDto roomDto) {
+    public String resolveEnteringRoomMessage(RoomDto roomDto) {
         return roomDto.room_id() + "번 방에 입장합니다.";
     }
 
     public String resolveUserNameInputMessage() {
-        return String.format("> 사용자명을 입력해 주세요 (4~10자) : %s 사용자명 - 예 %s mangcho", FIND_USER.message(), FIND_USER.message());
+        return String.format("> 사용자명을 입력해 주세요 (4~10자) : %s 사용자명 - 예 %s mangcho",
+                FIND_USER.message(), FIND_USER.message());
     }
 
-    public String resolveUserNameMessage(final UserDto user) {
+    public String resolveUserNameMessage(UserDto user) {
         return String.format("%s님 반갑습니다.", user.username());
     }
 }

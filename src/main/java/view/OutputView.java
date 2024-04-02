@@ -16,17 +16,17 @@ public class OutputView {
     }
 
     public static void printBoard(ChessBoard board) {
-        String boardMessage = messageResolver.resolveBoard(board);
+        String boardMessage = messageResolver.resolveBoardMessage(board);
         printWithLineSeparator(boardMessage);
     }
 
     public static void printScore(Score score) {
-        String scoreMessage = messageResolver.resolveScore(score);
+        String scoreMessage = messageResolver.resolveScoreMessage(score);
         printWithLineSeparator(scoreMessage);
     }
 
     public static void printWinner(Score score) {
-        printWithLineSeparator(messageResolver.resolveWinner(score));
+        printWithLineSeparator(messageResolver.resolveWinnerMessage(score));
     }
 
     public static void printErrorMessage(Exception e) {
@@ -34,7 +34,7 @@ public class OutputView {
     }
 
     public static void printGameRoomGuideMessage(List<RoomDto> rooms) {
-        printWithLineSeparator(messageResolver.resolveRoomList(rooms));
+        printWithLineSeparator(messageResolver.resolveRoomGuideMessage(rooms));
     }
 
     public static void printEnteringRoomMessage(RoomDto roomDto) {
@@ -45,7 +45,7 @@ public class OutputView {
         printWithLineSeparator(messageResolver.resolveUserNameInputMessage());
     }
 
-    public static void printUserNameMessage(final UserDto user) {
+    public static void printUserNameMessage(UserDto user) {
         printWithLineSeparator(messageResolver.resolveUserNameMessage(user));
     }
 

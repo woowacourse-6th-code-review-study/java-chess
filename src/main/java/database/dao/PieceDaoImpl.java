@@ -18,9 +18,6 @@ public class PieceDaoImpl implements PieceDao {
             resultSet.getString("type")
     );
 
-    public PieceDaoImpl() {
-    }
-
     public void add(final RoomDto room, final PieceDto piece) {
         final String query = "INSERT INTO " + TABLE_NAME + " VALUES(?, ?, ?, ?, ?)";
         jdbcTemplate.execute(query,

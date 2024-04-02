@@ -1,12 +1,12 @@
 package service;
 
+import database.dao.GameStateDao;
+import database.dao.PieceDao;
 import domain.ChessGame;
 import domain.board.ChessBoardFactory;
 import dto.PieceDto;
 import dto.RoomDto;
 import dto.StateDto;
-import database.dao.GameStateDao;
-import database.dao.PieceDao;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -20,9 +20,9 @@ public class ChessGameService {
         this.gameStateDao = gameStateDao;
     }
 
-    public ChessGame initializeChessGame(RoomDto roomDto) {
+    public ChessGame initializeChessGame(final RoomDto roomDto) {
         try {
-            StateDto stateDto = loadPreviousState(roomDto);
+            final StateDto stateDto = loadPreviousState(roomDto);
             return new ChessGame(ChessBoardFactory.loadPreviousChessBoard(
                     loadPreviousPieces(roomDto), stateDto.getState()));
         } catch (NoSuchElementException e) {
@@ -30,7 +30,7 @@ public class ChessGameService {
         }
     }
 
-    public void saveChessGame(ChessGame chessGame, RoomDto roomDto) {
+    public void saveChessGame(final ChessGame chessGame, final RoomDto roomDto) {
         if (chessGame.isGameOver()) {
             updateState(new StateDto("GAMEOVER", roomDto.room_id()));
             return;
@@ -50,7 +50,7 @@ public class ChessGameService {
 
     private void updatePieces(final RoomDto roomDto, final List<PieceDto> pieceDtos) {
         pieceDao.deleteAllByGameId(roomDto.room_id());
-        for (PieceDto pieceDto : pieceDtos) {
+        for (final PieceDto pieceDto : pieceDtos) {
             pieceDao.add(roomDto, pieceDto);
         }
     }
