@@ -30,9 +30,7 @@ public class BoardDao {
         try {
             return DriverManager.getConnection("jdbc:mysql://" + SERVER + "/" + DATABASE + OPTION, USERNAME, PASSWORD);
         } catch (final SQLException e) {
-            System.err.println("DB 연결 오류:" + e.getMessage());
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException("DB 연결 실패", e);
         }
     }
 
@@ -49,7 +47,7 @@ public class BoardDao {
             preparedStatement.setString(2, boardDto.getTurn());
             preparedStatement.executeUpdate();
         } catch (final SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("게임 정보 저장 실패", e);
         }
     }
 
@@ -61,7 +59,7 @@ public class BoardDao {
              final var preparedStatement = connection.prepareStatement(query)) {
             addPiece(gameId, board, preparedStatement);
         } catch (final SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("보드 정보 저장 실패", e);
         }
     }
 
@@ -89,7 +87,7 @@ public class BoardDao {
             preparedStatement.setInt(1, gameId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("게임 정보 삭제 실패", e);
         }
     }
 
@@ -100,7 +98,7 @@ public class BoardDao {
             preparedStatement.setInt(1, gameId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("보드 정보 삭제 실패", e);
         }
     }
 
@@ -181,9 +179,8 @@ public class BoardDao {
             preparedStatement.setInt(1, gameId);
             return getExist(preparedStatement);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("보드 존재 여부 확인 실패", e);
         }
-        return false;
     }
 
     private boolean getExist(PreparedStatement preparedStatement) throws SQLException {
