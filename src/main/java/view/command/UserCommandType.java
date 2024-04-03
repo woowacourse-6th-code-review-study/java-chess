@@ -1,6 +1,6 @@
 package view.command;
 
-import controller.user.command.Command;
+import controller.user.command.UserCommand;
 import controller.user.command.FindUserOnDemand;
 
 import java.util.Arrays;
@@ -11,14 +11,14 @@ public enum UserCommandType {
     FIND_USER("user", FindUserOnDemand::new);
 
     private final String command;
-    private final Function<List<String>, Command> mapper;
+    private final Function<List<String>, UserCommand> mapper;
 
-    UserCommandType(final String command, final Function<List<String>, Command> mapper) {
+    UserCommandType(final String command, final Function<List<String>, UserCommand> mapper) {
         this.command = command;
         this.mapper = mapper;
     }
 
-    public static Command getCommand(final CommandInput input) {
+    public static UserCommand getCommand(final CommandInput input) {
         final UserCommandType commandType = Arrays.stream(UserCommandType.values())
                 .filter(command -> input.prefix().equals(command.command))
                 .findFirst()

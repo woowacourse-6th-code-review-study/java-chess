@@ -6,10 +6,10 @@ import view.OutputView;
 
 import java.util.List;
 
-public class StatusOnCommand implements Command {
+public class StatusOnGameCommand implements GameCommand {
     private static final int ARGUMENT_SIZE = 0;
 
-    public StatusOnCommand(final List<String> arguments) {
+    public StatusOnGameCommand(final List<String> arguments) {
         validateArgumentSize(arguments);
     }
 

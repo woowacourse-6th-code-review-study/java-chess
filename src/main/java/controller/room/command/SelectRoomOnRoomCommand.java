@@ -6,12 +6,12 @@ import service.GameRoomService;
 
 import java.util.List;
 
-public class SelectRoomOnCommand implements Command {
+public class SelectRoomOnRoomCommand implements RoomCommand {
     private static final int ARGUMENT_SIZE = 1;
 
     private final String roomId;
 
-    public SelectRoomOnCommand(final List<String> arguments, final List<RoomDto> validRooms) {
+    public SelectRoomOnRoomCommand(final List<String> arguments, final List<RoomDto> validRooms) {
         validateArgumentSize(arguments);
         validateRoomIdFormat(arguments.get(0));
         validateRoomIdRunning(validRooms, arguments.get(0));

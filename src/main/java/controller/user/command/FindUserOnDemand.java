@@ -5,7 +5,7 @@ import service.UserService;
 
 import java.util.List;
 
-public class FindUserOnDemand implements Command {
+public class FindUserOnDemand implements UserCommand {
     private static final int ARGUMENT_SIZE = 1;
     private static final int MINIMUM_NAME_LENGTH = 4;
     private static final int MAXIMUM_NAME_LENGTH = 10;

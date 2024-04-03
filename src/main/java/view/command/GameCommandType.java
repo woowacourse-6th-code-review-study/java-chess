@@ -1,30 +1,30 @@
 package view.command;
 
-import controller.game.command.Command;
-import controller.game.command.EndOnCommand;
-import controller.game.command.MoveOnCommand;
-import controller.game.command.StartOnCommand;
-import controller.game.command.StatusOnCommand;
+import controller.game.command.GameCommand;
+import controller.game.command.EndOnGameCommand;
+import controller.game.command.MoveOnGameCommand;
+import controller.game.command.StartOnGameCommand;
+import controller.game.command.StatusOnGameCommand;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
 public enum GameCommandType {
-    START("start", StartOnCommand::new),
-    END("end", EndOnCommand::new),
-    STATUS("status", StatusOnCommand::new),
-    MOVE("move", MoveOnCommand::new);
+    START("start", StartOnGameCommand::new),
+    END("end", EndOnGameCommand::new),
+    STATUS("status", StatusOnGameCommand::new),
+    MOVE("move", MoveOnGameCommand::new);
 
     private final String command;
-    private final Function<List<String>, Command> mapper;
+    private final Function<List<String>, GameCommand> mapper;
 
-    GameCommandType(final String command, final Function<List<String>, Command> mapper) {
+    GameCommandType(final String command, final Function<List<String>, GameCommand> mapper) {
         this.command = command;
         this.mapper = mapper;
     }
 
-    public static Command getCommand(final CommandInput input) {
+    public static GameCommand getCommand(final CommandInput input) {
         final GameCommandType commandType = Arrays.stream(GameCommandType.values())
                 .filter(command -> input.prefix().equals(command.command))
                 .findFirst()

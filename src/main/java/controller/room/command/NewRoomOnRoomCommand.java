@@ -6,10 +6,10 @@ import service.GameRoomService;
 
 import java.util.List;
 
-public class NewRoomOnCommand implements Command {
+public class NewRoomOnRoomCommand implements RoomCommand {
     private static final int ARGUMENT_SIZE = 0;
 
-    public NewRoomOnCommand(final List<String> arguments) {
+    public NewRoomOnRoomCommand(final List<String> arguments) {
         validateArgumentSize(arguments);
     }
 

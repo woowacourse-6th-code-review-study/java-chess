@@ -4,6 +4,6 @@ import dto.RoomDto;
 import dto.UserDto;
 import service.GameRoomService;
 
-public interface Command {
+public interface RoomCommand {
     RoomDto execute(GameRoomService gameRoomService, UserDto user);
 }

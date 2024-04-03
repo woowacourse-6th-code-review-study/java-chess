@@ -1,5 +1,8 @@
 package view;
 
+import controller.game.command.GameCommand;
+import controller.room.command.RoomCommand;
+import controller.user.command.UserCommand;
 import dto.RoomDto;
 import view.command.CommandInput;
 import view.command.GameCommandType;
@@ -14,7 +17,7 @@ public class InputView {
     private static final Scanner SCANNER = new Scanner(System.in);
     private static final String WRONG_COMMAND_ERROR_MESSAGE = "잘못된 명령어입니다.";
 
-    public static controller.game.command.Command readGameCommand() {
+    public static GameCommand readGameCommand() {
         try {
             CommandInput input = readCommandInput();
             return GameCommandType.getCommand(input);
@@ -23,7 +26,7 @@ public class InputView {
         }
     }
 
-    public static controller.room.command.Command readRoomCommand(List<RoomDto> rooms) {
+    public static RoomCommand readRoomCommand(List<RoomDto> rooms) {
         try {
             CommandInput input = readCommandInput();
             return RoomCommandType.getCommand(input, rooms);
@@ -32,7 +35,7 @@ public class InputView {
         }
     }
 
-    public static controller.user.command.Command readUserCommand() {
+    public static UserCommand readUserCommand() {
         try {
             CommandInput input = readCommandInput();
             return UserCommandType.getCommand(input);

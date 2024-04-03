@@ -8,14 +8,14 @@ import view.OutputView;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class MoveOnCommand implements Command {
+public class MoveOnGameCommand implements GameCommand {
     private static final Pattern POSITION_INPUT_PATTERN = Pattern.compile("^[A-H][1-8]$");
     private static final int ARGUMENT_SIZE = 2;
 
     private final Position source;
     private final Position target;
 
-    public MoveOnCommand(final List<String> arguments) {
+    public MoveOnGameCommand(final List<String> arguments) {
         validateArgumentSize(arguments);
         this.source = new Position(arguments.get(0));
         this.target = new Position(arguments.get(1));
