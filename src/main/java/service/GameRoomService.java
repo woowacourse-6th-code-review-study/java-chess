@@ -5,7 +5,6 @@ import dto.RoomDto;
 import dto.UserDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public class GameRoomService {
     private final RoomDao roomDao;
@@ -19,8 +18,8 @@ public class GameRoomService {
     }
 
     public RoomDto createNewRoom(final UserDto user) {
-        final Optional<RoomDto> room = roomDao.addNewRoom(user);
-        return room.orElseThrow(IllegalStateException::new);
+        return roomDao.addNewRoom(user)
+                .orElseThrow(IllegalStateException::new);
     }
 
     public RoomDto findRoomById(final String roomId) {

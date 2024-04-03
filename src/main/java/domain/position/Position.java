@@ -7,8 +7,10 @@ public class Position {
     private final Rank rank;
 
     public Position(final String fileAndRank) {
-        this(File.fromName(fileAndRank.substring(0, 1)),
-                Rank.fromNumber(Integer.parseInt(fileAndRank.substring(1))));
+        this(
+                File.fromName(fileAndRank.substring(0, 1)),
+                Rank.fromNumber(Integer.parseInt(fileAndRank.substring(1)))
+        );
     }
 
     public Position(final File file, final Rank rank) {
