@@ -2,6 +2,8 @@ package chess.domain;
 
 import chess.domain.piece.PieceType;
 import chess.domain.piece.Team;
+import chess.domain.position.Position;
+import java.util.function.Predicate;
 
 public class ScoreCalculator {
 
@@ -29,10 +31,11 @@ public class ScoreCalculator {
     }
 
     private double calculateMinusScoreOf(Board board, Team team) {
+        Predicate<Position> isOnSameFile = position -> board.getPawnPositionsOf(team)
+                .anyMatch(other -> !other.equals(position) && other.isOnSameFile(position));
+
         int count = (int) board.getPawnPositionsOf(team)
-                .filter(position -> board.getPawnPositionsOf(team)
-                        .anyMatch(other -> !other.equals(position)
-                                && other.isOnSameFile(position)))
+                .filter(isOnSameFile)
                 .count();
 
         return count * PAWN_PENALTY_SCORE;
