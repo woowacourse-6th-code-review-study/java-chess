@@ -109,13 +109,13 @@ public class MessageResolver {
         String roomGuideHeaderMessage = String.format("> 입장할 방 선택 : %s 방번호 - 예 %s 1",
                 ROOM_SELECTION.message(), ROOM_SELECTION.message());
         String roomListMessage = "> 방 목록 : " + rooms.stream()
-                .map(room -> String.valueOf(room.room_id()))
+                .map(room -> String.valueOf(room.roomId()))
                 .collect(Collectors.joining(", "));
         return String.join(LINE_SEPARATOR, roomGuideHeaderMessage, roomListMessage);
     }
 
     public String resolveEnteringRoomMessage(RoomDto roomDto) {
-        return roomDto.room_id() + "번 방에 입장합니다.";
+        return roomDto.roomId() + "번 방에 입장합니다.";
     }
 
     public String resolveUserNameInputMessage() {

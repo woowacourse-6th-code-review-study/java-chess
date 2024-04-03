@@ -31,7 +31,7 @@ public class PieceMockDao implements PieceDao {
     }
 
     private String generateKey(RoomDto room, PieceDto piece) {
-        return room.room_id() + "-" + piece.boardFile() + "-" + piece.boardRank();
+        return room.roomId() + "-" + piece.boardFile() + "-" + piece.boardRank();
     }
 
     private int extractGameIdFromKey(String key) {

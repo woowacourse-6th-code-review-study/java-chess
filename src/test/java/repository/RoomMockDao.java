@@ -26,7 +26,7 @@ public class RoomMockDao implements RoomDao {
     public Optional<RoomDto> addNewRoom(UserDto userDto) {
         int newRoomId = roomRepository.keySet()
                 .stream()
-                .mapToInt(RoomDto::room_id)
+                .mapToInt(RoomDto::roomId)
                 .max()
                 .orElse(0) + 1;
         RoomDto newRoom = new RoomDto(newRoomId);
@@ -36,14 +36,14 @@ public class RoomMockDao implements RoomDao {
 
     public Optional<RoomDto> find(final String roomId) {
         return roomRepository.keySet().stream()
-                .filter(room -> room.room_id() == Integer.parseInt(roomId))
+                .filter(room -> room.roomId() == Integer.parseInt(roomId))
                 .findFirst();
     }
 
     public List<RoomDto> findActiveRoomAll(final UserDto user) {
         return roomRepository.entrySet().stream()
                 .filter(entry -> entry.getValue().equals(user))
-                .filter(entry -> !Objects.equals(turnRepository.get(entry.getKey().room_id()).state(), "GAMEOVER"))
+                .filter(entry -> !Objects.equals(turnRepository.get(entry.getKey().roomId()).state(), "GAMEOVER"))
                 .map(Map.Entry::getKey)
                 .toList();
     }

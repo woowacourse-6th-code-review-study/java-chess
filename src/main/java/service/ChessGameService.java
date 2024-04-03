@@ -32,24 +32,24 @@ public class ChessGameService {
 
     public void saveChessGame(final ChessGame chessGame, final RoomDto roomDto) {
         if (chessGame.isGameOver()) {
-            updateState(new StateDto("GAMEOVER", roomDto.room_id()));
+            updateState(new StateDto("GAMEOVER", roomDto.roomId()));
             return;
         }
         updatePieces(roomDto, chessGame.getBoard().getPieces());
-        updateState(new StateDto(chessGame.getTurn().name(), roomDto.room_id()));
+        updateState(new StateDto(chessGame.getTurn().name(), roomDto.roomId()));
     }
 
     private List<PieceDto> loadPreviousPieces(final RoomDto roomDto) {
-        return pieceDao.findPieceByGameId(roomDto.room_id());
+        return pieceDao.findPieceByGameId(roomDto.roomId());
     }
 
     private StateDto loadPreviousState(final RoomDto roomDto) {
-        return gameStateDao.findByGameId(roomDto.room_id())
+        return gameStateDao.findByGameId(roomDto.roomId())
                 .orElseThrow(NoSuchElementException::new);
     }
 
     private void updatePieces(final RoomDto roomDto, final List<PieceDto> pieceDtos) {
-        pieceDao.deleteAllByGameId(roomDto.room_id());
+        pieceDao.deleteAllByGameId(roomDto.roomId());
         for (final PieceDto pieceDto : pieceDtos) {
             pieceDao.add(roomDto, pieceDto);
         }

@@ -15,8 +15,13 @@ import service.UserService;
 
 public class MainController {
     private final GameRoomController gameRoomController = new GameRoomController(new GameRoomService(new RoomDaoImpl()));
-    private final ChessGameController chessGameController = new ChessGameController(new ChessGameService(
-            new PieceDaoImpl(), new GameStateDaoImpl()));
+    private final ChessGameController chessGameController
+            = new ChessGameController(
+            new ChessGameService(
+                    new PieceDaoImpl(),
+                    new GameStateDaoImpl()
+            )
+    );
     private final UserController userController = new UserController(new UserService(new UserDaoImpl()));
 
     public void run() {

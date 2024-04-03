@@ -1,4 +1,4 @@
 package dto;
 
-public record RoomDto(int room_id) {
+public record RoomDto(int roomId) {
 }

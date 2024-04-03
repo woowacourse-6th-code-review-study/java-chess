@@ -34,7 +34,7 @@ public class SelectRoomOnRoomCommand implements RoomCommand {
 
     private void validateRoomIdRunning(final List<RoomDto> validRooms, final String input) {
         boolean isRunningRoomNotFound = validRooms.stream()
-                .noneMatch(room -> room.room_id() == Integer.parseInt(input));
+                .noneMatch(room -> room.roomId() == Integer.parseInt(input));
         if (isRunningRoomNotFound) {
             throw new IllegalArgumentException();
         }
