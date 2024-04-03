@@ -7,14 +7,12 @@ import service.GameRoomService;
 import java.util.List;
 
 public class NewRoomOnRoomCommand implements RoomCommand {
-    private static final int ARGUMENT_SIZE = 0;
-
     public NewRoomOnRoomCommand(final List<String> arguments) {
         validateArgumentSize(arguments);
     }
 
     private void validateArgumentSize(final List<String> arguments) {
-        if (arguments.size() != ARGUMENT_SIZE) {
+        if (!arguments.isEmpty()) {
             throw new IllegalArgumentException();
         }
     }

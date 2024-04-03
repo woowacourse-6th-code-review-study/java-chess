@@ -7,14 +7,12 @@ import view.OutputView;
 import java.util.List;
 
 public class StatusOnGameCommand implements GameCommand {
-    private static final int ARGUMENT_SIZE = 0;
-
     public StatusOnGameCommand(final List<String> arguments) {
         validateArgumentSize(arguments);
     }
 
     private void validateArgumentSize(final List<String> arguments) {
-        if (arguments.size() != ARGUMENT_SIZE) {
+        if (!arguments.isEmpty()) {
             throw new IllegalArgumentException();
         }
     }

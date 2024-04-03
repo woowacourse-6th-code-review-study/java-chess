@@ -5,14 +5,12 @@ import domain.ChessGame;
 import java.util.List;
 
 public class EndOnGameCommand implements GameCommand {
-    private static final int ARGUMENT_SIZE = 0;
-
     public EndOnGameCommand(final List<String> arguments) {
         validateArgumentSize(arguments);
     }
 
     private void validateArgumentSize(final List<String> arguments) {
-        if (arguments.size() != ARGUMENT_SIZE) {
+        if (!arguments.isEmpty()) {
             throw new IllegalArgumentException();
         }
     }
