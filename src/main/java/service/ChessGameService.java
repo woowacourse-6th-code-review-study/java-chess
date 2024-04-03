@@ -3,7 +3,9 @@ package service;
 import database.dao.GameStateDao;
 import database.dao.PieceDao;
 import domain.ChessGame;
+import domain.board.ChessBoard;
 import domain.board.ChessBoardFactory;
+import domain.piece.Color;
 import dto.PieceDto;
 import dto.RoomDto;
 import dto.StateDto;
@@ -35,8 +37,11 @@ public class ChessGameService {
             updateState(new StateDto("GAMEOVER", roomDto.roomId()));
             return;
         }
-        updatePieces(roomDto, chessGame.getBoard().getPieces());
-        updateState(new StateDto(chessGame.getTurn().name(), roomDto.roomId()));
+
+        final ChessBoard board = chessGame.getBoard();
+        Color turn = chessGame.getTurn();
+        updatePieces(roomDto, board.getPieces());
+        updateState(new StateDto(turn.name(), roomDto.roomId()));
     }
 
     private List<PieceDto> loadPreviousPieces(final RoomDto roomDto) {

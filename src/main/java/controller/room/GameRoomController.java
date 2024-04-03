@@ -1,5 +1,6 @@
 package controller.room;
 
+import controller.room.command.RoomCommand;
 import dto.RoomDto;
 import dto.UserDto;
 import service.GameRoomService;
@@ -15,7 +16,7 @@ public class GameRoomController {
         this.roomService = roomService;
     }
 
-    public RoomDto run(UserDto user) {
+    public RoomDto loadRoom(UserDto user) {
         List<RoomDto> rooms = roomService.loadActiveRoomAll(user);
         OutputView.printGameRoomGuideMessage(rooms);
 
@@ -26,7 +27,8 @@ public class GameRoomController {
 
     private RoomDto readCommandUntilValid(UserDto user, List<RoomDto> rooms) {
         try {
-            return InputView.readRoomCommand(rooms).execute(roomService, user);
+            RoomCommand command = InputView.readRoomCommand(rooms);
+            return command.execute(roomService, user);
         } catch (IllegalArgumentException e) {
             OutputView.printErrorMessage(e);
             return readCommandUntilValid(user, rooms);

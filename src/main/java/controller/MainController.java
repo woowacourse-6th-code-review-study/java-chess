@@ -25,9 +25,9 @@ public class MainController {
     private final UserController userController = new UserController(new UserService(new UserDaoImpl()));
 
     public void run() {
-        UserDto user = userController.run();
+        UserDto user = userController.loadUser();
         while (true) {
-            RoomDto room = gameRoomController.run(user);
+            RoomDto room = gameRoomController.loadRoom(user);
             chessGameController.run(room);
         }
     }

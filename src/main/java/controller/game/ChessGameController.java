@@ -1,5 +1,6 @@
 package controller.game;
 
+import controller.game.command.GameCommand;
 import domain.ChessGame;
 import dto.RoomDto;
 import service.ChessGameService;
@@ -24,7 +25,8 @@ public class ChessGameController {
 
     private void readCommandUntilValid(ChessGame chessGame) {
         try {
-            InputView.readGameCommand().execute(chessGame);
+            GameCommand command = InputView.readGameCommand();
+            command.execute(chessGame);
         } catch (Exception e) {
             OutputView.printErrorMessage(e);
             readCommandUntilValid(chessGame);

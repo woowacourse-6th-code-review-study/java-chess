@@ -1,5 +1,6 @@
 package controller.user;
 
+import controller.user.command.UserCommand;
 import dto.UserDto;
 import service.UserService;
 import view.InputView;
@@ -12,7 +13,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    public UserDto run() {
+    public UserDto loadUser() {
         OutputView.printUserNameInputMessage();
         UserDto user = readCommandUntilValid();
         OutputView.printUserNameMessage(user);
@@ -21,7 +22,8 @@ public class UserController {
 
     private UserDto readCommandUntilValid() {
         try {
-            return InputView.readUserCommand().execute(userService);
+            UserCommand command = InputView.readUserCommand();
+            return command.execute(userService);
         } catch (IllegalArgumentException e) {
             OutputView.printErrorMessage(e);
             return readCommandUntilValid();
