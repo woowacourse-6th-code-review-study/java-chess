@@ -110,7 +110,7 @@ public class ChessGame {
         Position end = inputView.readPosition();
         GameStatus gameStatus = board.tryMove(start, end);
         showBoard(board);
-        if (gameStatus != GameStatus.PLAYING) {
+        if (!gameStatus.isPlaying()) {
             outputView.printWinner(gameStatus);
             BoardDao boardDao = new BoardDao();
             boardDao.delete(ONE_GAME);
