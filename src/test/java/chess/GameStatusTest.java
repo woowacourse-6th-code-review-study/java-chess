@@ -22,10 +22,10 @@ class GameStatusTest {
     @DisplayName("플레이 중인 상태인지 확인한다.")
     void isPlayingTest() {
         assertAll(
-                () -> assertThat(GameStatus.isPlaying(GameStatus.PLAYING)).isTrue(),
-                () -> assertThat(GameStatus.isPlaying(GameStatus.END)).isFalse(),
-                () -> assertThat(GameStatus.isPlaying(GameStatus.BLACK_WIN)).isFalse(),
-                () -> assertThat(GameStatus.isPlaying(GameStatus.WHITE_WIN)).isFalse()
+                () -> assertThat(GameStatus.PLAYING.isPlaying()).isTrue(),
+                () -> assertThat(GameStatus.END.isPlaying()).isFalse(),
+                () -> assertThat(GameStatus.BLACK_WIN.isPlaying()).isFalse(),
+                () -> assertThat(GameStatus.WHITE_WIN.isPlaying()).isFalse()
         );
     }
 }

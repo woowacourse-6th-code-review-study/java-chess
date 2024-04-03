@@ -55,7 +55,7 @@ public class ChessGame {
 
     private void play(Board board) {
         GameStatus gameStatus = GameStatus.PLAYING;
-        while (GameStatus.isPlaying(gameStatus)) {
+        while (gameStatus.isPlaying()) {
             gameStatus = tryProcessTurn(board);
         }
     }
