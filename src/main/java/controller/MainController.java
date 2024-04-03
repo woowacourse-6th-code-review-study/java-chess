@@ -26,9 +26,7 @@ public class MainController {
 
     public void run() {
         UserDto user = userController.loadUser();
-        while (true) {
-            RoomDto room = gameRoomController.loadRoom(user);
-            chessGameController.run(room);
-        }
+        RoomDto room = gameRoomController.loadRoom(user);
+        chessGameController.run(room);
     }
 }
