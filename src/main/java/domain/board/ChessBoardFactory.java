@@ -1,6 +1,5 @@
 package domain.board;
 
-import dto.PieceDto;
 import domain.piece.Color;
 import domain.piece.Piece;
 import domain.piece.nonpawn.Bishop;
@@ -13,6 +12,7 @@ import domain.piece.pawn.WhitePawn;
 import domain.position.File;
 import domain.position.Position;
 import domain.position.Rank;
+import dto.PieceDto;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,9 +30,6 @@ public class ChessBoardFactory {
             new King(Color.BLACK), new Bishop(Color.BLACK), new Knight(Color.BLACK), new Rook(Color.BLACK)
     );
 
-    private ChessBoardFactory() {
-    }
-
     public static ChessBoard createInitialChessBoard() {
         final Map<Position, Piece> pieceMap = new HashMap<>();
         for (int order = 0; order < SPECIAL_PIECE_SIZE; order++) {
@@ -44,11 +41,13 @@ public class ChessBoardFactory {
         return new ChessBoard(pieceMap);
     }
 
-    public static ChessBoard loadPreviousChessBoard(List<PieceDto> pieceDtos, final Color turn) {
-        return pieceDtos.stream()
-                .collect(Collectors.collectingAndThen(Collectors.toMap(
-                        PieceDto::getPosition,
-                        PieceDto::getPiece
-                ), board -> new ChessBoard(board, turn)));
+    public static ChessBoard loadPreviousChessBoard(final List<PieceDto> pieces, final Color turn) {
+        return pieces.stream()
+                .collect(
+                        Collectors.collectingAndThen(
+                                Collectors.toMap(PieceDto::getPosition, PieceDto::getPiece),
+                                board -> new ChessBoard(board, turn)
+                        )
+                );
     }
 }

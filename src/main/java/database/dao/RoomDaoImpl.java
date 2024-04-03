@@ -13,13 +13,13 @@ public class RoomDaoImpl implements RoomDao {
     private static final String GAME_STATUES_TABLE_NAME = "game_states";
 
     private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
-    private final RowMapper<RoomDto> rowMapper = (resultSet) -> new RoomDto(
+    private final RowMapper<RoomDto> rowMapper = resultSet -> new RoomDto(
             resultSet.getInt("room_id")
     );
 
     public void add(final UserDto userDto, final RoomDto roomDto) {
         final String insertQuery = "INSERT INTO " + TABLE_NAME + " VALUES (?, ?)";
-        jdbcTemplate.execute(insertQuery, userDto.username(), "" + roomDto.room_id());
+        jdbcTemplate.execute(insertQuery, userDto.username(), "" + roomDto.roomId());
     }
 
     public Optional<RoomDto> addNewRoom(final UserDto userDto) {
@@ -30,7 +30,7 @@ public class RoomDaoImpl implements RoomDao {
     private int getRoomIdMax() {
         final String selectQuery = "SELECT MAX(room_id) AS room_id FROM " + TABLE_NAME;
         final List<RoomDto> rooms = jdbcTemplate.executeAndGet(selectQuery, rowMapper);
-        return rooms.get(0).room_id();
+        return rooms.get(0).roomId();
     }
 
     private RoomDto insertNewRoom(final UserDto userDto, final int newRoomId) {

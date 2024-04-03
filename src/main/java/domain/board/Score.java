@@ -20,8 +20,8 @@ public class Score {
     }
 
     public static Score calculate(final Map<Position, Piece> board) {
-        double whiteScore = calculateBoardScore(board, Color.WHITE);
-        double blackScore = calculateBoardScore(board, Color.BLACK);
+        final double whiteScore = calculateBoardScore(board, Color.WHITE);
+        final double blackScore = calculateBoardScore(board, Color.BLACK);
         return new Score(whiteScore, blackScore);
     }
 

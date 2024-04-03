@@ -11,7 +11,7 @@ public class GameStateDaoImpl implements GameStateDao {
     private static final String TABLE_NAME = "game_states";
 
     private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
-    private final RowMapper<StateDto> rowMapper = (resultSet) -> new StateDto(
+    private final RowMapper<StateDto> rowMapper = resultSet -> new StateDto(
             resultSet.getString("state"),
             resultSet.getInt("game_id")
     );

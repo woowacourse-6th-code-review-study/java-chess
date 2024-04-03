@@ -11,7 +11,7 @@ public class UserDaoImpl implements UserDao {
     private static final String TABLE_NAME = "users";
 
     private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
-    private final RowMapper<UserDto> rowMapper = (resultSet) -> new UserDto(
+    private final RowMapper<UserDto> rowMapper = resultSet -> new UserDto(
             resultSet.getString("username")
     );
 

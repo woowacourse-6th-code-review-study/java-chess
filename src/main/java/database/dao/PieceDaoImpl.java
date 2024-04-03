@@ -11,7 +11,7 @@ public class PieceDaoImpl implements PieceDao {
     private static final String TABLE_NAME = "pieces";
 
     private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
-    private final RowMapper<PieceDto> rowMapper = (resultSet) -> new PieceDto(
+    private final RowMapper<PieceDto> rowMapper = resultSet -> new PieceDto(
             resultSet.getString("board_file"),
             resultSet.getString("board_rank"),
             resultSet.getString("color"),
@@ -21,7 +21,7 @@ public class PieceDaoImpl implements PieceDao {
     public void add(final RoomDto room, final PieceDto piece) {
         final String query = "INSERT INTO " + TABLE_NAME + " VALUES(?, ?, ?, ?, ?)";
         jdbcTemplate.execute(query,
-                String.valueOf(room.room_id()), piece.boardFile(), piece.boardRank(),
+                String.valueOf(room.roomId()), piece.boardFile(), piece.boardRank(),
                 piece.color(), piece.type());
     }
 
