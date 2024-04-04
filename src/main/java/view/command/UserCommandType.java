@@ -1,19 +1,18 @@
 package view.command;
 
-import controller.user.command.UserCommand;
 import controller.user.command.FindUserOnDemand;
+import controller.user.command.UserCommand;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 
 public enum UserCommandType {
     FIND_USER("user", FindUserOnDemand::new);
 
     private final String command;
-    private final Function<List<String>, UserCommand> mapper;
+    private final CommandMapper mapper;
 
-    UserCommandType(final String command, final Function<List<String>, UserCommand> mapper) {
+    UserCommandType(final String command, final CommandMapper mapper) {
         this.command = command;
         this.mapper = mapper;
     }
@@ -29,5 +28,10 @@ public enum UserCommandType {
 
     public String message() {
         return this.command;
+    }
+
+    @FunctionalInterface
+    private interface CommandMapper {
+        UserCommand apply(List<String> arguments);
     }
 }
